@@ -1,0 +1,53 @@
+{
+  "tournaments": [
+    {
+      "id": 1771370168598,
+      "name": "Pebble Beach",
+      "location": "Pebble Beach, CA",
+      "date": "2026-02-15",
+      "type": "regular",
+      "entryFee": 5,
+      "participants": [
+        {
+          "name": "CEH31979",
+          "score": 620,
+          "prize": 15.75,
+          "position": 1
+        },
+        {
+          "name": "Shanning2",
+          "score": 592,
+          "prize": 6.75,
+          "position": 2
+        },
+        {
+          "name": "Mdiamond",
+          "score": 548.5,
+          "prize": 0,
+          "position": 3
+        },
+        {
+          "name": "DR.Shocker",
+          "score": 525.5,
+          "prize": 0,
+          "position": 4
+        },
+        {
+          "name": "TJ-Lucky",
+          "score": 481.5,
+          "prize": 0,
+          "position": 5
+        }
+      ],
+      "grossPool": 25,
+      "totalPrizes": 22.5
+    }
+  ],
+  "knownPlayers": [
+    "CEH31979",
+    "DR.Shocker",
+    "Mdiamond",
+    "Shanning2",
+    "TJ-Lucky"
+  ]
+}

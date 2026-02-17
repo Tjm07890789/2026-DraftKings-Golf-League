@@ -861,9 +861,10 @@ function renderStandings() {
     var stats = {};
     app.tournaments.forEach(function(t) {
         t.participants.forEach(function(p) {
-            if (!stats[p.name]) stats[p.name] = { name:p.name, winnings:0, entries:0, wins:0, top3:0, played:0 };
+            if (!stats[p.name]) stats[p.name] = { name:p.name, winnings:0, entries:0, wins:0, top3:0, played:0, totalPoints:0 };
             var s = stats[p.name];
             s.winnings += p.prize; s.entries += t.entryFee; s.played++;
+            s.totalPoints += p.score;
             if (p.position === 1) s.wins++;
             if (p.position <= 3)  s.top3++;
         });
@@ -871,7 +872,8 @@ function renderStandings() {
 
     var rows = Object.keys(stats).map(function(k){
         var s = stats[k];
-        return { name:s.name, winnings:s.winnings, entries:s.entries, wins:s.wins, top3:s.top3, played:s.played, net:s.winnings-s.entries };
+        var avgPoints = s.played > 0 ? s.totalPoints / s.played : 0;
+        return { name:s.name, winnings:s.winnings, entries:s.entries, wins:s.wins, top3:s.top3, played:s.played, net:s.winnings-s.entries, avgPoints:avgPoints };
     }).sort(function(a,b){ return b.net - a.net; });
 
     var totalPrizes = app.tournaments.reduce(function(s,t){ return s+(t.totalPrizes||0); },0);
@@ -883,7 +885,7 @@ function renderStandings() {
           '<div class="stat-card"><div class="stat-value">' + Object.keys(stats).length + '</div><div class="stat-label">Players</div></div>' +
         '</div>' +
         '<div class="table-container"><table>' +
-        '<thead><tr><th>Rank</th><th>Player</th><th>Played</th><th>Wins</th><th>Top 3</th><th>Winnings</th><th>Entries Paid</th><th>Net Profit</th></tr></thead>' +
+        '<thead><tr><th>Rank</th><th>Player</th><th>Played</th><th>Avg Pts</th><th>Wins</th><th>Top 3</th><th>Winnings</th><th>Entries Paid</th><th>Net Profit</th></tr></thead>' +
         '<tbody>';
 
     rows.forEach(function(p,i){
@@ -893,7 +895,9 @@ function renderStandings() {
         html += '<tr>' +
             '<td><span class="rank-badge ' + rc + '">' + r + '</span></td>' +
             '<td><strong>' + escHtml(p.name) + '</strong></td>' +
-            '<td>' + p.played + '</td><td>' + p.wins + '</td><td>' + p.top3 + '</td>' +
+            '<td>' + p.played + '</td>' +
+            '<td>' + p.avgPoints.toFixed(1) + '</td>' +
+            '<td>' + p.wins + '</td><td>' + p.top3 + '</td>' +
             '<td class="money">$' + p.winnings.toFixed(2) + '</td>' +
             '<td>$' + p.entries.toFixed(2) + '</td>' +
             '<td class="' + nc + '">' + (p.net>=0?'+':'') + '$' + p.net.toFixed(2) + '</td>' +

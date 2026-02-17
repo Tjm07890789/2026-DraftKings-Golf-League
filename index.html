@@ -9,11 +9,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
 ```
     body {
@@ -26,19 +22,17 @@
         line-height: 1.6;
     }
 
-    .container {
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 1rem;
-    }
+    .container { max-width: 1200px; margin: 0 auto; padding: 1rem; }
 
+    /* HEADER */
     header {
         background-color: #0a3d2c;
         background-image: linear-gradient(135deg, #0a3d2c 0%, #1a5c42 100%);
-        padding: 2rem 1rem;
+        padding: 2rem 1rem 1.5rem;
         margin-bottom: 2rem;
         border-bottom: 3px solid #ffd700;
         box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+        position: relative;
     }
 
     h1 {
@@ -57,6 +51,60 @@
         font-size: 1rem;
     }
 
+    /* ADMIN CORNER */
+    .admin-corner {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 0.3rem;
+    }
+
+    .admin-label {
+        font-size: 0.62rem;
+        color: rgba(168,184,176,0.5);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        text-align: right;
+    }
+
+    .admin-btns {
+        display: flex;
+        gap: 0.35rem;
+    }
+
+    .admin-btn {
+        width: 2.2rem;
+        height: 2.2rem;
+        background-color: rgba(26,32,40,0.6);
+        border: 1px solid rgba(255,255,255,0.15);
+        border-radius: 6px;
+        color: rgba(168,184,176,0.6);
+        font-size: 0.9rem;
+        font-weight: 700;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: 'IBM Plex Sans', Arial, sans-serif;
+        transition: background-color 0.2s, color 0.2s, border-color 0.2s;
+    }
+
+    .admin-btn:hover {
+        background-color: #1a5c42;
+        color: #ffd700;
+        border-color: #ffd700;
+    }
+
+    .admin-btn.active {
+        background-color: #1a5c42;
+        color: #ffd700;
+        border-color: #ffd700;
+    }
+
+    /* MAIN NAV */
     nav {
         display: flex;
         gap: 0.5rem;
@@ -77,13 +125,13 @@
         font-family: 'IBM Plex Sans', Arial, sans-serif;
     }
 
-    nav button:hover,
-    nav button.active {
+    nav button:hover, nav button.active {
         background-color: #1a5c42;
         color: #ffd700;
         border-color: #ffd700;
     }
 
+    /* CARD */
     .card {
         background-color: #242d38;
         border: 1px solid rgba(255,255,255,0.1);
@@ -102,9 +150,8 @@
         padding-bottom: 0.75rem;
     }
 
-    .form-group {
-        margin-bottom: 1.25rem;
-    }
+    /* FORMS */
+    .form-group { margin-bottom: 1.25rem; }
 
     label {
         display: block;
@@ -116,8 +163,7 @@
         letter-spacing: 0.5px;
     }
 
-    input,
-    select {
+    input, select {
         width: 100%;
         padding: 0.75rem;
         background-color: #1a2028;
@@ -128,25 +174,16 @@
         font-family: 'IBM Plex Sans', Arial, sans-serif;
     }
 
-    input:focus,
-    select:focus {
+    input:focus, select:focus {
         outline: none;
         border-color: #ffd700;
     }
 
-    select option {
-        background-color: #1a2028;
-        color: #e8f0e8;
-    }
+    select option { background-color: #1a2028; color: #e8f0e8; }
 
-    input[type="number"] {
-        -moz-appearance: textfield;
-    }
-
+    input[type="number"] { -moz-appearance: textfield; }
     input[type="number"]::-webkit-inner-spin-button,
-    input[type="number"]::-webkit-outer-spin-button {
-        -webkit-appearance: none;
-    }
+    input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; }
 
     .form-row {
         display: grid;
@@ -154,6 +191,7 @@
         gap: 1rem;
     }
 
+    /* BUTTONS */
     .btn {
         display: inline-block;
         padding: 0.85rem 1.8rem;
@@ -170,9 +208,7 @@
         letter-spacing: 0.5px;
     }
 
-    .btn:hover {
-        background-color: #2d7a5a;
-    }
+    .btn:hover { background-color: #2d7a5a; }
 
     .btn-secondary {
         background-color: #1a2028;
@@ -180,11 +216,7 @@
         color: #a8b8b0;
         border-color: rgba(255,255,255,0.2);
     }
-
-    .btn-secondary:hover {
-        background-color: #242d38;
-        color: #e8f0e8;
-    }
+    .btn-secondary:hover { background-color: #242d38; color: #e8f0e8; }
 
     .btn-danger {
         background-color: #ef4444;
@@ -192,16 +224,11 @@
         border-color: #ef4444;
         color: #ffffff;
     }
+    .btn-danger:hover { background-color: #dc2626; }
 
-    .btn-danger:hover {
-        background-color: #dc2626;
-    }
+    .btn-sm { padding: 0.5rem 1rem; font-size: 0.82rem; }
 
-    .btn-sm {
-        padding: 0.5rem 1rem;
-        font-size: 0.82rem;
-    }
-
+    /* PARTICIPANT ROWS */
     .participant-entry {
         background-color: #1a2028;
         padding: 1rem 1.25rem;
@@ -229,21 +256,12 @@
         font-family: 'IBM Plex Sans', Arial, sans-serif;
         white-space: nowrap;
     }
+    .remove-btn:hover { background-color: #ef4444; color: #ffffff; }
 
-    .remove-btn:hover {
-        background-color: #ef4444;
-        color: #ffffff;
-    }
+    .new-name-input { margin-top: 0.4rem; display: none; }
+    .new-name-input.visible { display: block; }
 
-    .new-name-input {
-        margin-top: 0.4rem;
-        display: none;
-    }
-
-    .new-name-input.visible {
-        display: block;
-    }
-
+    /* POOL BAR */
     .pool-info {
         background-color: #0a3d2c;
         background-image: linear-gradient(135deg, #0a3d2c, #1a5c42);
@@ -258,45 +276,16 @@
         align-items: center;
     }
 
-    .pool-stat {
-        text-align: center;
-    }
+    .pool-stat { text-align: center; }
+    .pool-stat .val { font-size: 1.4rem; font-weight: 700; color: #ffd700; font-family: 'Playfair Display', Georgia, serif; }
+    .pool-stat .lbl { font-size: 0.75rem; color: #a8b8b0; text-transform: uppercase; letter-spacing: 0.5px; }
+    .pool-note { flex: 1; font-size: 0.82rem; color: #a8b8b0; min-width: 150px; }
+    .pool-note strong { color: #ffd700; }
 
-    .pool-stat .val {
-        font-size: 1.4rem;
-        font-weight: 700;
-        color: #ffd700;
-        font-family: 'Playfair Display', Georgia, serif;
-    }
+    /* TABLES */
+    .table-container { overflow-x: auto; margin-top: 1.25rem; }
 
-    .pool-stat .lbl {
-        font-size: 0.75rem;
-        color: #a8b8b0;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-    }
-
-    .pool-note {
-        flex: 1;
-        font-size: 0.82rem;
-        color: #a8b8b0;
-        min-width: 150px;
-    }
-
-    .pool-note strong {
-        color: #ffd700;
-    }
-
-    .table-container {
-        overflow-x: auto;
-        margin-top: 1.25rem;
-    }
-
-    table {
-        width: 100%;
-        border-collapse: separate;
-        border-spacing: 0;
-    }
+    table { width: 100%; border-collapse: separate; border-spacing: 0; }
 
     th {
         background-color: #1a5c42;
@@ -320,10 +309,7 @@
         font-size: 0.95rem;
     }
 
-    tr:hover td {
-        background-color: #242d38;
-    }
-
+    tr:hover td { background-color: #242d38; }
     tr:last-child td:first-child { border-bottom-left-radius: 8px; }
     tr:last-child td:last-child  { border-bottom-right-radius: 8px; }
 
@@ -343,9 +329,10 @@
     .rank-3 { background-color: #cd7f32; color: #ffffff; }
     .rank-other { background-color: #242d38; color: #a8b8b0; border: 1px solid rgba(255,255,255,0.15); }
 
-    .money         { color: #4ade80; font-weight: 700; }
+    .money { color: #4ade80; font-weight: 700; }
     .money.negative { color: #ef4444; }
 
+    /* TOURNAMENT HISTORY */
     .tournament-item {
         background-color: #1a2028;
         padding: 1.5rem;
@@ -363,22 +350,9 @@
         margin-bottom: 1rem;
     }
 
-    .tournament-name {
-        font-size: 1.2rem;
-        font-weight: 700;
-        color: #e8f0e8;
-        margin-bottom: 0.3rem;
-    }
+    .tournament-name { font-size: 1.2rem; font-weight: 700; color: #e8f0e8; margin-bottom: 0.3rem; }
 
-    .badge {
-        display: inline-block;
-        padding: 0.2rem 0.7rem;
-        border-radius: 4px;
-        font-weight: 700;
-        font-size: 0.72rem;
-        text-transform: uppercase;
-    }
-
+    .badge { display: inline-block; padding: 0.2rem 0.7rem; border-radius: 4px; font-weight: 700; font-size: 0.72rem; text-transform: uppercase; }
     .badge-major   { background-color: #ffd700; color: #0a3d2c; }
     .badge-regular { background-color: #1a5c42; color: #ffd700; border: 1px solid #ffd700; }
 
@@ -391,15 +365,9 @@
         margin-bottom: 1rem;
     }
 
-    .detail-item strong {
-        color: #e8f0e8;
-        display: block;
-        font-size: 0.72rem;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-        margin-bottom: 0.2rem;
-    }
+    .detail-item strong { color: #e8f0e8; display: block; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.2rem; }
 
+    /* STATS */
     .stats-grid {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
@@ -407,71 +375,52 @@
         margin-bottom: 2rem;
     }
 
-    .stat-card {
+    .stat-card { background-color: #1a2028; padding: 1.25rem; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); text-align: center; }
+    .stat-value { font-size: 2.2rem; font-weight: 900; color: #ffd700; font-family: 'Playfair Display', Georgia, serif; }
+    .stat-label { color: #a8b8b0; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.5px; margin-top: 0.3rem; }
+
+    .action-buttons { display: flex; gap: 1rem; margin-top: 1.5rem; flex-wrap: wrap; }
+
+    .section-title { font-size: 1rem; font-weight: 700; color: #ffd700; margin: 1.5rem 0 0.75rem; text-transform: uppercase; letter-spacing: 0.5px; }
+
+    .empty-state { text-align: center; padding: 3rem 1rem; color: #a8b8b0; }
+    .empty-state svg { width: 64px; height: 64px; margin-bottom: 1rem; opacity: 0.3; }
+
+    .success-msg { background-color: #059669; color: #ffffff; padding: 0.9rem; border-radius: 8px; margin-bottom: 1rem; font-weight: 600; text-align: center; }
+
+    /* DATA SYNC BANNER */
+    .sync-banner {
         background-color: #1a2028;
-        padding: 1.25rem;
-        border-radius: 8px;
         border: 1px solid rgba(255,255,255,0.1);
-        text-align: center;
-    }
-
-    .stat-value {
-        font-size: 2.2rem;
-        font-weight: 900;
-        color: #ffd700;
-        font-family: 'Playfair Display', Georgia, serif;
-    }
-
-    .stat-label {
-        color: #a8b8b0;
-        font-size: 0.78rem;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-        margin-top: 0.3rem;
-    }
-
-    .action-buttons {
-        display: flex;
-        gap: 1rem;
-        margin-top: 1.5rem;
-        flex-wrap: wrap;
-    }
-
-    .section-title {
-        font-size: 1rem;
-        font-weight: 700;
-        color: #ffd700;
-        margin: 1.5rem 0 0.75rem;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-    }
-
-    .empty-state {
-        text-align: center;
-        padding: 3rem 1rem;
-        color: #a8b8b0;
-    }
-
-    .empty-state svg {
-        width: 64px;
-        height: 64px;
-        margin-bottom: 1rem;
-        opacity: 0.3;
-    }
-
-    .success-msg {
-        background-color: #059669;
-        color: #ffffff;
-        padding: 0.9rem;
         border-radius: 8px;
+        padding: 0.75rem 1rem;
         margin-bottom: 1rem;
-        font-weight: 600;
-        text-align: center;
+        font-size: 0.85rem;
+        color: #a8b8b0;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
     }
 
-    .hidden {
-        display: none !important;
+    .sync-banner.synced { border-color: #4ade80; color: #4ade80; }
+    .sync-banner.error  { border-color: #f59e0b; color: #f59e0b; }
+
+    /* EXPORT INSTRUCTIONS */
+    .instructions {
+        background-color: #1a2028;
+        border-left: 3px solid #ffd700;
+        border-radius: 0 8px 8px 0;
+        padding: 1.25rem;
+        margin-top: 1.5rem;
+        font-size: 0.9rem;
+        color: #a8b8b0;
+        line-height: 2;
     }
+
+    .instructions strong { color: #e8f0e8; }
+    .instructions code { color: #ffd700; background-color: rgba(255,215,0,0.1); padding: 0.1rem 0.3rem; border-radius: 3px; }
+
+    .hidden { display: none !important; }
 
     @media (max-width: 600px) {
         h1 { font-size: 1.8rem; }
@@ -481,6 +430,7 @@
         .action-buttons { flex-direction: column; }
         .btn { width: 100%; text-align: center; }
         th, td { padding: 0.7rem 0.5rem; font-size: 0.82rem; }
+        .admin-corner { top: 0.5rem; right: 0.5rem; }
     }
 </style>
 ```
@@ -493,20 +443,50 @@
         <h1>⛳ DraftKings Golf League</h1>
         <p class="subtitle">Track Scores · Standings · Winnings</p>
     </div>
+
+```
+<!-- ADMIN CORNER -->
+<div class="admin-corner">
+    <div class="admin-label">Admin</div>
+    <div class="admin-btns">
+        <button class="admin-btn" id="admin-add-btn" title="Add Tournament">+</button>
+        <button class="admin-btn" id="admin-io-btn" title="Import / Export">I/O</button>
+    </div>
+</div>
+```
+
 </header>
 
 <div class="container">
 
 ```
+<!-- SYNC STATUS -->
+<div id="sync-banner" class="sync-banner hidden"></div>
+
+<!-- MAIN NAV (Standings + History only) -->
 <nav>
-    <button class="active" data-view="add-tournament">Add Tournament</button>
-    <button data-view="standings">Season Standings</button>
+    <button class="active" data-view="standings">Season Standings</button>
     <button data-view="tournaments">Tournament History</button>
-    <button data-view="data">Import / Export</button>
 </nav>
 
-<!-- ADD TOURNAMENT -->
-<div id="add-tournament-view">
+<!-- STANDINGS -->
+<div id="standings-view">
+    <div class="card">
+        <h2>Season Standings</h2>
+        <div id="standings-content"></div>
+    </div>
+</div>
+
+<!-- HISTORY -->
+<div id="tournaments-view" class="hidden">
+    <div class="card">
+        <h2>Tournament History</h2>
+        <div id="tournaments-content"></div>
+    </div>
+</div>
+
+<!-- ADD TOURNAMENT (admin only) -->
+<div id="add-tournament-view" class="hidden">
     <div class="card">
         <h2>Add New Tournament</h2>
         <form id="tournament-form" autocomplete="off">
@@ -537,24 +517,14 @@
                     <input type="number" id="t-num" min="2" max="30" required placeholder="e.g., 5">
                 </div>
             </div>
+
             <button type="button" class="btn" id="gen-btn">Generate Participant Fields →</button>
 
             <div id="pool-bar" class="pool-info hidden">
-                <div class="pool-stat">
-                    <div class="val" id="pi-entry">—</div>
-                    <div class="lbl">Entry Fee</div>
-                </div>
-                <div class="pool-stat">
-                    <div class="val" id="pi-players">—</div>
-                    <div class="lbl">Players</div>
-                </div>
-                <div class="pool-stat">
-                    <div class="val" id="pi-pool">—</div>
-                    <div class="lbl">Gross Pool</div>
-                </div>
-                <div class="pool-note">
-                    Enter the <strong>actual DK prize amounts</strong> each player received — DraftKings rake already deducted.
-                </div>
+                <div class="pool-stat"><div class="val" id="pi-entry">—</div><div class="lbl">Entry Fee</div></div>
+                <div class="pool-stat"><div class="val" id="pi-players">—</div><div class="lbl">Players</div></div>
+                <div class="pool-stat"><div class="val" id="pi-pool">—</div><div class="lbl">Gross Pool</div></div>
+                <div class="pool-note">Enter the <strong>actual DK prize amounts</strong> each player received — DraftKings rake already deducted.</div>
             </div>
 
             <div id="participants-container" class="hidden">
@@ -571,45 +541,24 @@
     </div>
 </div>
 
-<!-- STANDINGS -->
-<div id="standings-view" class="hidden">
-    <div class="card">
-        <h2>Season Standings</h2>
-        <div id="standings-content"></div>
-    </div>
-</div>
-
-<!-- HISTORY -->
-<div id="tournaments-view" class="hidden">
-    <div class="card">
-        <h2>Tournament History</h2>
-        <div id="tournaments-content"></div>
-    </div>
-</div>
-
-<!-- DATA -->
+<!-- IMPORT / EXPORT (admin only) -->
 <div id="data-view" class="hidden">
     <div class="card">
         <h2>Data Management</h2>
-        <p style="color:#a8b8b0; margin-bottom:1.5rem;">Export your data after entering scores each week, then share the file so others can import it on their device.</p>
         <div class="action-buttons">
-            <button class="btn" id="export-btn">📥 Export Data</button>
-            <button class="btn btn-secondary" id="import-btn">📤 Import Data</button>
+            <button class="btn" id="export-btn">📥 Export data.json</button>
+            <button class="btn btn-secondary" id="import-btn">📤 Import data.json</button>
             <button class="btn btn-danger" id="clear-btn">🗑️ Clear All Data</button>
         </div>
         <input type="file" id="import-file" accept=".json" class="hidden">
-    </div>
-    <div class="card">
-        <h2>Weekly Update Workflow</h2>
-        <p style="color:#a8b8b0; line-height:2.0;">
-            <strong style="color:#e8f0e8;">After entering scores each week:</strong><br>
-            1. Click <strong style="color:#ffd700;">Export Data</strong> to download a JSON backup.<br>
-            2. On your Mac open this <code style="color:#ffd700;">index.html</code> file in a text editor, replace contents with the latest version, save.<br>
-            3. Go to your GitHub repo and upload the new file — drag and drop to replace it.<br>
-            4. Click <strong style="color:#ffd700;">Commit changes</strong>. GitHub Pages updates within 2 minutes.<br>
-            5. Everyone refreshes the link to see the latest results.<br><br>
-            <strong style="color:#e8f0e8;">Tip:</strong> Always enter scores on the same device so your local data stays complete.
-        </p>
+
+        <div class="instructions">
+            <strong>Weekly workflow — 3 steps:</strong><br>
+            1. Enter scores using the <code>+</code> button above, then click <code>Export data.json</code>.<br>
+            2. Go to your GitHub repo → click <strong>Upload files</strong> → drag the exported <code>data.json</code> onto the page → <strong>Commit changes</strong>.<br>
+            3. Done — anyone who visits your link will automatically see the updated scores.<br><br>
+            <strong>First time setup:</strong> After uploading <code>index.html</code> to GitHub, also upload a blank <code>data.json</code> file containing just <code>{}</code> so the app has something to read.
+        </div>
     </div>
 </div>
 ```
@@ -618,6 +567,7 @@
 
 <script>
 var STORAGE_KEY = 'dkGolfLeague_v2';
+var DATA_FILE   = 'data.json';   // sits next to index.html in GitHub repo
 
 function defaultData() {
     return { tournaments: [], knownPlayers: [] };
@@ -625,50 +575,142 @@ function defaultData() {
 
 var app = defaultData();
 
-function loadData() {
+// ── LOAD: try data.json first, fall back to localStorage ──────
+function loadData(callback) {
+    // Always load localStorage first so admin edits are preserved
     try {
         var raw = localStorage.getItem(STORAGE_KEY);
         if (raw) {
             var parsed = JSON.parse(raw);
-            app = {
-                tournaments:  parsed.tournaments  || [],
-                knownPlayers: parsed.knownPlayers || []
-            };
+            app = { tournaments: parsed.tournaments||[], knownPlayers: parsed.knownPlayers||[] };
         }
-    } catch(e) {
-        app = defaultData();
+    } catch(e) { app = defaultData(); }
+
+    // Then try fetching data.json from the same server
+    var isLocal = (window.location.protocol === 'file:');
+    if (isLocal) {
+        // Running locally — skip fetch, just use localStorage
+        showBanner('Running locally — using device storage.', 'error');
+        if (callback) callback();
+        return;
     }
+
+    fetch(DATA_FILE + '?v=' + Date.now())
+        .then(function(res) {
+            if (!res.ok) throw new Error('No data.json found');
+            return res.json();
+        })
+        .then(function(remote) {
+            if (remote && remote.tournaments && remote.tournaments.length > 0) {
+                // Remote has data — use it and sync to localStorage
+                app = { tournaments: remote.tournaments||[], knownPlayers: remote.knownPlayers||[] };
+                saveLocal();
+                showBanner('✓ Scores loaded from GitHub', 'synced');
+            } else {
+                showBanner('✓ Loaded — no remote data yet', 'synced');
+            }
+            if (callback) callback();
+        })
+        .catch(function() {
+            // data.json not found — use localStorage silently
+            hideBanner();
+            if (callback) callback();
+        });
 }
 
-function saveData() {
+function saveLocal() {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(app));
 }
 
-loadData();
+function showBanner(msg, type) {
+    var b = document.getElementById('sync-banner');
+    b.textContent = msg;
+    b.className = 'sync-banner ' + (type || '');
+    b.classList.remove('hidden');
+    if (type === 'synced') {
+        setTimeout(function(){ b.classList.add('hidden'); }, 4000);
+    }
+}
 
-// Navigation
-var viewEls = {
-    'add-tournament': document.getElementById('add-tournament-view'),
-    'standings':       document.getElementById('standings-view'),
-    'tournaments':     document.getElementById('tournaments-view'),
-    'data':            document.getElementById('data-view')
+function hideBanner() {
+    document.getElementById('sync-banner').classList.add('hidden');
+}
+
+// ── VIEWS ─────────────────────────────────────────────────────
+var mainViews = {
+    'standings':   document.getElementById('standings-view'),
+    'tournaments': document.getElementById('tournaments-view')
 };
 
+var adminViews = {
+    'add-tournament': document.getElementById('add-tournament-view'),
+    'data':           document.getElementById('data-view')
+};
+
+// Main nav
 document.querySelectorAll('nav button').forEach(function(btn) {
     btn.addEventListener('click', function() {
         var v = btn.getAttribute('data-view');
-        document.querySelectorAll('nav button').forEach(function(b) { b.classList.remove('active'); });
+        document.querySelectorAll('nav button').forEach(function(b){ b.classList.remove('active'); });
         btn.classList.add('active');
-        Object.keys(viewEls).forEach(function(k) {
-            viewEls[k].classList[k === v ? 'remove' : 'add']('hidden');
+
+        // Hide admin views
+        Object.keys(adminViews).forEach(function(k){ adminViews[k].classList.add('hidden'); });
+        document.getElementById('admin-add-btn').classList.remove('active');
+        document.getElementById('admin-io-btn').classList.remove('active');
+
+        Object.keys(mainViews).forEach(function(k){
+            mainViews[k].classList[k === v ? 'remove' : 'add']('hidden');
         });
+
         if (v === 'standings')   renderStandings();
         if (v === 'tournaments') renderTournaments();
     });
 });
 
-// Build participant row
+// Admin + button
+document.getElementById('admin-add-btn').addEventListener('click', function() {
+    var isOpen = !document.getElementById('add-tournament-view').classList.contains('hidden');
+    // Close all views first
+    Object.keys(mainViews).forEach(function(k){ mainViews[k].classList.add('hidden'); });
+    Object.keys(adminViews).forEach(function(k){ adminViews[k].classList.add('hidden'); });
+    document.querySelectorAll('nav button').forEach(function(b){ b.classList.remove('active'); });
+    document.getElementById('admin-add-btn').classList.remove('active');
+    document.getElementById('admin-io-btn').classList.remove('active');
+
+    if (!isOpen) {
+        document.getElementById('add-tournament-view').classList.remove('hidden');
+        document.getElementById('admin-add-btn').classList.add('active');
+    } else {
+        // Toggled off — go back to standings
+        document.getElementById('standings-view').classList.remove('hidden');
+        document.querySelector('nav button[data-view="standings"]').classList.add('active');
+        renderStandings();
+    }
+});
+
+// Admin I/O button
+document.getElementById('admin-io-btn').addEventListener('click', function() {
+    var isOpen = !document.getElementById('data-view').classList.contains('hidden');
+    Object.keys(mainViews).forEach(function(k){ mainViews[k].classList.add('hidden'); });
+    Object.keys(adminViews).forEach(function(k){ adminViews[k].classList.add('hidden'); });
+    document.querySelectorAll('nav button').forEach(function(b){ b.classList.remove('active'); });
+    document.getElementById('admin-add-btn').classList.remove('active');
+    document.getElementById('admin-io-btn').classList.remove('active');
+
+    if (!isOpen) {
+        document.getElementById('data-view').classList.remove('hidden');
+        document.getElementById('admin-io-btn').classList.add('active');
+    } else {
+        document.getElementById('standings-view').classList.remove('hidden');
+        document.querySelector('nav button[data-view="standings"]').classList.add('active');
+        renderStandings();
+    }
+});
+
+// ── PARTICIPANT ROWS ──────────────────────────────────────────
 var rowCount = 0;
+
 function buildParticipantRow() {
     rowCount++;
     var div = document.createElement('div');
@@ -704,19 +746,14 @@ function buildParticipantRow() {
     var inp = div.querySelector('.p-name-input');
     sel.addEventListener('change', function() {
         if (sel.value === '__new__') {
-            inp.classList.add('visible');
-            inp.required = true;
-            inp.focus();
+            inp.classList.add('visible'); inp.required = true; inp.focus();
         } else {
-            inp.classList.remove('visible');
-            inp.required = false;
-            inp.value = '';
+            inp.classList.remove('visible'); inp.required = false; inp.value = '';
         }
     });
 
     div.querySelector('.remove-btn').addEventListener('click', function() {
-        div.parentNode.removeChild(div);
-        updatePoolBar();
+        div.parentNode.removeChild(div); updatePoolBar();
     });
 
     return div;
@@ -726,8 +763,7 @@ document.getElementById('gen-btn').addEventListener('click', function() {
     var num = parseInt(document.getElementById('t-num').value);
     if (!num || num < 2) { alert('Please enter at least 2 participants.'); return; }
     var container = document.getElementById('participant-rows');
-    container.innerHTML = '';
-    rowCount = 0;
+    container.innerHTML = ''; rowCount = 0;
     for (var i = 0; i < num; i++) { container.appendChild(buildParticipantRow()); }
     updatePoolBar();
     document.getElementById('pool-bar').classList.remove('hidden');
@@ -736,8 +772,7 @@ document.getElementById('gen-btn').addEventListener('click', function() {
 });
 
 document.getElementById('add-row-btn').addEventListener('click', function() {
-    document.getElementById('participant-rows').appendChild(buildParticipantRow());
-    updatePoolBar();
+    document.getElementById('participant-rows').appendChild(buildParticipantRow()); updatePoolBar();
 });
 
 document.getElementById('t-type').addEventListener('change', updatePoolBar);
@@ -753,6 +788,7 @@ function updatePoolBar() {
     document.getElementById('pi-pool').textContent    = '$' + (fee * (rows || num)).toFixed(2);
 }
 
+// ── FORM SUBMIT ───────────────────────────────────────────────
 document.getElementById('tournament-form').addEventListener('submit', function(e) {
     e.preventDefault();
     var name     = document.getElementById('t-name').value.trim();
@@ -781,27 +817,22 @@ document.getElementById('tournament-form').addEventListener('submit', function(e
 
     if (!participants.length) { alert('Please enter at least one participant.'); return; }
     participants.sort(function(a,b){ return b.score - a.score; });
-    participants.forEach(function(p,i){ p.position = i + 1; });
+    participants.forEach(function(p,i){ p.position = i+1; });
 
     app.tournaments.push({
-        id:          Date.now(),
-        name:        name,
-        location:    location,
-        date:        date,
-        type:        type,
-        entryFee:    entryFee,
-        participants: participants,
-        grossPool:   participants.length * entryFee,
-        totalPrizes: participants.reduce(function(s,p){ return s + p.prize; }, 0)
+        id: Date.now(), name: name, location: location, date: date,
+        type: type, entryFee: entryFee, participants: participants,
+        grossPool: participants.length * entryFee,
+        totalPrizes: participants.reduce(function(s,p){ return s+p.prize; },0)
     });
-    saveData();
+    saveLocal();
 
     var msg = document.createElement('div');
     msg.className = 'success-msg';
-    msg.textContent = '✓ "' + name + '" saved successfully!';
+    msg.textContent = '✓ "' + name + '" saved! Now export data.json and upload to GitHub.';
     var view = document.getElementById('add-tournament-view');
     view.insertBefore(msg, view.firstChild);
-    setTimeout(function(){ if (msg.parentNode) msg.parentNode.removeChild(msg); }, 3000);
+    setTimeout(function(){ if (msg.parentNode) msg.parentNode.removeChild(msg); }, 5000);
 
     document.getElementById('tournament-form').reset();
     document.getElementById('participant-rows').innerHTML = '';
@@ -818,18 +849,20 @@ document.getElementById('cancel-btn').addEventListener('click', function() {
     document.getElementById('submit-section').classList.add('hidden');
 });
 
+// ── STANDINGS ─────────────────────────────────────────────────
 function renderStandings() {
     var el = document.getElementById('standings-content');
-    if (!app.tournaments.length) { el.innerHTML = emptyState('No tournaments yet. Add your first tournament to see standings!'); return; }
+    if (!app.tournaments.length) {
+        el.innerHTML = emptyState('No tournaments yet. Check back after the first week!');
+        return;
+    }
 
     var stats = {};
     app.tournaments.forEach(function(t) {
         t.participants.forEach(function(p) {
             if (!stats[p.name]) stats[p.name] = { name:p.name, winnings:0, entries:0, wins:0, top3:0, played:0 };
             var s = stats[p.name];
-            s.winnings += p.prize;
-            s.entries  += t.entryFee;
-            s.played++;
+            s.winnings += p.prize; s.entries += t.entryFee; s.played++;
             if (p.position === 1) s.wins++;
             if (p.position <= 3)  s.top3++;
         });
@@ -840,7 +873,7 @@ function renderStandings() {
         return { name:s.name, winnings:s.winnings, entries:s.entries, wins:s.wins, top3:s.top3, played:s.played, net:s.winnings-s.entries };
     }).sort(function(a,b){ return b.net - a.net; });
 
-    var totalPrizes = app.tournaments.reduce(function(s,t){ return s + (t.totalPrizes||0); },0);
+    var totalPrizes = app.tournaments.reduce(function(s,t){ return s+(t.totalPrizes||0); },0);
 
     var html =
         '<div class="stats-grid">' +
@@ -869,47 +902,48 @@ function renderStandings() {
     el.innerHTML = html;
 }
 
+// ── TOURNAMENT HISTORY ────────────────────────────────────────
 function renderTournaments() {
     var el = document.getElementById('tournaments-content');
     if (!app.tournaments.length) { el.innerHTML = emptyState('No tournament history yet.'); return; }
 
-    var sorted = app.tournaments.slice().sort(function(a,b){ return new Date(b.date) - new Date(a.date); });
+    var sorted = app.tournaments.slice().sort(function(a,b){ return new Date(b.date)-new Date(a.date); });
     var html = '';
 
     sorted.forEach(function(t) {
-        var dateStr = new Date(t.date + 'T12:00:00').toLocaleDateString('en-US',{ month:'long', day:'numeric', year:'numeric' });
-        var bc = t.type === 'major' ? 'badge-major' : 'badge-regular';
-        var bt = t.type === 'major' ? 'MAJOR' : 'REGULAR';
+        var dateStr = new Date(t.date+'T12:00:00').toLocaleDateString('en-US',{ month:'long', day:'numeric', year:'numeric' });
+        var bc = t.type==='major'?'badge-major':'badge-regular';
+        var bt = t.type==='major'?'MAJOR':'REGULAR';
         var trows = '';
         t.participants.forEach(function(p){
             var rc = p.position===1?'rank-1':p.position===2?'rank-2':p.position===3?'rank-3':'rank-other';
             trows += '<tr>' +
-                '<td><span class="rank-badge ' + rc + '">' + p.position + '</span></td>' +
-                '<td><strong>' + escHtml(p.name) + '</strong></td>' +
-                '<td>' + p.score.toFixed(2) + '</td>' +
-                '<td class="money">' + (p.prize > 0 ? '$'+p.prize.toFixed(2) : '—') + '</td>' +
+                '<td><span class="rank-badge '+rc+'">'+p.position+'</span></td>' +
+                '<td><strong>'+escHtml(p.name)+'</strong></td>' +
+                '<td>'+p.score.toFixed(2)+'</td>' +
+                '<td class="money">'+(p.prize>0?'$'+p.prize.toFixed(2):'—')+'</td>' +
             '</tr>';
         });
 
         html +=
             '<div class="tournament-item">' +
               '<div class="tournament-header"><div>' +
-                '<div class="tournament-name">' + escHtml(t.name) + '</div>' +
-                '<span class="badge ' + bc + '">' + bt + '</span>' +
+                '<div class="tournament-name">'+escHtml(t.name)+'</div>' +
+                '<span class="badge '+bc+'">'+bt+'</span>' +
               '</div></div>' +
               '<div class="tournament-details">' +
-                '<div class="detail-item"><strong>Location</strong>' + escHtml(t.location) + '</div>' +
-                '<div class="detail-item"><strong>Final Round</strong>' + dateStr + '</div>' +
-                '<div class="detail-item"><strong>Entry Fee</strong>$' + t.entryFee + '</div>' +
-                '<div class="detail-item"><strong>Gross Pool</strong>$' + t.grossPool.toFixed(2) + '</div>' +
-                '<div class="detail-item"><strong>Prizes Paid</strong>$' + (t.totalPrizes||0).toFixed(2) + '</div>' +
+                '<div class="detail-item"><strong>Location</strong>'+escHtml(t.location)+'</div>' +
+                '<div class="detail-item"><strong>Final Round</strong>'+dateStr+'</div>' +
+                '<div class="detail-item"><strong>Entry Fee</strong>$'+t.entryFee+'</div>' +
+                '<div class="detail-item"><strong>Gross Pool</strong>$'+t.grossPool.toFixed(2)+'</div>' +
+                '<div class="detail-item"><strong>Prizes Paid</strong>$'+(t.totalPrizes||0).toFixed(2)+'</div>' +
               '</div>' +
               '<div class="table-container"><table>' +
                 '<thead><tr><th>Pos</th><th>Player</th><th>DK Score</th><th>Prize Won</th></tr></thead>' +
-                '<tbody>' + trows + '</tbody>' +
+                '<tbody>'+trows+'</tbody>' +
               '</table></div>' +
               '<div style="margin-top:1rem;text-align:right;">' +
-                '<button class="btn btn-danger btn-sm" onclick="deleteTournament(' + t.id + ')">Delete Tournament</button>' +
+                '<button class="btn btn-danger btn-sm" onclick="deleteTournament('+t.id+')">Delete Tournament</button>' +
               '</div>' +
             '</div>';
     });
@@ -918,22 +952,23 @@ function renderTournaments() {
 
 window.deleteTournament = function(id) {
     if (confirm('Delete this tournament? This cannot be undone.')) {
-        app.tournaments = app.tournaments.filter(function(t){ return t.id !== id; });
-        saveData();
-        renderTournaments();
+        app.tournaments = app.tournaments.filter(function(t){ return t.id!==id; });
+        saveLocal(); renderTournaments();
     }
 };
 
+// ── EXPORT ────────────────────────────────────────────────────
 document.getElementById('export-btn').addEventListener('click', function() {
-    var blob = new Blob([JSON.stringify(app, null, 2)], { type: 'application/json' });
-    var url = URL.createObjectURL(blob);
-    var a = document.createElement('a');
-    a.href = url;
-    a.download = 'dk-golf-' + new Date().toISOString().split('T')[0] + '.json';
+    var blob = new Blob([JSON.stringify(app, null, 2)], { type:'application/json' });
+    var url  = URL.createObjectURL(blob);
+    var a    = document.createElement('a');
+    a.href   = url;
+    a.download = 'data.json';   // always named data.json for GitHub upload
     a.click();
     URL.revokeObjectURL(url);
 });
 
+// ── IMPORT ────────────────────────────────────────────────────
 document.getElementById('import-btn').addEventListener('click', function() {
     document.getElementById('import-file').click();
 });
@@ -946,7 +981,7 @@ document.getElementById('import-file').addEventListener('change', function(e) {
         try {
             var imported = JSON.parse(ev.target.result);
             app = { tournaments: imported.tournaments||[], knownPlayers: imported.knownPlayers||[] };
-            saveData();
+            saveLocal();
             alert('Data imported successfully!');
             location.reload();
         } catch(err) {
@@ -956,6 +991,7 @@ document.getElementById('import-file').addEventListener('change', function(e) {
     reader.readAsText(file);
 });
 
+// ── CLEAR ─────────────────────────────────────────────────────
 document.getElementById('clear-btn').addEventListener('click', function() {
     if (confirm('Clear ALL data? This cannot be undone.')) {
         if (confirm('Are you sure? Everything will be deleted.')) {
@@ -965,6 +1001,7 @@ document.getElementById('clear-btn').addEventListener('click', function() {
     }
 });
 
+// ── HELPERS ───────────────────────────────────────────────────
 function escHtml(str) {
     return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
@@ -972,8 +1009,13 @@ function escHtml(str) {
 function emptyState(msg) {
     return '<div class="empty-state"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24">' +
         '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>' +
-        '</svg><p>' + msg + '</p></div>';
+        '</svg><p>'+msg+'</p></div>';
 }
+
+// ── INIT ──────────────────────────────────────────────────────
+loadData(function() {
+    renderStandings();
+});
 </script>
 
 </body>

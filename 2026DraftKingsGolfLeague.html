@@ -1,0 +1,1181 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Track your DraftKings Golf League scores, standings, and winnings">
+    <meta name="theme-color" content="#0a3d2c">
+    <title>DraftKings Golf League Tracker</title>
+
+```
+<!-- PWA Manifest -->
+<link rel="manifest" href="data:application/json;base64,ewogICJuYW1lIjogIkRyYWZ0S2luZ3MgR29sZiBMZWFndWUiLAogICJzaG9ydF9uYW1lIjogIkRLIEdvbGYiLAogICJkZXNjcmlwdGlvbiI6ICJUcmFjayB5b3VyIERyYWZ0S2luZ3MgR29sZiBMZWFndWUgc2NvcmVzIGFuZCBzdGFuZGluZ3MiLAogICJzdGFydF91cmwiOiAiLiIsCiAgImRpc3BsYXkiOiAic3RhbmRhbG9uZSIsCiAgImJhY2tncm91bmRfY29sb3IiOiAiIzBhM2QyYyIsCiAgInRoZW1lX2NvbG9yIjogIiMwYTNkMmMiLAogICJpY29ucyI6IFsKICAgIHsKICAgICAgInNyYyI6ICJkYXRhOmltYWdlL3N2Zyt4bWwsJTNDc3ZnIHhtbG5zPSdodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2Zycgdmlld0JveD0nMCAwIDUxMiA1MTInJTNFJTNDcmVjdCBmaWxsPSclMjMwYTNkMmMnIHdpZHRoPSc1MTInIGhlaWdodD0nNTEyJy8lM0UlM0N0ZXh0IHg9JzUwJTI1JyB5PSc1MCUyNScgZm9udC1zaXplPScyODAnIHRleHQtYW5jaG9yPSdtaWRkbGUnIGR5PScuMzVlbScgZmlsbD0nJTIzZmZkNzAwJyBmb250LWZhbWlseT0nc2VyaWYnIGZvbnQtd2VpZ2h0PSdib2xkJyUzRUclM0MvdGV4dCUzRSUzQy9zdmclM0UiLAogICAgICAic2l6ZXMiOiAiNTEyeDUxMiIsCiAgICAgICJ0eXBlIjogImltYWdlL3N2Zyt4bWwiCiAgICB9CiAgXQp9">
+
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap');
+    
+    :root {
+        --forest-dark: #0a3d2c;
+        --forest-mid: #1a5c42;
+        --forest-light: #2d7a5a;
+        --gold: #ffd700;
+        --gold-dark: #d4af37;
+        --silver: #c0c0c0;
+        --bronze: #cd7f32;
+        --bg-primary: #0f1419;
+        --bg-secondary: #1a2028;
+        --bg-card: #242d38;
+        --text-primary: #e8f0e8;
+        --text-secondary: #a8b8b0;
+        --accent: #4ade80;
+        --danger: #ef4444;
+        --border: rgba(255, 255, 255, 0.1);
+    }
+    
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+    
+    body {
+        font-family: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+        background: linear-gradient(135deg, var(--bg-primary) 0%, var(--forest-dark) 100%);
+        color: var(--text-primary);
+        min-height: 100vh;
+        padding-bottom: 2rem;
+        line-height: 1.6;
+    }
+    
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 1rem;
+    }
+    
+    /* Header */
+    header {
+        background: linear-gradient(135deg, var(--forest-dark) 0%, var(--forest-mid) 100%);
+        padding: 2rem 1rem;
+        margin-bottom: 2rem;
+        border-bottom: 3px solid var(--gold);
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        position: relative;
+        overflow: hidden;
+    }
+    
+    header::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="2" fill="rgba(255,215,0,0.1)"/></svg>') repeat;
+        background-size: 30px 30px;
+        opacity: 0.3;
+    }
+    
+    h1 {
+        font-family: 'Playfair Display', serif;
+        font-size: clamp(2rem, 5vw, 3.5rem);
+        font-weight: 900;
+        text-align: center;
+        color: var(--gold);
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        letter-spacing: -0.5px;
+        position: relative;
+        z-index: 1;
+    }
+    
+    .subtitle {
+        text-align: center;
+        color: var(--text-secondary);
+        margin-top: 0.5rem;
+        font-size: 1.1rem;
+        font-weight: 500;
+        position: relative;
+        z-index: 1;
+    }
+    
+    /* Navigation */
+    nav {
+        display: flex;
+        gap: 0.5rem;
+        margin: 2rem 0;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    
+    nav button {
+        padding: 0.75rem 1.5rem;
+        background: var(--bg-card);
+        border: 2px solid var(--border);
+        color: var(--text-secondary);
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-size: 0.95rem;
+        border-radius: 8px;
+        font-family: 'IBM Plex Sans', sans-serif;
+    }
+    
+    nav button:hover {
+        background: var(--forest-mid);
+        color: var(--gold);
+        border-color: var(--gold);
+        transform: translateY(-2px);
+    }
+    
+    nav button.active {
+        background: var(--forest-mid);
+        color: var(--gold);
+        border-color: var(--gold);
+    }
+    
+    /* Cards */
+    .card {
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 2rem;
+        margin-bottom: 2rem;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        animation: slideUp 0.4s ease;
+    }
+    
+    @keyframes slideUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    .card h2 {
+        font-family: 'Playfair Display', serif;
+        font-size: 2rem;
+        color: var(--gold);
+        margin-bottom: 1.5rem;
+        border-bottom: 2px solid var(--border);
+        padding-bottom: 0.75rem;
+    }
+    
+    /* Forms */
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+    
+    label {
+        display: block;
+        margin-bottom: 0.5rem;
+        color: var(--text-secondary);
+        font-weight: 600;
+        font-size: 0.9rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+    
+    input, select, textarea {
+        width: 100%;
+        padding: 0.75rem;
+        background: var(--bg-secondary);
+        border: 2px solid var(--border);
+        border-radius: 6px;
+        color: var(--text-primary);
+        font-size: 1rem;
+        font-family: 'IBM Plex Sans', sans-serif;
+        transition: all 0.3s ease;
+    }
+    
+    input:focus, select:focus, textarea:focus {
+        outline: none;
+        border-color: var(--gold);
+        box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.1);
+    }
+    
+    input[type="number"] {
+        -moz-appearance: textfield;
+    }
+    
+    input[type="number"]::-webkit-inner-spin-button,
+    input[type="number"]::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+    
+    .form-row {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1rem;
+    }
+    
+    /* Buttons */
+    .btn {
+        padding: 0.875rem 2rem;
+        background: linear-gradient(135deg, var(--forest-mid), var(--forest-light));
+        color: var(--gold);
+        border: 2px solid var(--gold);
+        border-radius: 8px;
+        font-weight: 700;
+        cursor: pointer;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        font-family: 'IBM Plex Sans', sans-serif;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    }
+    
+    .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(255, 215, 0, 0.3);
+        background: linear-gradient(135deg, var(--forest-light), var(--forest-mid));
+    }
+    
+    .btn:active {
+        transform: translateY(0);
+    }
+    
+    .btn-secondary {
+        background: var(--bg-secondary);
+        color: var(--text-secondary);
+        border-color: var(--border);
+    }
+    
+    .btn-secondary:hover {
+        background: var(--bg-card);
+        color: var(--text-primary);
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    }
+    
+    .btn-danger {
+        background: var(--danger);
+        border-color: var(--danger);
+        color: white;
+    }
+    
+    .btn-danger:hover {
+        background: #dc2626;
+        box-shadow: 0 6px 16px rgba(239, 68, 68, 0.3);
+    }
+    
+    /* Participant Entry */
+    .participant-entry {
+        background: var(--bg-secondary);
+        padding: 1rem;
+        border-radius: 8px;
+        margin-bottom: 1rem;
+        border: 2px solid var(--border);
+        animation: slideUp 0.3s ease;
+    }
+    
+    .participant-entry .form-row {
+        margin-bottom: 0.75rem;
+    }
+    
+    .remove-btn {
+        padding: 0.5rem 1rem;
+        background: transparent;
+        color: var(--danger);
+        border: 1px solid var(--danger);
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 0.875rem;
+        transition: all 0.3s ease;
+        font-weight: 600;
+    }
+    
+    .remove-btn:hover {
+        background: var(--danger);
+        color: white;
+    }
+    
+    /* Tables */
+    .table-container {
+        overflow-x: auto;
+        margin-top: 1.5rem;
+    }
+    
+    table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0;
+    }
+    
+    th {
+        background: var(--forest-mid);
+        color: var(--gold);
+        padding: 1rem;
+        text-align: left;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        font-size: 0.85rem;
+        border-bottom: 2px solid var(--gold);
+    }
+    
+    th:first-child {
+        border-top-left-radius: 8px;
+    }
+    
+    th:last-child {
+        border-top-right-radius: 8px;
+    }
+    
+    td {
+        padding: 1rem;
+        background: var(--bg-secondary);
+        border-bottom: 1px solid var(--border);
+    }
+    
+    tr:hover td {
+        background: var(--bg-card);
+    }
+    
+    tr:last-child td:first-child {
+        border-bottom-left-radius: 8px;
+    }
+    
+    tr:last-child td:last-child {
+        border-bottom-right-radius: 8px;
+    }
+    
+    .rank-badge {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 2rem;
+        height: 2rem;
+        border-radius: 50%;
+        font-weight: 700;
+        font-size: 0.9rem;
+    }
+    
+    .rank-1 {
+        background: var(--gold);
+        color: var(--forest-dark);
+        box-shadow: 0 2px 8px rgba(255, 215, 0, 0.4);
+    }
+    
+    .rank-2 {
+        background: var(--silver);
+        color: var(--forest-dark);
+    }
+    
+    .rank-3 {
+        background: var(--bronze);
+        color: white;
+    }
+    
+    .rank-other {
+        background: var(--bg-card);
+        color: var(--text-secondary);
+        border: 1px solid var(--border);
+    }
+    
+    .money {
+        color: var(--accent);
+        font-weight: 700;
+    }
+    
+    .money.negative {
+        color: var(--danger);
+    }
+    
+    /* Tournament List */
+    .tournament-item {
+        background: var(--bg-secondary);
+        padding: 1.5rem;
+        border-radius: 8px;
+        margin-bottom: 1rem;
+        border-left: 4px solid var(--gold);
+        cursor: pointer;
+        transition: all 0.3s ease;
+        animation: slideUp 0.3s ease;
+    }
+    
+    .tournament-item:hover {
+        background: var(--bg-card);
+        border-left-width: 6px;
+        transform: translateX(4px);
+    }
+    
+    .tournament-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: start;
+        flex-wrap: wrap;
+        gap: 1rem;
+        margin-bottom: 1rem;
+    }
+    
+    .tournament-name {
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: var(--text-primary);
+    }
+    
+    .tournament-type {
+        background: var(--gold);
+        color: var(--forest-dark);
+        padding: 0.25rem 0.75rem;
+        border-radius: 4px;
+        font-weight: 700;
+        font-size: 0.75rem;
+        text-transform: uppercase;
+    }
+    
+    .tournament-type.regular {
+        background: var(--forest-mid);
+        color: var(--gold);
+    }
+    
+    .tournament-details {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 1rem;
+        color: var(--text-secondary);
+        font-size: 0.9rem;
+    }
+    
+    .detail-item strong {
+        color: var(--text-primary);
+        display: block;
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 0.25rem;
+    }
+    
+    /* Stats Grid */
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1.5rem;
+        margin-top: 2rem;
+    }
+    
+    .stat-card {
+        background: linear-gradient(135deg, var(--bg-secondary), var(--bg-card));
+        padding: 1.5rem;
+        border-radius: 8px;
+        border: 1px solid var(--border);
+        text-align: center;
+    }
+    
+    .stat-value {
+        font-size: 2.5rem;
+        font-weight: 900;
+        color: var(--gold);
+        font-family: 'Playfair Display', serif;
+    }
+    
+    .stat-label {
+        color: var(--text-secondary);
+        font-size: 0.85rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-top: 0.5rem;
+    }
+    
+    /* Action Buttons */
+    .action-buttons {
+        display: flex;
+        gap: 1rem;
+        margin-top: 2rem;
+        flex-wrap: wrap;
+    }
+    
+    /* Empty State */
+    .empty-state {
+        text-align: center;
+        padding: 3rem 1rem;
+        color: var(--text-secondary);
+    }
+    
+    .empty-state svg {
+        width: 80px;
+        height: 80px;
+        margin-bottom: 1rem;
+        opacity: 0.3;
+    }
+    
+    /* Utilities */
+    .hidden {
+        display: none !important;
+    }
+    
+    .text-center {
+        text-align: center;
+    }
+    
+    .mt-2 {
+        margin-top: 2rem;
+    }
+    
+    /* Responsive */
+    @media (max-width: 768px) {
+        .container {
+            padding: 0.5rem;
+        }
+        
+        header {
+            padding: 1.5rem 1rem;
+        }
+        
+        .card {
+            padding: 1.5rem;
+        }
+        
+        .form-row {
+            grid-template-columns: 1fr;
+        }
+        
+        table {
+            font-size: 0.85rem;
+        }
+        
+        th, td {
+            padding: 0.75rem 0.5rem;
+        }
+        
+        .action-buttons {
+            flex-direction: column;
+        }
+        
+        .btn {
+            width: 100%;
+        }
+    }
+    
+    /* Success Message */
+    .success-message {
+        background: linear-gradient(135deg, #059669, #10b981);
+        color: white;
+        padding: 1rem;
+        border-radius: 8px;
+        margin-bottom: 1rem;
+        font-weight: 600;
+        text-align: center;
+        animation: slideUp 0.3s ease;
+    }
+</style>
+```
+
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>⛳ DraftKings Golf League</h1>
+            <p class="subtitle">Track Scores • Standings • Winnings</p>
+        </div>
+    </header>
+
+```
+<div class="container">
+    <nav>
+        <button class="active" data-view="add-tournament">Add Tournament</button>
+        <button data-view="standings">Season Standings</button>
+        <button data-view="tournaments">Tournament History</button>
+        <button data-view="data">Import/Export Data</button>
+    </nav>
+
+    <!-- Add Tournament View -->
+    <div id="add-tournament-view">
+        <div class="card">
+            <h2>Add New Tournament</h2>
+            <form id="tournament-form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Tournament Name *</label>
+                        <input type="text" id="tournament-name" required placeholder="e.g., The Masters">
+                    </div>
+                    <div class="form-group">
+                        <label>Location *</label>
+                        <input type="text" id="tournament-location" required placeholder="e.g., Augusta, GA">
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Final Round Date *</label>
+                        <input type="date" id="tournament-date" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Tournament Type *</label>
+                        <select id="tournament-type" required>
+                            <option value="regular">Regular ($5 entry)</option>
+                            <option value="major">Major ($10 entry)</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Number of Participants *</label>
+                    <input type="number" id="num-participants" min="2" required placeholder="How many players?">
+                </div>
+                
+                <button type="button" class="btn" id="generate-participants">Generate Participant Fields</button>
+                
+                <div id="participants-container" class="hidden mt-2"></div>
+                
+                <div class="action-buttons hidden" id="submit-section">
+                    <button type="submit" class="btn">Save Tournament</button>
+                    <button type="button" class="btn btn-secondary" id="cancel-btn">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Season Standings View -->
+    <div id="standings-view" class="hidden">
+        <div class="card">
+            <h2>Season Standings</h2>
+            <div id="standings-content"></div>
+        </div>
+    </div>
+
+    <!-- Tournament History View -->
+    <div id="tournaments-view" class="hidden">
+        <div class="card">
+            <h2>Tournament History</h2>
+            <div id="tournaments-content"></div>
+        </div>
+    </div>
+
+    <!-- Import/Export Data View -->
+    <div id="data-view" class="hidden">
+        <div class="card">
+            <h2>Data Management</h2>
+            <p style="color: var(--text-secondary); margin-bottom: 2rem;">
+                Export your data to share with friends or backup. Import to restore or load shared data.
+            </p>
+            
+            <div class="action-buttons">
+                <button class="btn" id="export-btn">📥 Export Data</button>
+                <button class="btn btn-secondary" id="import-btn">📤 Import Data</button>
+                <button class="btn btn-danger" id="clear-btn">🗑️ Clear All Data</button>
+            </div>
+            
+            <input type="file" id="import-file" accept=".json" class="hidden">
+        </div>
+        
+        <div class="card">
+            <h2>Setup Instructions</h2>
+            <p style="color: var(--text-secondary); line-height: 1.8;">
+                <strong>To share this with your league:</strong><br><br>
+                
+                <strong>Option 1 - GitHub Pages (Recommended):</strong><br>
+                1. Create a free GitHub account at github.com<br>
+                2. Create a new repository (e.g., "golf-league")<br>
+                3. Upload this HTML file<br>
+                4. Go to Settings → Pages → Enable GitHub Pages<br>
+                5. Share the URL with your league (e.g., username.github.io/golf-league)<br><br>
+                
+                <strong>Option 2 - Netlify Drop:</strong><br>
+                1. Go to app.netlify.com/drop<br>
+                2. Drag and drop this HTML file<br>
+                3. Get your shareable link instantly<br><br>
+                
+                <strong>To update scores for everyone:</strong><br>
+                1. Enter tournament data on YOUR device<br>
+                2. Click "Export Data" and download the JSON file<br>
+                3. Upload the updated HTML file + JSON to your hosting<br>
+                4. Friends refresh the page to see updates
+            </p>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Data Storage
+    const STORAGE_KEY = 'dkGolfLeague';
+    
+    let appData = {
+        tournaments: [],
+        participants: new Set()
+    };
+    
+    // Load data from localStorage
+    function loadData() {
+        const saved = localStorage.getItem(STORAGE_KEY);
+        if (saved) {
+            const parsed = JSON.parse(saved);
+            appData = {
+                tournaments: parsed.tournaments || [],
+                participants: new Set(parsed.participants || [])
+            };
+        }
+    }
+    
+    // Save data to localStorage
+    function saveData() {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify({
+            tournaments: appData.tournaments,
+            participants: Array.from(appData.participants)
+        }));
+    }
+    
+    // Initialize app
+    loadData();
+    
+    // View Management
+    const views = {
+        'add-tournament': document.getElementById('add-tournament-view'),
+        'standings': document.getElementById('standings-view'),
+        'tournaments': document.getElementById('tournaments-view'),
+        'data': document.getElementById('data-view')
+    };
+    
+    document.querySelectorAll('nav button').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const viewName = btn.dataset.view;
+            
+            // Update active button
+            document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            
+            // Show selected view
+            Object.keys(views).forEach(key => {
+                views[key].classList.toggle('hidden', key !== viewName);
+            });
+            
+            // Update content for dynamic views
+            if (viewName === 'standings') renderStandings();
+            if (viewName === 'tournaments') renderTournaments();
+        });
+    });
+    
+    // Generate Participant Fields
+    document.getElementById('generate-participants').addEventListener('click', () => {
+        const numParticipants = parseInt(document.getElementById('num-participants').value);
+        
+        if (!numParticipants || numParticipants < 2) {
+            alert('Please enter at least 2 participants');
+            return;
+        }
+        
+        const container = document.getElementById('participants-container');
+        container.innerHTML = '<h3 style="color: var(--gold); margin-bottom: 1rem;">Participant Scores</h3>';
+        
+        for (let i = 0; i < numParticipants; i++) {
+            const entry = document.createElement('div');
+            entry.className = 'participant-entry';
+            entry.innerHTML = `
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Participant Name *</label>
+                        <input type="text" class="participant-name" required placeholder="Player ${i + 1}">
+                    </div>
+                    <div class="form-group">
+                        <label>DraftKings Score *</label>
+                        <input type="number" step="0.01" class="participant-score" required placeholder="0.00">
+                    </div>
+                </div>
+            `;
+            container.appendChild(entry);
+        }
+        
+        container.classList.remove('hidden');
+        document.getElementById('submit-section').classList.remove('hidden');
+    });
+    
+    // Calculate prize distribution
+    function calculatePrizes(numParticipants, entryFee, scores) {
+        const totalPool = numParticipants * entryFee;
+        const prizes = [];
+        
+        // Default percentages for top 3
+        const percentages = [0.50, 0.30, 0.20];
+        
+        for (let i = 0; i < Math.min(3, numParticipants); i++) {
+            prizes.push(totalPool * percentages[i]);
+        }
+        
+        return prizes;
+    }
+    
+    // Sort participants by score (highest first) and assign positions
+    function assignPositions(participants) {
+        participants.sort((a, b) => b.score - a.score);
+        
+        participants.forEach((p, index) => {
+            p.position = index + 1;
+        });
+        
+        return participants;
+    }
+    
+    // Tournament Form Submission
+    document.getElementById('tournament-form').addEventListener('submit', (e) => {
+        e.preventDefault();
+        
+        const name = document.getElementById('tournament-name').value;
+        const location = document.getElementById('tournament-location').value;
+        const date = document.getElementById('tournament-date').value;
+        const type = document.getElementById('tournament-type').value;
+        const numParticipants = parseInt(document.getElementById('num-participants').value);
+        
+        const entryFee = type === 'major' ? 10 : 5;
+        
+        // Collect participant data
+        const participantEntries = document.querySelectorAll('.participant-entry');
+        const participants = [];
+        
+        participantEntries.forEach(entry => {
+            const participantName = entry.querySelector('.participant-name').value;
+            const score = parseFloat(entry.querySelector('.participant-score').value);
+            
+            participants.push({
+                name: participantName,
+                score: score
+            });
+            
+            appData.participants.add(participantName);
+        });
+        
+        // Assign positions
+        const rankedParticipants = assignPositions(participants);
+        
+        // Calculate prizes
+        const prizes = calculatePrizes(numParticipants, entryFee, rankedParticipants);
+        
+        // Assign prizes to top finishers
+        rankedParticipants.forEach((p, index) => {
+            p.prize = prizes[index] || 0;
+        });
+        
+        // Create tournament object
+        const tournament = {
+            id: Date.now(),
+            name,
+            location,
+            date,
+            type,
+            entryFee,
+            participants: rankedParticipants,
+            totalPool: numParticipants * entryFee
+        };
+        
+        appData.tournaments.push(tournament);
+        saveData();
+        
+        // Show success message
+        const successMsg = document.createElement('div');
+        successMsg.className = 'success-message';
+        successMsg.textContent = `✓ Tournament "${name}" saved successfully!`;
+        document.getElementById('add-tournament-view').insertBefore(
+            successMsg,
+            document.getElementById('add-tournament-view').firstChild
+        );
+        
+        setTimeout(() => successMsg.remove(), 3000);
+        
+        // Reset form
+        document.getElementById('tournament-form').reset();
+        document.getElementById('participants-container').classList.add('hidden');
+        document.getElementById('submit-section').classList.add('hidden');
+    });
+    
+    // Cancel button
+    document.getElementById('cancel-btn').addEventListener('click', () => {
+        document.getElementById('tournament-form').reset();
+        document.getElementById('participants-container').classList.add('hidden');
+        document.getElementById('submit-section').classList.add('hidden');
+    });
+    
+    // Render Season Standings
+    function renderStandings() {
+        const container = document.getElementById('standings-content');
+        
+        if (appData.tournaments.length === 0) {
+            container.innerHTML = `
+                <div class="empty-state">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                    <p>No tournaments yet. Add your first tournament to see standings!</p>
+                </div>
+            `;
+            return;
+        }
+        
+        // Calculate season stats for each participant
+        const seasonStats = {};
+        
+        appData.participants.forEach(name => {
+            seasonStats[name] = {
+                name,
+                totalWinnings: 0,
+                totalEntries: 0,
+                wins: 0,
+                top3s: 0,
+                tournaments: 0
+            };
+        });
+        
+        appData.tournaments.forEach(tournament => {
+            tournament.participants.forEach(p => {
+                if (!seasonStats[p.name]) {
+                    seasonStats[p.name] = {
+                        name: p.name,
+                        totalWinnings: 0,
+                        totalEntries: 0,
+                        wins: 0,
+                        top3s: 0,
+                        tournaments: 0
+                    };
+                }
+                
+                const stats = seasonStats[p.name];
+                stats.totalWinnings += p.prize;
+                stats.totalEntries += tournament.entryFee;
+                stats.tournaments += 1;
+                
+                if (p.position === 1) stats.wins += 1;
+                if (p.position <= 3) stats.top3s += 1;
+            });
+        });
+        
+        // Convert to array and sort by net profit
+        const standings = Object.values(seasonStats)
+            .map(s => ({
+                ...s,
+                netProfit: s.totalWinnings - s.totalEntries
+            }))
+            .sort((a, b) => b.netProfit - a.netProfit);
+        
+        // Calculate overall stats
+        const totalTournaments = appData.tournaments.length;
+        const totalPool = appData.tournaments.reduce((sum, t) => sum + t.totalPool, 0);
+        
+        let html = `
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-value">${totalTournaments}</div>
+                    <div class="stat-label">Tournaments</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">$${totalPool.toFixed(0)}</div>
+                    <div class="stat-label">Total Prizes</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">${appData.participants.size}</div>
+                    <div class="stat-label">Players</div>
+                </div>
+            </div>
+            
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Rank</th>
+                            <th>Player</th>
+                            <th>Tournaments</th>
+                            <th>Wins</th>
+                            <th>Top 3s</th>
+                            <th>Total Winnings</th>
+                            <th>Total Entries</th>
+                            <th>Net Profit</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+        `;
+        
+        standings.forEach((player, index) => {
+            const rank = index + 1;
+            let rankClass = 'rank-other';
+            if (rank === 1) rankClass = 'rank-1';
+            else if (rank === 2) rankClass = 'rank-2';
+            else if (rank === 3) rankClass = 'rank-3';
+            
+            const profitClass = player.netProfit >= 0 ? 'money' : 'money negative';
+            
+            html += `
+                <tr>
+                    <td><span class="rank-badge ${rankClass}">${rank}</span></td>
+                    <td><strong>${player.name}</strong></td>
+                    <td>${player.tournaments}</td>
+                    <td>${player.wins}</td>
+                    <td>${player.top3s}</td>
+                    <td class="money">$${player.totalWinnings.toFixed(2)}</td>
+                    <td>$${player.totalEntries.toFixed(2)}</td>
+                    <td class="${profitClass}">${player.netProfit >= 0 ? '+' : ''}$${player.netProfit.toFixed(2)}</td>
+                </tr>
+            `;
+        });
+        
+        html += `
+                    </tbody>
+                </table>
+            </div>
+        `;
+        
+        container.innerHTML = html;
+    }
+    
+    // Render Tournament History
+    function renderTournaments() {
+        const container = document.getElementById('tournaments-content');
+        
+        if (appData.tournaments.length === 0) {
+            container.innerHTML = `
+                <div class="empty-state">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                    </svg>
+                    <p>No tournament history yet. Add your first tournament!</p>
+                </div>
+            `;
+            return;
+        }
+        
+        const sorted = [...appData.tournaments].sort((a, b) => new Date(b.date) - new Date(a.date));
+        
+        let html = '';
+        
+        sorted.forEach(tournament => {
+            const formattedDate = new Date(tournament.date).toLocaleDateString('en-US', {
+                month: 'long',
+                day: 'numeric',
+                year: 'numeric'
+            });
+            
+            html += `
+                <div class="tournament-item">
+                    <div class="tournament-header">
+                        <div>
+                            <div class="tournament-name">${tournament.name}</div>
+                            <span class="tournament-type ${tournament.type}">${tournament.type === 'major' ? 'MAJOR' : 'REGULAR'}</span>
+                        </div>
+                    </div>
+                    
+                    <div class="tournament-details">
+                        <div class="detail-item">
+                            <strong>Location</strong>
+                            ${tournament.location}
+                        </div>
+                        <div class="detail-item">
+                            <strong>Final Round</strong>
+                            ${formattedDate}
+                        </div>
+                        <div class="detail-item">
+                            <strong>Prize Pool</strong>
+                            $${tournament.totalPool.toFixed(2)}
+                        </div>
+                        <div class="detail-item">
+                            <strong>Entry Fee</strong>
+                            $${tournament.entryFee}
+                        </div>
+                    </div>
+                    
+                    <div class="table-container" style="margin-top: 1rem;">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Pos</th>
+                                    <th>Player</th>
+                                    <th>DK Score</th>
+                                    <th>Prize</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+            `;
+            
+            tournament.participants.forEach(p => {
+                let rankClass = 'rank-other';
+                if (p.position === 1) rankClass = 'rank-1';
+                else if (p.position === 2) rankClass = 'rank-2';
+                else if (p.position === 3) rankClass = 'rank-3';
+                
+                html += `
+                    <tr>
+                        <td><span class="rank-badge ${rankClass}">${p.position}</span></td>
+                        <td><strong>${p.name}</strong></td>
+                        <td>${p.score.toFixed(2)}</td>
+                        <td class="money">${p.prize > 0 ? '$' + p.prize.toFixed(2) : '-'}</td>
+                    </tr>
+                `;
+            });
+            
+            html += `
+                            </tbody>
+                        </table>
+                    </div>
+                    <div style="margin-top: 1rem; text-align: right;">
+                        <button class="btn btn-danger" onclick="deleteTournament(${tournament.id})">Delete Tournament</button>
+                    </div>
+                </div>
+            `;
+        });
+        
+        container.innerHTML = html;
+    }
+    
+    // Delete Tournament
+    window.deleteTournament = function(id) {
+        if (confirm('Are you sure you want to delete this tournament? This cannot be undone.')) {
+            appData.tournaments = appData.tournaments.filter(t => t.id !== id);
+            saveData();
+            renderTournaments();
+        }
+    };
+    
+    // Export Data
+    document.getElementById('export-btn').addEventListener('click', () => {
+        const dataStr = JSON.stringify(appData, null, 2);
+        const blob = new Blob([dataStr], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `dk-golf-league-${new Date().toISOString().split('T')[0]}.json`;
+        a.click();
+        URL.revokeObjectURL(url);
+    });
+    
+    // Import Data
+    document.getElementById('import-btn').addEventListener('click', () => {
+        document.getElementById('import-file').click();
+    });
+    
+    document.getElementById('import-file').addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+        
+        const reader = new FileReader();
+        reader.onload = (event) => {
+            try {
+                const imported = JSON.parse(event.target.result);
+                appData = {
+                    tournaments: imported.tournaments || [],
+                    participants: new Set(imported.participants || [])
+                };
+                saveData();
+                alert('Data imported successfully!');
+                location.reload();
+            } catch (err) {
+                alert('Error importing data. Please check the file format.');
+            }
+        };
+        reader.readAsText(file);
+    });
+    
+    // Clear Data
+    document.getElementById('clear-btn').addEventListener('click', () => {
+        if (confirm('Are you sure you want to clear ALL data? This cannot be undone.')) {
+            if (confirm('Really? This will delete everything!')) {
+                localStorage.removeItem(STORAGE_KEY);
+                location.reload();
+            }
+        }
+    });
+</script>
+```
+
+</body>
+</html>

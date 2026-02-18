@@ -340,6 +340,32 @@
         border-radius: 8px;
         margin-bottom: 1rem;
         border-left: 4px solid #ffd700;
+        position: relative;
+    }
+
+    .tournament-delete {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        width: 1.8rem;
+        height: 1.8rem;
+        background-color: transparent;
+        border: 1px solid rgba(239,68,68,0.3);
+        border-radius: 4px;
+        color: rgba(239,68,68,0.4);
+        font-size: 0.9rem;
+        font-weight: 700;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: background-color 0.2s, color 0.2s, border-color 0.2s;
+    }
+
+    .tournament-delete:hover {
+        background-color: #ef4444;
+        color: #ffffff;
+        border-color: #ef4444;
     }
 
     .tournament-header {
@@ -932,6 +958,7 @@ function renderTournaments() {
 
         html +=
             '<div class="tournament-item">' +
+              '<button class="tournament-delete" onclick="deleteTournament('+t.id+')" title="Delete (Admin)">✕</button>' +
               '<div class="tournament-header"><div>' +
                 '<div class="tournament-name">'+escHtml(t.name)+'</div>' +
                 '<span class="badge '+bc+'">'+bt+'</span>' +
@@ -947,9 +974,6 @@ function renderTournaments() {
                 '<thead><tr><th>Pos</th><th>Player</th><th>DK Score</th><th>Prize Won</th></tr></thead>' +
                 '<tbody>'+trows+'</tbody>' +
               '</table></div>' +
-              '<div style="margin-top:1rem;text-align:right;">' +
-                '<button class="btn btn-danger btn-sm" onclick="deleteTournament('+t.id+')">Delete Tournament</button>' +
-              '</div>' +
             '</div>';
     });
     el.innerHTML = html;

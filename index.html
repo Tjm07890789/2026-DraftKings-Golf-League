@@ -595,12 +595,59 @@
 <script>
 var STORAGE_KEY = 'dkGolfLeague_v2';
 var DATA_FILE   = 'data.json';   // sits next to index.html in GitHub repo
+var PLAYER_ALIASES = {
+    'shanning2': 'Shanning2',
+    'mdiamond34': 'Mdiamond'
+};
 
 function defaultData() {
     return { tournaments: [], knownPlayers: [] };
 }
 
 var app = defaultData();
+
+function canonicalPlayerName(name, knownPlayers) {
+    var raw = String(name || '').trim();
+    if (!raw) return '';
+    var key = raw.toLowerCase();
+
+    if (PLAYER_ALIASES[key]) return PLAYER_ALIASES[key];
+
+    var list = knownPlayers || [];
+    for (var i = 0; i < list.length; i++) {
+        if (String(list[i]).toLowerCase() === key) return list[i];
+    }
+    return raw;
+}
+
+function normalizeAppData(data) {
+    var base = data || {};
+    var tournaments = Array.isArray(base.tournaments) ? base.tournaments : [];
+    var normalized = { tournaments: [], knownPlayers: [] };
+    var seen = {};
+
+    tournaments.forEach(function(t) {
+        var nt = Object.assign({}, t);
+        nt.participants = (Array.isArray(t.participants) ? t.participants : []).map(function(p) {
+            var np = Object.assign({}, p);
+            np.name = canonicalPlayerName(p.name, normalized.knownPlayers);
+            if (!seen[np.name]) { seen[np.name] = true; normalized.knownPlayers.push(np.name); }
+            return np;
+        });
+        normalized.tournaments.push(nt);
+    });
+
+    (Array.isArray(base.knownPlayers) ? base.knownPlayers : []).forEach(function(name) {
+        var canonical = canonicalPlayerName(name, normalized.knownPlayers);
+        if (canonical && !seen[canonical]) {
+            seen[canonical] = true;
+            normalized.knownPlayers.push(canonical);
+        }
+    });
+
+    normalized.knownPlayers.sort(function(a, b) { return a.localeCompare(b); });
+    return normalized;
+}
 
 // ── LOAD: try data.json first, fall back to localStorage ──────
 function loadData(callback) {
@@ -609,7 +656,7 @@ function loadData(callback) {
         var raw = localStorage.getItem(STORAGE_KEY);
         if (raw) {
             var parsed = JSON.parse(raw);
-            app = { tournaments: parsed.tournaments||[], knownPlayers: parsed.knownPlayers||[] };
+            app = normalizeAppData(parsed);
         }
     } catch(e) { app = defaultData(); }
 
@@ -630,7 +677,7 @@ function loadData(callback) {
         .then(function(remote) {
             if (remote && remote.tournaments && remote.tournaments.length > 0) {
                 // Remote has data — use it and sync to localStorage
-                app = { tournaments: remote.tournaments||[], knownPlayers: remote.knownPlayers||[] };
+                app = normalizeAppData(remote);
                 saveLocal();
                 showBanner('✓ Scores loaded from GitHub', 'synced');
             } else {
@@ -828,13 +875,17 @@ document.getElementById('tournament-form').addEventListener('submit', function(e
     if (!rows.length) { alert('Please add at least one participant.'); return; }
 
     var participants = [];
+    var seenThisTournament = {};
     rows.forEach(function(row) {
         var sel   = row.querySelector('.p-name-select');
         var inp   = row.querySelector('.p-name-input');
         var score = parseFloat(row.querySelector('.p-score').value) || 0;
         var prize = parseFloat(row.querySelector('.p-prize').value) || 0;
         var pName = sel.value === '__new__' ? inp.value.trim() : sel.value;
+        pName = canonicalPlayerName(pName, app.knownPlayers);
         if (!pName) return;
+        if (seenThisTournament[pName]) return;
+        seenThisTournament[pName] = true;
         if (app.knownPlayers.indexOf(pName) === -1) {
             app.knownPlayers.push(pName);
             app.knownPlayers.sort(function(a,b){ return a.localeCompare(b); });
@@ -1009,7 +1060,7 @@ document.getElementById('import-file').addEventListener('change', function(e) {
     reader.onload = function(ev) {
         try {
             var imported = JSON.parse(ev.target.result);
-            app = { tournaments: imported.tournaments||[], knownPlayers: imported.knownPlayers||[] };
+            app = normalizeAppData(imported);
             saveLocal();
             alert('Data imported successfully!');
             location.reload();

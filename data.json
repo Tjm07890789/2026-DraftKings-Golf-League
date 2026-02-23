@@ -51,13 +51,13 @@
       "entryFee": 5,
       "participants": [
         {
-          "name": "mdiamond34",
+          "name": "Mdiamond",
           "score": 485.5,
           "prize": 15.75,
           "position": 1
         },
         {
-          "name": "shanning2",
+          "name": "Shanning2",
           "score": 460,
           "prize": 6.75,
           "position": 2
@@ -91,8 +91,6 @@
     "Mdiamond",
     "Shanning2",
     "TJ-Lucky",
-    "mdiamond34",
-    "shanning2",
     "willfloyd5"
   ]
 }

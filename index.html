@@ -951,7 +951,11 @@ function renderStandings() {
         var s = stats[k];
         var avgPoints = s.played > 0 ? s.totalPoints / s.played : 0;
         return { name:s.name, winnings:s.winnings, entries:s.entries, wins:s.wins, top3:s.top3, played:s.played, net:s.winnings-s.entries, avgPoints:avgPoints };
-    }).sort(function(a,b){ return b.net - a.net; });
+    }).sort(function(a,b){
+        if (b.avgPoints !== a.avgPoints) return b.avgPoints - a.avgPoints;
+        if (b.played !== a.played) return b.played - a.played;
+        return b.net - a.net;
+    });
 
     var totalPrizes = app.tournaments.reduce(function(s,t){ return s+(t.totalPrizes||0); },0);
 

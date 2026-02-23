@@ -41,6 +41,48 @@
       ],
       "grossPool": 25,
       "totalPrizes": 22.5
+    },
+    {
+      "id": 1771891200000,
+      "name": "PGA TOUR $5 5-Player (Top 2 Win)",
+      "location": "DraftKings",
+      "date": "2026-02-23",
+      "type": "regular",
+      "entryFee": 5,
+      "participants": [
+        {
+          "name": "mdiamond34",
+          "score": 485.5,
+          "prize": 15.75,
+          "position": 1
+        },
+        {
+          "name": "shanning2",
+          "score": 460,
+          "prize": 6.75,
+          "position": 2
+        },
+        {
+          "name": "CEH31979",
+          "score": 389.5,
+          "prize": 0,
+          "position": 3
+        },
+        {
+          "name": "TJ-Lucky",
+          "score": 376,
+          "prize": 0,
+          "position": 4
+        },
+        {
+          "name": "willfloyd5",
+          "score": 372.5,
+          "prize": 0,
+          "position": 5
+        }
+      ],
+      "grossPool": 25,
+      "totalPrizes": 22.5
     }
   ],
   "knownPlayers": [
@@ -48,6 +90,9 @@
     "DR.Shocker",
     "Mdiamond",
     "Shanning2",
-    "TJ-Lucky"
+    "TJ-Lucky",
+    "mdiamond34",
+    "shanning2",
+    "willfloyd5"
   ]
 }

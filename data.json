@@ -83,6 +83,48 @@
       ],
       "grossPool": 25,
       "totalPrizes": 22.5
+    },
+    {
+      "id": 1772323200000,
+      "name": "Cognizant Tournament",
+      "location": "DraftKings",
+      "date": "2026-03-01",
+      "type": "regular",
+      "entryFee": 5,
+      "participants": [
+        {
+          "name": "willfloyd5",
+          "score": 411,
+          "prize": 15.75,
+          "position": 1
+        },
+        {
+          "name": "loganrx",
+          "score": 401,
+          "prize": 6.75,
+          "position": 2
+        },
+        {
+          "name": "CEH31979",
+          "score": 390,
+          "prize": 0,
+          "position": 3
+        },
+        {
+          "name": "Mdiamond",
+          "score": 390,
+          "prize": 0,
+          "position": 3
+        },
+        {
+          "name": "TJ-Lucky",
+          "score": 354.5,
+          "prize": 0,
+          "position": 5
+        }
+      ],
+      "grossPool": 25,
+      "totalPrizes": 22.5
     }
   ],
   "knownPlayers": [
@@ -91,6 +133,7 @@
     "Mdiamond",
     "Shanning2",
     "TJ-Lucky",
-    "willfloyd5"
+    "willfloyd5",
+    "loganrx"
   ]
 }

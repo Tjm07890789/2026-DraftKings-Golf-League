@@ -368,6 +368,18 @@
         border-color: #ef4444;
     }
 
+    .trend-up { color: #4ade80; font-weight: 700; }
+    .trend-down { color: #ef4444; font-weight: 700; }
+    .trend-flat, .trend-na { color: #a8b8b0; font-weight: 700; }
+    .h2h-result {
+        background-color: #1a2028;
+        border: 1px solid rgba(255,255,255,0.12);
+        border-radius: 8px;
+        padding: 1rem;
+        margin-top: 1rem;
+        color: #e8f0e8;
+    }
+
     .tournament-header {
         display: flex;
         justify-content: space-between;
@@ -494,6 +506,7 @@
 <nav>
     <button class="active" data-view="standings">Season Standings</button>
     <button data-view="tournaments">Tournament History</button>
+    <button data-view="analytics">Advanced Stats</button>
 </nav>
 
 <!-- STANDINGS -->
@@ -509,6 +522,14 @@
     <div class="card">
         <h2>Tournament History</h2>
         <div id="tournaments-content"></div>
+    </div>
+</div>
+
+<!-- ANALYTICS -->
+<div id="analytics-view" class="hidden">
+    <div class="card">
+        <h2>Advanced Season Analytics</h2>
+        <div id="analytics-content"></div>
     </div>
 </div>
 
@@ -713,7 +734,8 @@ function hideBanner() {
 // ── VIEWS ─────────────────────────────────────────────────────
 var mainViews = {
     'standings':   document.getElementById('standings-view'),
-    'tournaments': document.getElementById('tournaments-view')
+    'tournaments': document.getElementById('tournaments-view'),
+    'analytics':   document.getElementById('analytics-view')
 };
 
 var adminViews = {
@@ -739,6 +761,7 @@ document.querySelectorAll('nav button').forEach(function(btn) {
 
         if (v === 'standings')   renderStandings();
         if (v === 'tournaments') renderTournaments();
+        if (v === 'analytics')   renderAnalytics();
     });
 });
 
@@ -926,6 +949,263 @@ document.getElementById('cancel-btn').addEventListener('click', function() {
     document.getElementById('participants-container').classList.add('hidden');
     document.getElementById('submit-section').classList.add('hidden');
 });
+
+// ── ANALYTICS ─────────────────────────────────────────────────
+function fmtMoney(v) { return '$' + (Number(v) || 0).toFixed(2); }
+function fmtPct(v) { return (v >= 0 ? '+' : '') + (v * 100).toFixed(1) + '%'; }
+
+function initPlayerStats(name) {
+    return {
+        name: name,
+        winnings: 0,
+        entries: 0,
+        played: 0,
+        finishTotal: 0,
+        history: [],
+        cashCount: 0,
+        top5Count: 0
+    };
+}
+
+function getChronologicalTournaments() {
+    return app.tournaments.slice().sort(function(a, b) {
+        var ad = new Date((a.date || '') + 'T12:00:00').getTime();
+        var bd = new Date((b.date || '') + 'T12:00:00').getTime();
+        if (isNaN(ad) && isNaN(bd)) return (a.id || 0) - (b.id || 0);
+        if (isNaN(ad)) return 1;
+        if (isNaN(bd)) return -1;
+        if (ad !== bd) return ad - bd;
+        return (a.id || 0) - (b.id || 0);
+    });
+}
+
+function calculateStreak(history, predicate) {
+    var best = 0, current = 0, run = 0;
+    history.forEach(function(h) {
+        if (predicate(h)) {
+            run++;
+            if (run > best) best = run;
+        } else {
+            run = 0;
+        }
+    });
+    for (var i = history.length - 1; i >= 0; i--) {
+        if (predicate(history[i])) current++;
+        else break;
+    }
+    return { current: current, best: best };
+}
+
+function getTrend(history) {
+    if (history.length < 3) return { symbol: '—', className: 'trend-na', note: 'Need 3 events' };
+    var last3 = history.slice(-3);
+    var baseline = (last3[0].position + last3[1].position) / 2;
+    var latest = last3[2].position;
+    if (latest < baseline) return { symbol: '↑', className: 'trend-up', note: 'Improving' };
+    if (latest > baseline) return { symbol: '↓', className: 'trend-down', note: 'Declining' };
+    return { symbol: '→', className: 'trend-flat', note: 'Flat' };
+}
+
+function buildSeasonAnalytics() {
+    var tournaments = getChronologicalTournaments();
+    var players = {};
+
+    (app.knownPlayers || []).forEach(function(name) {
+        players[name] = initPlayerStats(name);
+    });
+
+    var cumulativeRows = [];
+
+    tournaments.forEach(function(t) {
+        var fee = Number(t.entryFee) || (t.type === 'major' ? 10 : 5);
+        (t.participants || []).forEach(function(p) {
+            var name = canonicalPlayerName(p.name, app.knownPlayers);
+            if (!players[name]) players[name] = initPlayerStats(name);
+
+            var pos = Number(p.position) || 0;
+            var prize = Number(p.prize) || 0;
+            var s = players[name];
+
+            s.winnings += prize;
+            s.entries += fee;
+            s.played += 1;
+            s.finishTotal += pos;
+            s.cashCount += prize > 0 ? 1 : 0;
+            s.top5Count += (pos > 0 && pos <= 5) ? 1 : 0;
+            s.history.push({
+                tournament: t.name || 'Tournament',
+                date: t.date || '',
+                position: pos,
+                prize: prize
+            });
+        });
+
+        var row = { tournament: t.name || 'Tournament', date: t.date || '', earnings: {} };
+        Object.keys(players).forEach(function(n) { row.earnings[n] = players[n].winnings; });
+        cumulativeRows.push(row);
+    });
+
+    var playerRows = Object.keys(players).map(function(name) {
+        var s = players[name];
+        var cashStreak = calculateStreak(s.history, function(h) { return h.prize > 0; });
+        var top5Streak = calculateStreak(s.history, function(h) { return h.position > 0 && h.position <= 5; });
+        var trend = getTrend(s.history);
+
+        return {
+            name: s.name,
+            winnings: s.winnings,
+            entries: s.entries,
+            played: s.played,
+            avgFinish: s.played ? (s.finishTotal / s.played) : 0,
+            roi: s.entries > 0 ? ((s.winnings - s.entries) / s.entries) : 0,
+            cashStreakCurrent: cashStreak.current,
+            cashStreakBest: cashStreak.best,
+            top5StreakCurrent: top5Streak.current,
+            top5StreakBest: top5Streak.best,
+            trend: trend
+        };
+    });
+
+    var leaderboard = playerRows.slice().sort(function(a, b) {
+        if (b.winnings !== a.winnings) return b.winnings - a.winnings;
+        return a.avgFinish - b.avgFinish;
+    });
+
+    return {
+        tournaments: tournaments,
+        players: playerRows,
+        leaderboard: leaderboard,
+        cumulativeRows: cumulativeRows
+    };
+}
+
+function buildHeadToHead(aName, bName, tournaments) {
+    var out = { compared: 0, aWins: 0, bWins: 0, ties: 0, aPrize: 0, bPrize: 0 };
+    tournaments.forEach(function(t) {
+        var a = null, b = null;
+        (t.participants || []).forEach(function(p) {
+            if (p.name === aName) a = p;
+            if (p.name === bName) b = p;
+        });
+        if (!a || !b) return;
+
+        out.compared++;
+        out.aPrize += Number(a.prize) || 0;
+        out.bPrize += Number(b.prize) || 0;
+
+        if (a.position < b.position) out.aWins++;
+        else if (b.position < a.position) out.bWins++;
+        else out.ties++;
+    });
+    return out;
+}
+
+function renderHeadToHead() {
+    var aEl = document.getElementById('h2h-a');
+    var bEl = document.getElementById('h2h-b');
+    var rEl = document.getElementById('h2h-result');
+    if (!aEl || !bEl || !rEl) return;
+
+    var a = aEl.value;
+    var b = bEl.value;
+
+    if (!a || !b || a === b) {
+        rEl.innerHTML = 'Select two different players.';
+        return;
+    }
+
+    var rec = buildHeadToHead(a, b, getChronologicalTournaments());
+    if (!rec.compared) {
+        rEl.innerHTML = 'No shared tournaments yet for <strong>' + escHtml(a) + '</strong> vs <strong>' + escHtml(b) + '</strong>.';
+        return;
+    }
+
+    rEl.innerHTML =
+        '<strong>' + escHtml(a) + '</strong> vs <strong>' + escHtml(b) + '</strong><br>' +
+        'Record: <strong>' + rec.aWins + '-' + rec.bWins + '</strong>' + (rec.ties ? ('-' + rec.ties + ' ties') : '') + '<br>' +
+        'Shared events: ' + rec.compared + '<br>' +
+        'Prizes (shared events): ' + escHtml(a) + ' ' + fmtMoney(rec.aPrize) + ' | ' + escHtml(b) + ' ' + fmtMoney(rec.bPrize);
+}
+
+function renderAnalytics() {
+    var el = document.getElementById('analytics-content');
+    if (!app.tournaments.length) {
+        el.innerHTML = emptyState('No tournaments yet for analytics.');
+        return;
+    }
+
+    var data = buildSeasonAnalytics();
+    var playersByEarnings = data.leaderboard;
+    var playersByRoi = data.players.slice().sort(function(a, b) { return b.roi - a.roi; });
+    var playerNames = playersByEarnings.map(function(p) { return p.name; });
+
+    var playerOptions = playerNames.map(function(n) {
+        return '<option value="' + escHtml(n) + '">' + escHtml(n) + '</option>';
+    }).join('');
+
+    var html = '';
+
+    html += '<div class="section-title">Season Stats</div>';
+    html += '<div class="table-container"><table><thead><tr><th>Player</th><th>Total Winnings</th><th>Events Played</th><th>Avg Finish</th></tr></thead><tbody>';
+    playersByEarnings.forEach(function(p) {
+        html += '<tr><td><strong>' + escHtml(p.name) + '</strong></td><td class="money">' + fmtMoney(p.winnings) + '</td><td>' + p.played + '</td><td>' + (p.played ? p.avgFinish.toFixed(2) : '—') + '</td></tr>';
+    });
+    html += '</tbody></table></div>';
+
+    html += '<div class="section-title">Player Leaderboard (YTD Earnings)</div>';
+    html += '<div class="table-container"><table><thead><tr><th>Rank</th><th>Player</th><th>YTD Earnings</th><th>Trend (Last 3)</th></tr></thead><tbody>';
+    playersByEarnings.forEach(function(p, i) {
+        html += '<tr><td>' + (i + 1) + '</td><td><strong>' + escHtml(p.name) + '</strong></td><td class="money">' + fmtMoney(p.winnings) + '</td><td class="' + p.trend.className + '">' + p.trend.symbol + '</td></tr>';
+    });
+    html += '</tbody></table></div>';
+
+    html += '<div class="section-title">ROI Tracker</div>';
+    html += '<div class="table-container"><table><thead><tr><th>Player</th><th>Total Prizes</th><th>Total Entry Fees</th><th>ROI</th></tr></thead><tbody>';
+    playersByRoi.forEach(function(p) {
+        html += '<tr><td><strong>' + escHtml(p.name) + '</strong></td><td class="money">' + fmtMoney(p.winnings) + '</td><td>' + fmtMoney(p.entries) + '</td><td class="' + (p.roi >= 0 ? 'money' : 'money negative') + '">' + fmtPct(p.roi) + '</td></tr>';
+    });
+    html += '</tbody></table></div>';
+
+    html += '<div class="section-title">Streaks</div>';
+    html += '<div class="table-container"><table><thead><tr><th>Player</th><th>Cash Streak (Current/Best)</th><th>Top-5 Streak (Current/Best)</th></tr></thead><tbody>';
+    playersByEarnings.forEach(function(p) {
+        html += '<tr><td><strong>' + escHtml(p.name) + '</strong></td><td>' + p.cashStreakCurrent + ' / ' + p.cashStreakBest + '</td><td>' + p.top5StreakCurrent + ' / ' + p.top5StreakBest + '</td></tr>';
+    });
+    html += '</tbody></table></div>';
+
+    html += '<div class="section-title">Cumulative Standings (Season Earnings by Event)</div>';
+    html += '<div class="table-container"><table><thead><tr><th>Tournament</th>';
+    playerNames.forEach(function(n) { html += '<th>' + escHtml(n) + '</th>'; });
+    html += '</tr></thead><tbody>';
+    data.cumulativeRows.forEach(function(r) {
+        var dateStr = r.date ? new Date(r.date + 'T12:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : '';
+        html += '<tr><td><strong>' + escHtml(r.tournament) + '</strong>' + (dateStr ? '<br><small>' + dateStr + '</small>' : '') + '</td>';
+        playerNames.forEach(function(n) {
+            html += '<td>' + fmtMoney(r.earnings[n] || 0) + '</td>';
+        });
+        html += '</tr>';
+    });
+    html += '</tbody></table></div>';
+
+    html += '<div class="section-title">Head-to-Head</div>';
+    html += '<div class="form-row">' +
+        '<div class="form-group"><label>Player A</label><select id="h2h-a">' + playerOptions + '</select></div>' +
+        '<div class="form-group"><label>Player B</label><select id="h2h-b">' + playerOptions + '</select></div>' +
+        '</div>' +
+        '<button class="btn btn-secondary" id="h2h-compare-btn" type="button">Compare</button>' +
+        '<div id="h2h-result" class="h2h-result">Select two players and click Compare.</div>';
+
+    el.innerHTML = html;
+
+    var aSel = document.getElementById('h2h-a');
+    var bSel = document.getElementById('h2h-b');
+    if (bSel && bSel.options.length > 1) bSel.selectedIndex = 1;
+
+    document.getElementById('h2h-compare-btn').addEventListener('click', renderHeadToHead);
+    aSel.addEventListener('change', renderHeadToHead);
+    bSel.addEventListener('change', renderHeadToHead);
+    renderHeadToHead();
+}
 
 // ── STANDINGS ─────────────────────────────────────────────────
 function renderStandings() {

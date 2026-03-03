@@ -1166,27 +1166,6 @@ function renderAnalytics() {
     });
     html += '</tbody></table></div>';
 
-    html += '<div class="section-title">Streaks</div>';
-    html += '<div class="table-container"><table><thead><tr><th>Player</th><th>Cash Streak (Current/Best)</th><th>Top-5 Streak (Current/Best)</th></tr></thead><tbody>';
-    playersByEarnings.forEach(function(p) {
-        html += '<tr><td><strong>' + escHtml(p.name) + '</strong></td><td>' + p.cashStreakCurrent + ' / ' + p.cashStreakBest + '</td><td>' + p.top5StreakCurrent + ' / ' + p.top5StreakBest + '</td></tr>';
-    });
-    html += '</tbody></table></div>';
-
-    html += '<div class="section-title">Cumulative Season Earnings (YTD by Tournament)</div>';
-    html += '<div class="table-container"><table><thead><tr><th>Tournament</th>';
-    playerNames.forEach(function(n) { html += '<th>' + escHtml(n) + '</th>'; });
-    html += '</tr></thead><tbody>';
-    data.cumulativeRows.forEach(function(r) {
-        var dateStr = r.date ? new Date(r.date + 'T12:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : '';
-        html += '<tr><td><strong>' + escHtml(r.tournament) + '</strong>' + (dateStr ? '<br><small>' + dateStr + '</small>' : '') + '</td>';
-        playerNames.forEach(function(n) {
-            html += '<td>' + fmtMoney(r.earnings[n] || 0) + '</td>';
-        });
-        html += '</tr>';
-    });
-    html += '</tbody></table></div>';
-
     html += '<div class="section-title">Head-to-Head</div>';
     html += '<div class="form-row">' +
         '<div class="form-group"><label>Player A</label><select id="h2h-a">' + playerOptions + '</select></div>' +

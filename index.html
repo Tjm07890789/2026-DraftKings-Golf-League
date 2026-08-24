@@ -5,13 +5,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DraftKings Golf League Tracker</title>
+    <script>
+        window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+    </script>
+    <script defer src="/_vercel/insights/script.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
-```
     body {
         font-family: 'IBM Plex Sans', Arial, sans-serif;
         background-color: #0f1419;
@@ -51,57 +54,25 @@
         font-size: 1rem;
     }
 
-    /* ADMIN CORNER */
-    .admin-corner {
-        position: absolute;
-        top: 1rem;
-        right: 1rem;
+    .header-powered {
+        margin-top: 1rem;
         display: flex;
-        flex-direction: column;
-        align-items: flex-end;
-        gap: 0.3rem;
-    }
-
-    .admin-label {
-        font-size: 0.62rem;
-        color: rgba(168,184,176,0.5);
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-        text-align: right;
-    }
-
-    .admin-btns {
-        display: flex;
-        gap: 0.35rem;
-    }
-
-    .admin-btn {
-        width: 2.2rem;
-        height: 2.2rem;
-        background-color: rgba(26,32,40,0.6);
-        border: 1px solid rgba(255,255,255,0.15);
-        border-radius: 6px;
-        color: rgba(168,184,176,0.6);
-        font-size: 0.9rem;
-        font-weight: 700;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
         justify-content: center;
-        font-family: 'IBM Plex Sans', Arial, sans-serif;
-        transition: background-color 0.2s, color 0.2s, border-color 0.2s;
+        align-items: center;
+        gap: 0.7rem;
+        color: #c7d3cd;
+        font-size: 0.88rem;
+        letter-spacing: 0.04em;
     }
 
-    .admin-btn:hover {
-        background-color: #1a5c42;
-        color: #ffd700;
-        border-color: #ffd700;
-    }
-
-    .admin-btn.active {
-        background-color: #1a5c42;
-        color: #ffd700;
-        border-color: #ffd700;
+    .header-powered img {
+        width: 68px;
+        height: 68px;
+        object-fit: cover;
+        border-radius: 999px;
+        border: 1px solid rgba(255, 215, 0, 0.45);
+        box-shadow: 0 0 16px rgba(255, 215, 0, 0.12);
+        background: rgba(0, 0, 0, 0.18);
     }
 
     /* MAIN NAV */
@@ -299,6 +270,43 @@
         border-bottom: 2px solid #ffd700;
     }
 
+    th.sortable {
+        padding: 0;
+    }
+
+    .sort-button {
+        width: 100%;
+        background: transparent;
+        border: 0;
+        color: inherit;
+        font: inherit;
+        font-weight: inherit;
+        text-transform: inherit;
+        letter-spacing: inherit;
+        font-size: inherit;
+        padding: 0.9rem 1rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.5rem;
+        cursor: pointer;
+    }
+
+    .sort-button:hover {
+        background-color: rgba(255,255,255,0.08);
+    }
+
+    .sort-label {
+        flex: 1;
+        text-align: left;
+    }
+
+    .sort-indicator {
+        min-width: 0.9rem;
+        text-align: right;
+        opacity: 0.75;
+    }
+
     th:first-child { border-top-left-radius: 8px; }
     th:last-child  { border-top-right-radius: 8px; }
 
@@ -332,6 +340,8 @@
 
     .money { color: #4ade80; font-weight: 700; }
     .money.negative { color: #ef4444; }
+    .cut-made { color: #4ade80; font-weight: 700; }
+    .cut-missed { color: #ef4444; font-weight: 700; }
 
     /* TOURNAMENT HISTORY */
     .tournament-item {
@@ -341,31 +351,6 @@
         margin-bottom: 1rem;
         border-left: 4px solid #ffd700;
         position: relative;
-    }
-
-    .tournament-delete {
-        position: absolute;
-        top: 1rem;
-        right: 1rem;
-        width: 1.8rem;
-        height: 1.8rem;
-        background-color: transparent;
-        border: 1px solid rgba(239,68,68,0.3);
-        border-radius: 4px;
-        color: rgba(239,68,68,0.4);
-        font-size: 0.9rem;
-        font-weight: 700;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        transition: background-color 0.2s, color 0.2s, border-color 0.2s;
-    }
-
-    .tournament-delete:hover {
-        background-color: #ef4444;
-        color: #ffffff;
-        border-color: #ef4444;
     }
 
     .trend-up { color: #4ade80; font-weight: 700; }
@@ -380,6 +365,343 @@
         color: #e8f0e8;
     }
 
+    .insight-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 0.75rem;
+        margin: 1rem 0 1.25rem;
+    }
+
+    .insight-card {
+        background: linear-gradient(180deg, rgba(26,92,66,0.24), rgba(26,32,40,0.95));
+        border: 1px solid rgba(255,215,0,0.18);
+        border-radius: 10px;
+        padding: 0.9rem 1rem;
+    }
+
+    .insight-label {
+        font-size: 0.68rem;
+        text-transform: uppercase;
+        letter-spacing: 0.7px;
+        color: #a8b8b0;
+        margin-bottom: 0.35rem;
+    }
+
+    .insight-value {
+        color: #ffffff;
+        font-weight: 700;
+        font-size: 0.98rem;
+    }
+
+    .insight-subvalue {
+        color: #a8b8b0;
+        font-size: 0.78rem;
+        margin-top: 0.2rem;
+    }
+
+    .lineup-link {
+        background: transparent;
+        border: 1px solid rgba(255,215,0,0.45);
+        color: #ffd700;
+        border-radius: 999px;
+        padding: 0.35rem 0.7rem;
+        font-size: 0.75rem;
+        font-weight: 700;
+        cursor: pointer;
+        white-space: nowrap;
+    }
+
+    .lineup-link:hover {
+        background-color: rgba(255,215,0,0.12);
+    }
+
+    .player-link {
+        background: none;
+        border: 0;
+        padding: 0;
+        color: #ffd700;
+        font: inherit;
+        font-weight: 700;
+        cursor: pointer;
+        text-decoration: underline;
+        text-underline-offset: 2px;
+    }
+
+    .player-link:hover {
+        color: #fff2a6;
+    }
+
+    .player-profile-header {
+        display: flex;
+        justify-content: space-between;
+        gap: 1rem;
+        align-items: flex-start;
+        flex-wrap: wrap;
+        margin-bottom: 1.5rem;
+    }
+
+    .player-profile-title {
+        display: flex;
+        flex-direction: column;
+        gap: 0.35rem;
+    }
+
+    .player-profile-title h3 {
+        font-family: 'Playfair Display', Georgia, serif;
+        font-size: 2rem;
+        color: #ffd700;
+        line-height: 1.1;
+    }
+
+    .player-profile-subtitle {
+        color: #a8b8b0;
+        font-size: 0.95rem;
+    }
+
+    .profile-back {
+        white-space: nowrap;
+    }
+
+    .profile-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 0.9rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .profile-card {
+        background: linear-gradient(180deg, rgba(26,92,66,0.24), rgba(26,32,40,0.95));
+        border: 1px solid rgba(255,215,0,0.18);
+        border-radius: 12px;
+        padding: 1rem 1.1rem;
+    }
+
+    .profile-card-label {
+        color: #a8b8b0;
+        font-size: 0.72rem;
+        text-transform: uppercase;
+        letter-spacing: 0.6px;
+        margin-bottom: 0.4rem;
+    }
+
+    .profile-card-value {
+        color: #ffffff;
+        font-weight: 700;
+        font-size: 1.35rem;
+    }
+
+    .profile-card-note {
+        color: #a8b8b0;
+        font-size: 0.78rem;
+        margin-top: 0.35rem;
+    }
+
+    .player-profile-section {
+        margin-top: 1.5rem;
+    }
+
+    .player-profile-section h3 {
+        color: #ffd700;
+        font-family: 'Playfair Display', Georgia, serif;
+        font-size: 1.4rem;
+        margin-bottom: 0.7rem;
+    }
+
+    .mini-note {
+        color: #a8b8b0;
+        font-size: 0.82rem;
+        margin-bottom: 0.9rem;
+    }
+
+    .profile-trend-strip {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 0.8rem;
+        margin-bottom: 1rem;
+    }
+
+    .profile-trend-item {
+        background-color: #1a2028;
+        border: 1px solid rgba(255,255,255,0.08);
+        border-radius: 10px;
+        padding: 0.9rem 1rem;
+    }
+
+    .profile-trend-label {
+        color: #a8b8b0;
+        font-size: 0.72rem;
+        text-transform: uppercase;
+        letter-spacing: 0.6px;
+        margin-bottom: 0.3rem;
+    }
+
+    .profile-trend-value {
+        color: #ffffff;
+        font-weight: 700;
+        font-size: 1rem;
+    }
+
+    .profile-sparkline {
+        display: flex;
+        gap: 0.45rem;
+        align-items: flex-end;
+        height: 120px;
+        padding: 0.75rem 0 0.25rem;
+    }
+
+    .spark-bar-wrap {
+        flex: 1;
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 0.4rem;
+    }
+
+    .spark-bar {
+        width: 100%;
+        max-width: 42px;
+        border-radius: 8px 8px 3px 3px;
+        background: linear-gradient(180deg, #ffd700, #1a5c42);
+        min-height: 8px;
+    }
+
+    .spark-label {
+        color: #a8b8b0;
+        font-size: 0.68rem;
+        text-align: center;
+        line-height: 1.2;
+    }
+
+    .profile-split {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1rem;
+    }
+
+    .lineup-link:disabled {
+        opacity: 0.45;
+        cursor: not-allowed;
+    }
+
+    .analytics-stack {
+        display: grid;
+        gap: 1.5rem;
+    }
+
+    .analytics-panel {
+        background-color: #1a2028;
+        border: 1px solid rgba(255,255,255,0.1);
+        border-radius: 10px;
+        padding: 1.2rem;
+    }
+
+    .analytics-panel h3 {
+        color: #ffd700;
+        font-size: 1rem;
+        margin-bottom: 0.8rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .note-inline {
+        color: #a8b8b0;
+        font-size: 0.84rem;
+        margin-bottom: 0.8rem;
+    }
+
+    .lineup-modal {
+        position: fixed;
+        inset: 0;
+        background: rgba(7, 10, 12, 0.78);
+        display: none;
+        align-items: center;
+        justify-content: center;
+        z-index: 999;
+        padding: 1rem;
+        backdrop-filter: blur(6px);
+    }
+
+    .lineup-modal.visible {
+        display: flex;
+    }
+
+    .lineup-dialog {
+        width: min(760px, 100%);
+        max-height: 88vh;
+        overflow: auto;
+        background: linear-gradient(180deg, #202833 0%, #131922 100%);
+        border: 1px solid rgba(255,215,0,0.3);
+        border-radius: 16px;
+        box-shadow: 0 22px 60px rgba(0,0,0,0.45);
+        padding: 1.4rem;
+    }
+
+    .lineup-dialog-header {
+        display: flex;
+        justify-content: space-between;
+        gap: 1rem;
+        align-items: flex-start;
+        margin-bottom: 1rem;
+    }
+
+    .lineup-dialog-title {
+        color: #ffd700;
+        font-family: 'Playfair Display', Georgia, serif;
+        font-size: 1.6rem;
+        margin-bottom: 0.2rem;
+    }
+
+    .lineup-dialog-subtitle {
+        color: #a8b8b0;
+        font-size: 0.88rem;
+    }
+
+    .close-modal {
+        background: transparent;
+        border: 1px solid rgba(255,255,255,0.16);
+        color: #e8f0e8;
+        border-radius: 999px;
+        width: 2.2rem;
+        height: 2.2rem;
+        cursor: pointer;
+        font-size: 1rem;
+    }
+
+    .close-modal:hover {
+        border-color: #ffd700;
+        color: #ffd700;
+    }
+
+    .lineup-summary {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+        gap: 0.75rem;
+        margin-bottom: 1rem;
+    }
+
+    .lineup-summary-card {
+        background-color: rgba(255,255,255,0.03);
+        border: 1px solid rgba(255,255,255,0.08);
+        border-radius: 10px;
+        padding: 0.8rem;
+    }
+
+    .lineup-summary-card strong {
+        display: block;
+        color: #a8b8b0;
+        text-transform: uppercase;
+        font-size: 0.68rem;
+        letter-spacing: 0.6px;
+        margin-bottom: 0.35rem;
+    }
+
+    .lineup-summary-card span {
+        color: #ffffff;
+        font-weight: 700;
+    }
+
     .tournament-header {
         display: flex;
         justify-content: space-between;
@@ -390,6 +712,31 @@
     }
 
     .tournament-name { font-size: 1.2rem; font-weight: 700; color: #e8f0e8; margin-bottom: 0.3rem; }
+    .tournament-meta { color: #a8b8b0; font-size: 0.82rem; }
+    .tournament-header-actions {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+        margin-right: 2.4rem;
+    }
+    .tournament-toggle {
+        background: transparent;
+        border: 1px solid rgba(255,215,0,0.35);
+        color: #ffd700;
+        border-radius: 999px;
+        padding: 0.35rem 0.8rem;
+        font-size: 0.75rem;
+        font-weight: 700;
+        cursor: pointer;
+        white-space: nowrap;
+    }
+    .tournament-toggle:hover {
+        background-color: rgba(255,215,0,0.1);
+    }
+    .tournament-body.hidden {
+        display: none;
+    }
 
     .badge { display: inline-block; padding: 0.2rem 0.7rem; border-radius: 4px; font-weight: 700; font-size: 0.72rem; text-transform: uppercase; }
     .badge-major   { background-color: #ffd700; color: #0a3d2c; }
@@ -459,9 +806,105 @@
     .instructions strong { color: #e8f0e8; }
     .instructions code { color: #ffd700; background-color: rgba(255,215,0,0.1); padding: 0.1rem 0.3rem; border-radius: 3px; }
 
+    .mobile-stack {
+        display: grid;
+        gap: 0.9rem;
+    }
+
+    .mobile-card {
+        background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(10,14,18,0.32));
+        border: 1px solid rgba(255,255,255,0.1);
+        border-radius: 12px;
+        padding: 1rem;
+    }
+
+    .mobile-card-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 0.8rem;
+        margin-bottom: 0.75rem;
+    }
+
+    .mobile-card-title {
+        color: #ffffff;
+        font-weight: 700;
+        font-size: 1rem;
+    }
+
+    .mobile-card-subtitle {
+        color: #a8b8b0;
+        font-size: 0.78rem;
+        margin-top: 0.2rem;
+    }
+
+    .mobile-rank {
+        min-width: 2rem;
+        text-align: center;
+    }
+
+    .mobile-metric-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 0.7rem;
+    }
+
+    .mobile-metric {
+        background-color: rgba(255,255,255,0.03);
+        border: 1px solid rgba(255,255,255,0.07);
+        border-radius: 10px;
+        padding: 0.7rem 0.8rem;
+    }
+
+    .mobile-metric-label {
+        color: #a8b8b0;
+        font-size: 0.67rem;
+        text-transform: uppercase;
+        letter-spacing: 0.55px;
+        margin-bottom: 0.25rem;
+    }
+
+    .mobile-metric-value {
+        color: #ffffff;
+        font-weight: 700;
+        font-size: 0.95rem;
+    }
+
+    .mobile-actions {
+        display: flex;
+        gap: 0.55rem;
+        flex-wrap: wrap;
+        margin-top: 0.8rem;
+    }
+
+    .mobile-inline-note {
+        color: #a8b8b0;
+        font-size: 0.78rem;
+        margin-top: 0.75rem;
+    }
+
+    .mobile-panel-title {
+        color: #ffd700;
+        font-size: 1rem;
+        font-weight: 700;
+        margin-bottom: 0.35rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .mobile-panel-note {
+        color: #a8b8b0;
+        font-size: 0.8rem;
+        margin-bottom: 0.8rem;
+    }
+
+    .mobile-section-spacer {
+        margin-top: 1.1rem;
+    }
+
     .hidden { display: none !important; }
 
-    @media (max-width: 600px) {
+    @media (max-width: 760px) {
         h1 { font-size: 1.8rem; }
         .card { padding: 1.25rem; }
         .participant-row { grid-template-columns: 1fr 1fr; }
@@ -469,11 +912,35 @@
         .action-buttons { flex-direction: column; }
         .btn { width: 100%; text-align: center; }
         th, td { padding: 0.7rem 0.5rem; font-size: 0.82rem; }
-        .admin-corner { top: 0.5rem; right: 0.5rem; }
+        .lineup-dialog { padding: 1rem; }
+        .lineup-dialog-title { font-size: 1.25rem; }
+        nav { justify-content: stretch; }
+        nav button { flex: 1 1 calc(50% - 0.5rem); min-width: 0; }
+        .stats-grid,
+        .profile-grid,
+        .profile-trend-strip,
+        .profile-split,
+        .insight-grid,
+        .lineup-summary,
+        .tournament-details {
+            grid-template-columns: 1fr;
+        }
+        .tournament-item {
+            padding: 1rem;
+        }
+
+        .header-powered {
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            font-size: 0.8rem;
+        }
+
+        .header-powered img {
+            width: 60px;
+            height: 60px;
+        }
     }
 </style>
-```
-
 </head>
 <body>
 
@@ -481,27 +948,15 @@
     <div class="container">
         <h1>⛳ DraftKings Golf League</h1>
         <p class="subtitle">Track Scores · Standings · Winnings</p>
-    </div>
-
-    <!-- ADMIN CORNER -->
-    <div class="admin-corner">
-        <div class="admin-label">Admin</div>
-        <div class="admin-btns">
-            <button class="admin-btn" id="admin-add-btn" title="Add Tournament">+</button>
-            <button class="admin-btn" id="admin-io-btn" title="Import / Export">I/O</button>
-        </div>
-        <div style="display:flex;align-items:center;gap:8px;margin-top:8px;color:#fff;font-size:0.75rem;">
-            <span>powered by</span>
-            <img src="https://raw.githubusercontent.com/Tjm07890789/2026-DraftKings-Golf-League/main/logos/TJMbot.jpg" alt="TJMbot" style="width:80px;height:80px;border-radius:8px;">
+        <div class="header-powered">
+            <span>Powered by</span>
+            <img src="logos/TJMbot.jpg" alt="TJMbot Logo">
         </div>
     </div>
-
-
 </header>
 
 <div class="container">
 
-```
 <!-- SYNC STATUS -->
 <div id="sync-banner" class="sync-banner hidden"></div>
 
@@ -536,89 +991,91 @@
     </div>
 </div>
 
-<!-- ADD TOURNAMENT (admin only) -->
-<div id="add-tournament-view" class="hidden">
+<div id="player-profile-view" class="hidden">
     <div class="card">
-        <h2>Add New Tournament</h2>
-        <form id="tournament-form" autocomplete="off">
-            <div class="form-row">
-                <div class="form-group">
-                    <label>Tournament Name *</label>
-                    <input type="text" id="t-name" required placeholder="e.g., The Masters">
-                </div>
-                <div class="form-group">
-                    <label>Location *</label>
-                    <input type="text" id="t-location" required placeholder="e.g., Augusta, GA">
-                </div>
-            </div>
-            <div class="form-row">
-                <div class="form-group">
-                    <label>Final Round Date *</label>
-                    <input type="date" id="t-date" required>
-                </div>
-                <div class="form-group">
-                    <label>Tournament Type *</label>
-                    <select id="t-type">
-                        <option value="regular">Regular — $5 entry</option>
-                        <option value="major">Major — $10 entry</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>Number of Participants *</label>
-                    <input type="number" id="t-num" min="2" max="30" required placeholder="e.g., 5">
-                </div>
-            </div>
-
-            <button type="button" class="btn" id="gen-btn">Generate Participant Fields →</button>
-
-            <div id="pool-bar" class="pool-info hidden">
-                <div class="pool-stat"><div class="val" id="pi-entry">—</div><div class="lbl">Entry Fee</div></div>
-                <div class="pool-stat"><div class="val" id="pi-players">—</div><div class="lbl">Players</div></div>
-                <div class="pool-stat"><div class="val" id="pi-pool">—</div><div class="lbl">Gross Pool</div></div>
-                <div class="pool-note">Enter the <strong>actual DK prize amounts</strong> each player received — DraftKings rake already deducted.</div>
-            </div>
-
-            <div id="participants-container" class="hidden">
-                <p class="section-title">Participant Results</p>
-                <div id="participant-rows"></div>
-                <button type="button" class="btn btn-secondary btn-sm" id="add-row-btn" style="margin-top:0.5rem;">+ Add Another Participant</button>
-            </div>
-
-            <div class="action-buttons hidden" id="submit-section">
-                <button type="submit" class="btn">✓ Save Tournament</button>
-                <button type="button" class="btn btn-secondary" id="cancel-btn">Cancel</button>
-            </div>
-        </form>
+        <div id="player-profile-content"></div>
     </div>
 </div>
-
-<!-- IMPORT / EXPORT (admin only) -->
-<div id="data-view" class="hidden">
-    <div class="card">
-        <h2>Data Management</h2>
-        <div class="action-buttons">
-            <button class="btn" id="export-btn">📥 Export data.json</button>
-            <button class="btn btn-secondary" id="import-btn">📤 Import data.json</button>
-            <button class="btn btn-danger" id="clear-btn">🗑️ Clear All Data</button>
-        </div>
-        <input type="file" id="import-file" accept=".json" class="hidden">
-
-        <div class="instructions">
-            <strong>Weekly workflow — 3 steps:</strong><br>
-            1. Enter scores using the <code>+</code> button above, then click <code>Export data.json</code>.<br>
-            2. Go to your GitHub repo → click <strong>Upload files</strong> → drag the exported <code>data.json</code> onto the page → <strong>Commit changes</strong>.<br>
-            3. Done — anyone who visits your link will automatically see the updated scores.<br><br>
-            <strong>First time setup:</strong> After uploading <code>index.html</code> to GitHub, also upload a blank <code>data.json</code> file containing just <code>{}</code> so the app has something to read.
-        </div>
-    </div>
 </div>
-```
 
+<div id="lineup-modal" class="lineup-modal hidden" aria-hidden="true">
+    <div class="lineup-dialog" role="dialog" aria-modal="true" aria-labelledby="lineup-modal-title">
+        <div class="lineup-dialog-header">
+            <div>
+                <div id="lineup-modal-title" class="lineup-dialog-title">Lineup</div>
+                <div id="lineup-modal-subtitle" class="lineup-dialog-subtitle"></div>
+            </div>
+            <button id="lineup-modal-close" class="close-modal" type="button" aria-label="Close lineup details">✕</button>
+        </div>
+        <div id="lineup-modal-body"></div>
+    </div>
 </div>
 
 <script>
-var STORAGE_KEY = 'dkGolfLeague_v2';
+var STORAGE_KEY = 'dkGolfLeague_v3';
 var DATA_FILE   = 'data.json';   // sits next to index.html in GitHub repo
+var DATA_API    = 'https://dashboard-tjm07890789s-projects.vercel.app/api/golf-public-results';
+var standingsSort = { key: 'winnings', dir: 'desc' };
+var currentPlayerProfile = null;
+var playerProfileReturnView = 'standings';
+var tournamentExpandState = {};
+var analyticsSorts = {
+    seasonPerformance: { key: 'winnings', dir: 'desc' },
+    roi: { key: 'roi', dir: 'desc' },
+    strategy: { key: 'avgOwnership', dir: 'desc' },
+    golferExposure: { key: 'appearances', dir: 'desc' }
+};
+
+function compareSortValues(a, b, dir) {
+    if (a == null && b == null) return 0;
+    if (a == null) return 1;
+    if (b == null) return -1;
+    var left = a;
+    var right = b;
+    if (typeof left === 'string' && typeof right === 'string') {
+        return dir === 'asc' ? left.localeCompare(right) : right.localeCompare(left);
+    }
+    if (left < right) return dir === 'asc' ? -1 : 1;
+    if (left > right) return dir === 'asc' ? 1 : -1;
+    return 0;
+}
+
+function sortByColumns(rows, columns, sortState, fallbackKey) {
+    var activeKey = sortState && sortState.key ? sortState.key : fallbackKey;
+    var activeDir = sortState && sortState.dir ? sortState.dir : 'desc';
+    var activeColumn = null;
+    columns.forEach(function(column) {
+        if (column.key === activeKey) activeColumn = column;
+    });
+    activeColumn = activeColumn || columns[0];
+
+    return rows.slice().sort(function(a, b) {
+        var primary = compareSortValues(activeColumn.getValue(a), activeColumn.getValue(b), activeDir);
+        if (primary !== 0) return primary;
+        return String(a.name || '').localeCompare(String(b.name || ''));
+    });
+}
+
+function buildSortHeader(label, key, state, handlerName, defaultDir) {
+    var active = state && state.key === key;
+    var indicator = active ? (state.dir === 'asc' ? '↑' : '↓') : '↕';
+    return '<th class="sortable"><button class="sort-button" type="button" onclick="' + handlerName + '(\'' + key + '\', \'' + (defaultDir || 'desc') + '\')"><span class="sort-label">' + escHtml(label) + '</span><span class="sort-indicator">' + indicator + '</span></button></th>';
+}
+
+function buildAnalyticsSortHeader(label, tableKey, key, state, defaultDir) {
+    var active = state && state.key === key;
+    var indicator = active ? (state.dir === 'asc' ? '↑' : '↓') : '↕';
+    return '<th class="sortable"><button class="sort-button" type="button" onclick="setAnalyticsSort(\'' + tableKey + '\', \'' + key + '\', \'' + (defaultDir || 'desc') + '\')"><span class="sort-label">' + escHtml(label) + '</span><span class="sort-indicator">' + indicator + '</span></button></th>';
+}
+
+function toggleSortState(state, key, defaultDir) {
+    if (state.key === key) {
+        state.dir = state.dir === 'asc' ? 'desc' : 'asc';
+    } else {
+        state.key = key;
+        state.dir = defaultDir || 'desc';
+    }
+}
 var PLAYER_ALIASES = {
     'shanning2': 'Shanning2',
     'mdiamond34': 'Mdiamond'
@@ -644,6 +1101,61 @@ function canonicalPlayerName(name, knownPlayers) {
     return raw;
 }
 
+function buildFieldStatLookup(fieldStats) {
+    var lookup = {};
+    (Array.isArray(fieldStats) ? fieldStats : []).forEach(function(fs) {
+        var playerName = fs && (fs.playerName || fs.player_name || fs.name || '');
+        var key = String(playerName || '').trim().toLowerCase();
+        if (!key) return;
+        lookup[key] = {
+            playerName: playerName,
+            rosterPosition: fs.rosterPosition || fs.roster_position || null,
+            draftedPct: fs.draftedPct == null ? (fs.drafted_pct == null ? null : Number(fs.drafted_pct)) : Number(fs.draftedPct),
+            fantasyPoints: fs.fantasyPoints == null ? (fs.fantasy_points == null ? null : Number(fs.fantasy_points)) : Number(fs.fantasyPoints),
+            madeCut: fs.madeCut == null ? (fs.made_cut == null ? null : !!fs.made_cut) : !!fs.madeCut,
+            cutStatus: fs.cutStatus || fs.cut_status || null,
+            roundsPresent: Array.isArray(fs.roundsPresent) ? fs.roundsPresent.slice() : (Array.isArray(fs.rounds_present) ? fs.rounds_present.slice() : [])
+        };
+    });
+    return lookup;
+}
+
+function normalizeLineupPlayer(lp, idx, fieldLookup) {
+    var raw = lp;
+    var playerName = '';
+    var rosterPosition = null;
+    var fantasyPoints = null;
+    var draftedPct = null;
+    var madeCut = null;
+    var cutStatus = null;
+    var roundsPresent = [];
+
+    if (typeof raw === 'string') {
+        playerName = raw.trim();
+    } else if (raw && typeof raw === 'object') {
+        playerName = String(raw.playerName || raw.player_name || raw.name || '').trim();
+        rosterPosition = raw.rosterPosition || raw.roster_position || null;
+        fantasyPoints = raw.fantasyPoints == null ? (raw.fantasy_points == null ? null : Number(raw.fantasy_points)) : Number(raw.fantasyPoints);
+        draftedPct = raw.draftedPct == null ? (raw.drafted_pct == null ? null : Number(raw.drafted_pct)) : Number(raw.draftedPct);
+        madeCut = raw.madeCut == null ? (raw.made_cut == null ? null : !!raw.made_cut) : !!raw.madeCut;
+        cutStatus = raw.cutStatus || raw.cut_status || null;
+        roundsPresent = Array.isArray(raw.roundsPresent) ? raw.roundsPresent.slice() : (Array.isArray(raw.rounds_present) ? raw.rounds_present.slice() : []);
+    }
+
+    if (!playerName) return null;
+
+    var stat = fieldLookup[String(playerName).toLowerCase()] || null;
+    return {
+        playerName: playerName,
+        rosterPosition: rosterPosition || (stat ? stat.rosterPosition : null) || null,
+        fantasyPoints: fantasyPoints == null ? (stat ? stat.fantasyPoints : null) : fantasyPoints,
+        draftedPct: draftedPct == null ? (stat ? stat.draftedPct : null) : draftedPct,
+        madeCut: madeCut == null ? (stat ? stat.madeCut : null) : madeCut,
+        cutStatus: cutStatus || (stat ? stat.cutStatus : null) || null,
+        roundsPresent: roundsPresent.length ? roundsPresent : ((stat && stat.roundsPresent) ? stat.roundsPresent.slice() : [])
+    };
+}
+
 function normalizeAppData(data) {
     var base = data || {};
     var tournaments = Array.isArray(base.tournaments) ? base.tournaments : [];
@@ -652,11 +1164,36 @@ function normalizeAppData(data) {
 
     tournaments.forEach(function(t) {
         var nt = Object.assign({}, t);
+        nt.fieldStats = (Array.isArray(t.fieldStats) ? t.fieldStats : Array.isArray(t.field_stats) ? t.field_stats : []).map(function(fs) {
+            return {
+                playerName: fs.playerName || fs.player_name || '',
+                rosterPosition: fs.rosterPosition || fs.roster_position || null,
+                draftedPct: fs.draftedPct == null ? (fs.drafted_pct == null ? null : Number(fs.drafted_pct)) : Number(fs.draftedPct),
+                fantasyPoints: fs.fantasyPoints == null ? (fs.fantasy_points == null ? null : Number(fs.fantasy_points)) : Number(fs.fantasyPoints),
+                madeCut: fs.madeCut == null ? (fs.made_cut == null ? null : !!fs.made_cut) : !!fs.madeCut,
+                cutStatus: fs.cutStatus || fs.cut_status || null,
+                roundsPresent: Array.isArray(fs.roundsPresent) ? fs.roundsPresent.slice() : (Array.isArray(fs.rounds_present) ? fs.rounds_present.slice() : [])
+            };
+        }).filter(function(fs) {
+            return String(fs.playerName || '').trim() !== '';
+        });
+        var fieldLookup = buildFieldStatLookup(nt.fieldStats);
         nt.participants = (Array.isArray(t.participants) ? t.participants : []).map(function(p) {
             var np = Object.assign({}, p);
             np.name = canonicalPlayerName(p.name, normalized.knownPlayers);
+            var rawLineup = Array.isArray(p.lineup) ? p.lineup : (Array.isArray(p.lineup_players) ? p.lineup_players : []);
+            np.lineup = rawLineup.map(function(lp) {
+                return normalizeLineupPlayer(lp, 0, fieldLookup);
+            }).filter(function(lp) { return lp !== null; });
             if (!seen[np.name]) { seen[np.name] = true; normalized.knownPlayers.push(np.name); }
             return np;
+        });
+        nt.payoutBreakdown = (Array.isArray(t.payoutBreakdown) ? t.payoutBreakdown : []).map(function(pb) {
+            return {
+                position: Number(pb.position) || 0,
+                prize: Number(pb.prize) || 0,
+                status: pb.status || null
+            };
         });
         normalized.tournaments.push(nt);
     });
@@ -673,9 +1210,9 @@ function normalizeAppData(data) {
     return normalized;
 }
 
-// ── LOAD: try data.json first, fall back to localStorage ──────
+// ── LOAD: try Neon-backed API first, then data.json, then localStorage ──────
 function loadData(callback) {
-    // Always load localStorage first so admin edits are preserved
+    // Always load localStorage first as an instant offline-cache fallback
     try {
         var raw = localStorage.getItem(STORAGE_KEY);
         if (raw) {
@@ -684,7 +1221,7 @@ function loadData(callback) {
         }
     } catch(e) { app = defaultData(); }
 
-    // Then try fetching data.json from the same server
+    // Then try fetching the shared results API
     var isLocal = (window.location.protocol === 'file:');
     if (isLocal) {
         // Running locally — skip fetch, just use localStorage
@@ -693,9 +1230,9 @@ function loadData(callback) {
         return;
     }
 
-    fetch(DATA_FILE + '?v=' + Date.now())
+    fetch(DATA_API + '?v=' + Date.now())
         .then(function(res) {
-            if (!res.ok) throw new Error('No data.json found');
+            if (!res.ok) throw new Error('No remote API data found');
             return res.json();
         })
         .then(function(remote) {
@@ -703,21 +1240,124 @@ function loadData(callback) {
                 // Remote has data — use it and sync to localStorage
                 app = normalizeAppData(remote);
                 saveLocal();
-                showBanner('✓ Scores loaded from GitHub', 'synced');
+                showBanner('✓ Scores loaded from shared results API', 'synced');
             } else {
-                showBanner('✓ Loaded — no remote data yet', 'synced');
+                showBanner('✓ Loaded — no remote tournament data yet', 'synced');
             }
             if (callback) callback();
         })
         .catch(function() {
-            // data.json not found — use localStorage silently
-            hideBanner();
-            if (callback) callback();
+            fetch(DATA_FILE + '?v=' + Date.now())
+                .then(function(res) {
+                    if (!res.ok) throw new Error('No data.json found');
+                    return res.json();
+                })
+                .then(function(remote) {
+                    if (remote && remote.tournaments && remote.tournaments.length > 0) {
+                        app = normalizeAppData(remote);
+                        saveLocal();
+                        showBanner('✓ Scores loaded from GitHub', 'synced');
+                    } else {
+                        showBanner('✓ Loaded — no remote data yet', 'synced');
+                    }
+                    if (callback) callback();
+                })
+                .catch(function() {
+                    hideBanner();
+                    if (callback) callback();
+                });
         });
 }
 
 function saveLocal() {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(app));
+}
+
+function parseRoute() {
+    var rawHash = String(window.location.hash || '').replace(/^#/, '');
+    var route = { view: 'standings', player: '', returnView: 'standings' };
+    if (!rawHash) return route;
+
+    var params = new URLSearchParams(rawHash);
+    var view = params.get('view');
+    if (view === 'standings' || view === 'tournaments' || view === 'analytics') {
+        route.view = view;
+        route.returnView = view;
+    }
+
+    var player = params.get('player');
+    if (player) {
+        route.view = 'player-profile';
+        route.player = player;
+        var back = params.get('back');
+        route.returnView = back === 'analytics' ? 'analytics' : 'standings';
+        return route;
+    }
+
+    if (rawHash === 'analytics' || rawHash === 'tournaments' || rawHash === 'standings') {
+        route.view = rawHash;
+        route.returnView = rawHash;
+    }
+    return route;
+}
+
+function updateRoute(view, opts) {
+    var options = opts || {};
+    var hash = '';
+    if (view === 'player-profile' && options.player) {
+        var playerParams = new URLSearchParams();
+        playerParams.set('player', options.player);
+        playerParams.set('back', options.back === 'analytics' ? 'analytics' : 'standings');
+        hash = '#' + playerParams.toString();
+    } else {
+        var target = (view === 'standings' || view === 'tournaments' || view === 'analytics') ? view : 'standings';
+        hash = target === 'standings' ? '' : ('#' + target);
+    }
+
+    if ((window.location.hash || '') === hash) return;
+    if (options.replace) {
+        history.replaceState(null, '', window.location.pathname + window.location.search + hash);
+    } else {
+        history.pushState(null, '', window.location.pathname + window.location.search + hash);
+    }
+}
+
+function isMobileViewport() {
+    return window.innerWidth <= 760;
+}
+
+function buildMobileMetric(label, value, extraClass) {
+    return '<div class="mobile-metric">' +
+        '<div class="mobile-metric-label">' + escHtml(label) + '</div>' +
+        '<div class="mobile-metric-value' + (extraClass ? (' ' + extraClass) : '') + '">' + value + '</div>' +
+    '</div>';
+}
+
+function applyRoute(options) {
+    var route = parseRoute();
+    playerProfileReturnView = route.returnView || 'standings';
+
+    if (route.view === 'player-profile' && route.player) {
+        currentPlayerProfile = route.player;
+        document.querySelectorAll('nav button').forEach(function(b){ b.classList.remove('active'); });
+        renderPlayerProfile(currentPlayerProfile);
+        showOnlyMainView('player-profile');
+        return;
+    }
+
+    currentPlayerProfile = null;
+    var target = route.view || 'standings';
+    showOnlyMainView(target);
+    document.querySelectorAll('nav button').forEach(function(b){ b.classList.remove('active'); });
+    var navButton = document.querySelector('nav button[data-view="' + target + '"]');
+    if (navButton) navButton.classList.add('active');
+    if (target === 'analytics') renderAnalytics();
+    else if (target === 'tournaments') renderTournaments();
+    else renderStandings();
+
+    if (options && options.normalizeHash && target === 'standings' && window.location.hash) {
+        updateRoute('standings', { replace: true });
+    }
 }
 
 function showBanner(msg, type) {
@@ -738,224 +1378,68 @@ function hideBanner() {
 var mainViews = {
     'standings':   document.getElementById('standings-view'),
     'tournaments': document.getElementById('tournaments-view'),
-    'analytics':   document.getElementById('analytics-view')
-};
-
-var adminViews = {
-    'add-tournament': document.getElementById('add-tournament-view'),
-    'data':           document.getElementById('data-view')
+    'analytics':   document.getElementById('analytics-view'),
+    'player-profile': document.getElementById('player-profile-view')
 };
 
 // Main nav
 document.querySelectorAll('nav button').forEach(function(btn) {
     btn.addEventListener('click', function() {
         var v = btn.getAttribute('data-view');
+        currentPlayerProfile = null;
+        playerProfileReturnView = v === 'analytics' ? 'analytics' : 'standings';
+        showOnlyMainView(v);
         document.querySelectorAll('nav button').forEach(function(b){ b.classList.remove('active'); });
         btn.classList.add('active');
-
-        // Hide admin views
-        Object.keys(adminViews).forEach(function(k){ adminViews[k].classList.add('hidden'); });
-        document.getElementById('admin-add-btn').classList.remove('active');
-        document.getElementById('admin-io-btn').classList.remove('active');
-
-        Object.keys(mainViews).forEach(function(k){
-            mainViews[k].classList[k === v ? 'remove' : 'add']('hidden');
-        });
-
-        if (v === 'standings')   renderStandings();
+        if (v === 'standings') renderStandings();
         if (v === 'tournaments') renderTournaments();
-        if (v === 'analytics')   renderAnalytics();
+        if (v === 'analytics') renderAnalytics();
+        updateRoute(v);
     });
-});
-
-// Admin + button
-document.getElementById('admin-add-btn').addEventListener('click', function() {
-    var isOpen = !document.getElementById('add-tournament-view').classList.contains('hidden');
-    // Close all views first
-    Object.keys(mainViews).forEach(function(k){ mainViews[k].classList.add('hidden'); });
-    Object.keys(adminViews).forEach(function(k){ adminViews[k].classList.add('hidden'); });
-    document.querySelectorAll('nav button').forEach(function(b){ b.classList.remove('active'); });
-    document.getElementById('admin-add-btn').classList.remove('active');
-    document.getElementById('admin-io-btn').classList.remove('active');
-
-    if (!isOpen) {
-        document.getElementById('add-tournament-view').classList.remove('hidden');
-        document.getElementById('admin-add-btn').classList.add('active');
-    } else {
-        // Toggled off — go back to standings
-        document.getElementById('standings-view').classList.remove('hidden');
-        document.querySelector('nav button[data-view="standings"]').classList.add('active');
-        renderStandings();
-    }
-});
-
-// Admin I/O button
-document.getElementById('admin-io-btn').addEventListener('click', function() {
-    var isOpen = !document.getElementById('data-view').classList.contains('hidden');
-    Object.keys(mainViews).forEach(function(k){ mainViews[k].classList.add('hidden'); });
-    Object.keys(adminViews).forEach(function(k){ adminViews[k].classList.add('hidden'); });
-    document.querySelectorAll('nav button').forEach(function(b){ b.classList.remove('active'); });
-    document.getElementById('admin-add-btn').classList.remove('active');
-    document.getElementById('admin-io-btn').classList.remove('active');
-
-    if (!isOpen) {
-        document.getElementById('data-view').classList.remove('hidden');
-        document.getElementById('admin-io-btn').classList.add('active');
-    } else {
-        document.getElementById('standings-view').classList.remove('hidden');
-        document.querySelector('nav button[data-view="standings"]').classList.add('active');
-        renderStandings();
-    }
-});
-
-// ── PARTICIPANT ROWS ──────────────────────────────────────────
-var rowCount = 0;
-
-function buildParticipantRow() {
-    rowCount++;
-    var div = document.createElement('div');
-    div.className = 'participant-entry';
-
-    var opts = '<option value="">— Select or add new —</option>';
-    app.knownPlayers.forEach(function(p) {
-        opts += '<option value="' + escHtml(p) + '">' + escHtml(p) + '</option>';
-    });
-    opts += '<option value="__new__">+ Add new player…</option>';
-
-    div.innerHTML =
-        '<div class="participant-row">' +
-          '<div class="form-group" style="margin-bottom:0;">' +
-            '<label>Player Name *</label>' +
-            '<select class="p-name-select">' + opts + '</select>' +
-            '<input type="text" class="p-name-input new-name-input" placeholder="Type new player name">' +
-          '</div>' +
-          '<div class="form-group" style="margin-bottom:0;">' +
-            '<label>DK Score *</label>' +
-            '<input type="number" step="0.01" class="p-score" placeholder="0.00">' +
-          '</div>' +
-          '<div class="form-group" style="margin-bottom:0;">' +
-            '<label>Prize Won ($)</label>' +
-            '<input type="number" step="0.01" class="p-prize" placeholder="0.00" min="0" value="0">' +
-          '</div>' +
-          '<div class="remove-col">' +
-            '<button type="button" class="remove-btn">✕ Remove</button>' +
-          '</div>' +
-        '</div>';
-
-    var sel = div.querySelector('.p-name-select');
-    var inp = div.querySelector('.p-name-input');
-    sel.addEventListener('change', function() {
-        if (sel.value === '__new__') {
-            inp.classList.add('visible'); inp.required = true; inp.focus();
-        } else {
-            inp.classList.remove('visible'); inp.required = false; inp.value = '';
-        }
-    });
-
-    div.querySelector('.remove-btn').addEventListener('click', function() {
-        div.parentNode.removeChild(div); updatePoolBar();
-    });
-
-    return div;
-}
-
-document.getElementById('gen-btn').addEventListener('click', function() {
-    var num = parseInt(document.getElementById('t-num').value);
-    if (!num || num < 2) { alert('Please enter at least 2 participants.'); return; }
-    var container = document.getElementById('participant-rows');
-    container.innerHTML = ''; rowCount = 0;
-    for (var i = 0; i < num; i++) { container.appendChild(buildParticipantRow()); }
-    updatePoolBar();
-    document.getElementById('pool-bar').classList.remove('hidden');
-    document.getElementById('participants-container').classList.remove('hidden');
-    document.getElementById('submit-section').classList.remove('hidden');
-});
-
-document.getElementById('add-row-btn').addEventListener('click', function() {
-    document.getElementById('participant-rows').appendChild(buildParticipantRow()); updatePoolBar();
-});
-
-document.getElementById('t-type').addEventListener('change', updatePoolBar);
-document.getElementById('t-num').addEventListener('input', updatePoolBar);
-
-function updatePoolBar() {
-    var type = document.getElementById('t-type').value;
-    var num  = parseInt(document.getElementById('t-num').value) || 0;
-    var fee  = type === 'major' ? 10 : 5;
-    var rows = document.querySelectorAll('#participant-rows .participant-entry').length || num;
-    document.getElementById('pi-entry').textContent   = '$' + fee;
-    document.getElementById('pi-players').textContent = rows || num;
-    document.getElementById('pi-pool').textContent    = '$' + (fee * (rows || num)).toFixed(2);
-}
-
-// ── FORM SUBMIT ───────────────────────────────────────────────
-document.getElementById('tournament-form').addEventListener('submit', function(e) {
-    e.preventDefault();
-    var name     = document.getElementById('t-name').value.trim();
-    var location = document.getElementById('t-location').value.trim();
-    var date     = document.getElementById('t-date').value;
-    var type     = document.getElementById('t-type').value;
-    var entryFee = type === 'major' ? 10 : 5;
-
-    var rows = document.querySelectorAll('#participant-rows .participant-entry');
-    if (!rows.length) { alert('Please add at least one participant.'); return; }
-
-    var participants = [];
-    var seenThisTournament = {};
-    rows.forEach(function(row) {
-        var sel   = row.querySelector('.p-name-select');
-        var inp   = row.querySelector('.p-name-input');
-        var score = parseFloat(row.querySelector('.p-score').value) || 0;
-        var prize = parseFloat(row.querySelector('.p-prize').value) || 0;
-        var pName = sel.value === '__new__' ? inp.value.trim() : sel.value;
-        pName = canonicalPlayerName(pName, app.knownPlayers);
-        if (!pName) return;
-        if (seenThisTournament[pName]) return;
-        seenThisTournament[pName] = true;
-        if (app.knownPlayers.indexOf(pName) === -1) {
-            app.knownPlayers.push(pName);
-            app.knownPlayers.sort(function(a,b){ return a.localeCompare(b); });
-        }
-        participants.push({ name: pName, score: score, prize: prize });
-    });
-
-    if (!participants.length) { alert('Please enter at least one participant.'); return; }
-    participants.sort(function(a,b){ return b.score - a.score; });
-    participants.forEach(function(p,i){ p.position = i+1; });
-
-    app.tournaments.push({
-        id: Date.now(), name: name, location: location, date: date,
-        type: type, entryFee: entryFee, participants: participants,
-        grossPool: participants.length * entryFee,
-        totalPrizes: participants.reduce(function(s,p){ return s+p.prize; },0)
-    });
-    saveLocal();
-
-    var msg = document.createElement('div');
-    msg.className = 'success-msg';
-    msg.textContent = '✓ "' + name + '" saved! Now export data.json and upload to GitHub.';
-    var view = document.getElementById('add-tournament-view');
-    view.insertBefore(msg, view.firstChild);
-    setTimeout(function(){ if (msg.parentNode) msg.parentNode.removeChild(msg); }, 5000);
-
-    document.getElementById('tournament-form').reset();
-    document.getElementById('participant-rows').innerHTML = '';
-    document.getElementById('pool-bar').classList.add('hidden');
-    document.getElementById('participants-container').classList.add('hidden');
-    document.getElementById('submit-section').classList.add('hidden');
-});
-
-document.getElementById('cancel-btn').addEventListener('click', function() {
-    document.getElementById('tournament-form').reset();
-    document.getElementById('participant-rows').innerHTML = '';
-    document.getElementById('pool-bar').classList.add('hidden');
-    document.getElementById('participants-container').classList.add('hidden');
-    document.getElementById('submit-section').classList.add('hidden');
 });
 
 // ── ANALYTICS ─────────────────────────────────────────────────
 function fmtMoney(v) { return '$' + (Number(v) || 0).toFixed(2); }
 function fmtPct(v) { return (v >= 0 ? '+' : '') + (v * 100).toFixed(1) + '%'; }
+function fmtScore(v) { return v == null ? '—' : Number(v).toFixed(2); }
+function getCutStatusMeta(player) {
+    if (!player) return { label: '—', className: '' };
+    if (player.cutStatus === 'made_cut' || player.madeCut === true) return { label: 'Made Cut', className: 'cut-made' };
+    if (player.cutStatus === 'missed_cut' || player.madeCut === false) return { label: 'Missed Cut', className: 'cut-missed' };
+    return { label: '—', className: '' };
+}
+
+function tournamentKnownCutStatusCount(tournament) {
+    var known = 0;
+    var fieldStats = Array.isArray(tournament && tournament.fieldStats) ? tournament.fieldStats : [];
+    for (var i = 0; i < fieldStats.length; i++) {
+        var fs = fieldStats[i] || {};
+        if (fs.madeCut === true || fs.madeCut === false || fs.cutStatus === 'made_cut' || fs.cutStatus === 'missed_cut') {
+            known += 1;
+        }
+    }
+    if (known > 0) return known;
+
+    var participants = Array.isArray(tournament && tournament.participants) ? tournament.participants : [];
+    for (var p = 0; p < participants.length; p++) {
+        var lineup = Array.isArray(participants[p] && participants[p].lineup) ? participants[p].lineup : [];
+        for (var l = 0; l < lineup.length; l++) {
+            var lp = lineup[l] || {};
+            if (lp.madeCut === true || lp.madeCut === false || lp.cutStatus === 'made_cut' || lp.cutStatus === 'missed_cut') {
+                known += 1;
+            }
+        }
+    }
+    return known;
+}
+
+function shouldUseTournamentForCutStats(tournament) {
+    var name = String((tournament && tournament.name) || '').toLowerCase();
+    if (name.indexOf('zurich classic') !== -1 && tournamentKnownCutStatusCount(tournament) === 0) {
+        return false;
+    }
+    return true;
+}
 
 function initPlayerStats(name) {
     return {
@@ -964,20 +1448,31 @@ function initPlayerStats(name) {
         entries: 0,
         played: 0,
         finishTotal: 0,
+        top3Count: 0,
+        wins: 0,
+        totalPoints: 0,
         history: [],
         cashCount: 0,
-        top5Count: 0
+        top3StreakCount: 0,
+        lineupCount: 0,
+        ownershipTotal: 0,
+        uniqueGolfers: {},
+        rosterSlots: 0,
+        rosterMadeCutCount: 0,
+        rosterKnownCutCount: 0
     };
 }
 
 function getChronologicalTournaments() {
     return app.tournaments.slice().sort(function(a, b) {
-        var ad = new Date((a.date || '') + 'T12:00:00').getTime();
-        var bd = new Date((b.date || '') + 'T12:00:00').getTime();
-        if (isNaN(ad) && isNaN(bd)) return (a.id || 0) - (b.id || 0);
-        if (isNaN(ad)) return 1;
-        if (isNaN(bd)) return -1;
-        if (ad !== bd) return ad - bd;
+        var ad = parseTournamentDate(a.date);
+        var bd = parseTournamentDate(b.date);
+        var at = ad ? ad.getTime() : NaN;
+        var bt = bd ? bd.getTime() : NaN;
+        if (isNaN(at) && isNaN(bt)) return (a.id || 0) - (b.id || 0);
+        if (isNaN(at)) return 1;
+        if (isNaN(bt)) return -1;
+        if (at !== bt) return at - bt;
         return (a.id || 0) - (b.id || 0);
     });
 }
@@ -1009,9 +1504,107 @@ function getTrend(history) {
     return { symbol: '→', className: 'trend-flat', note: 'Flat' };
 }
 
+function getTournamentFieldStatMap(tournament) {
+    var out = {};
+    (tournament.fieldStats || []).forEach(function(stat) {
+        if (!stat || !stat.playerName) return;
+        out[String(stat.playerName).toLowerCase()] = stat;
+    });
+    return out;
+}
+
+function getTournamentEntry(tournament, participantName) {
+    var target = String(participantName || '').toLowerCase();
+    var participants = Array.isArray(tournament.participants) ? tournament.participants : [];
+    for (var i = 0; i < participants.length; i++) {
+        if (String(participants[i].name || '').toLowerCase() === target) return participants[i];
+    }
+    return null;
+}
+
+function summarizeTournamentInsights(tournament) {
+    var lineupCounts = {};
+    var winningEdge = null;
+    var highestField = null;
+    var deepestCut = null;
+    var mostRostered = null;
+
+    (tournament.fieldStats || []).forEach(function(stat) {
+        if (!highestField || Number(stat.fantasyPoints || -Infinity) > Number(highestField.fantasyPoints || -Infinity)) {
+            highestField = stat;
+        }
+        if (!deepestCut || Number(stat.draftedPct || -Infinity) > Number(deepestCut.draftedPct || -Infinity)) {
+            deepestCut = stat;
+        }
+    });
+
+    (tournament.participants || []).forEach(function(participant) {
+        (participant.lineup || []).forEach(function(player) {
+            var key = String(player.playerName || '').toLowerCase();
+            if (!key) return;
+            if (!lineupCounts[key]) {
+                lineupCounts[key] = {
+                    playerName: player.playerName,
+                    appearances: 0,
+                    fantasyPoints: player.fantasyPoints,
+                    draftedPct: player.draftedPct
+                };
+            }
+            lineupCounts[key].appearances += 1;
+        });
+
+        if (participant.position === 1 && participant.lineup && participant.lineup.length) {
+            participant.lineup.forEach(function(player) {
+                if (!winningEdge || Number(player.fantasyPoints || -Infinity) > Number(winningEdge.fantasyPoints || -Infinity)) {
+                    winningEdge = player;
+                }
+            });
+        }
+    });
+
+    Object.keys(lineupCounts).forEach(function(key) {
+        if (!mostRostered || lineupCounts[key].appearances > mostRostered.appearances) {
+            mostRostered = lineupCounts[key];
+        }
+    });
+
+    return {
+        mostRostered: mostRostered,
+        highestField: highestField,
+        winningEdge: winningEdge,
+        chalkiest: deepestCut
+    };
+}
+
+function buildLineupModalTable(entry, tournament) {
+    var rows = '';
+    (entry.lineup || []).forEach(function(player, idx) {
+        var cutMeta = getCutStatusMeta(player);
+        rows += '<tr>' +
+            '<td>' + (player.rosterPosition ? escHtml(player.rosterPosition) : ('G' + (idx + 1))) + '</td>' +
+            '<td><strong>' + escHtml(player.playerName) + '</strong></td>' +
+            '<td>' + fmtScore(player.fantasyPoints) + '</td>' +
+            '<td>' + (player.draftedPct == null ? '—' : (Number(player.draftedPct).toFixed(1) + '%')) + '</td>' +
+            '<td class="' + cutMeta.className + '">' + cutMeta.label + '</td>' +
+        '</tr>';
+    });
+
+    return '<div class="lineup-summary">' +
+        '<div class="lineup-summary-card"><strong>Tournament</strong><span>' + escHtml(tournament.name) + '</span></div>' +
+        '<div class="lineup-summary-card"><strong>Finish</strong><span>' + (entry.position || '—') + '</span></div>' +
+        '<div class="lineup-summary-card"><strong>DK Score</strong><span>' + fmtScore(entry.score) + '</span></div>' +
+        '<div class="lineup-summary-card"><strong>Prize</strong><span>' + (entry.prize > 0 ? fmtMoney(entry.prize) : '—') + '</span></div>' +
+      '</div>' +
+      '<div class="table-container"><table>' +
+        '<thead><tr><th>Slot</th><th>Golfer</th><th>Points</th><th>Field Rostered</th><th>Cut</th></tr></thead>' +
+        '<tbody>' + rows + '</tbody>' +
+      '</table></div>';
+}
+
 function buildSeasonAnalytics() {
     var tournaments = getChronologicalTournaments();
     var players = {};
+    var golfers = {};
 
     (app.knownPlayers || []).forEach(function(name) {
         players[name] = initPlayerStats(name);
@@ -1021,6 +1614,7 @@ function buildSeasonAnalytics() {
 
     tournaments.forEach(function(t) {
         var fee = Number(t.entryFee) || (t.type === 'major' ? 10 : 5);
+        var cutStatsEligible = shouldUseTournamentForCutStats(t);
         (t.participants || []).forEach(function(p) {
             var name = canonicalPlayerName(p.name, app.knownPlayers);
             if (!players[name]) players[name] = initPlayerStats(name);
@@ -1033,14 +1627,80 @@ function buildSeasonAnalytics() {
             s.entries += fee;
             s.played += 1;
             s.finishTotal += pos;
+            s.top3Count += (pos > 0 && pos <= 3) ? 1 : 0;
+            s.wins += pos === 1 ? 1 : 0;
+            s.totalPoints += Number(p.score) || 0;
             s.cashCount += prize > 0 ? 1 : 0;
-            s.top5Count += (pos > 0 && pos <= 5) ? 1 : 0;
+            s.top3StreakCount += (pos > 0 && pos <= 3) ? 1 : 0;
             s.history.push({
                 tournament: t.name || 'Tournament',
                 date: t.date || '',
                 position: pos,
                 prize: prize
             });
+
+            if (p.lineup && p.lineup.length) {
+                var ownershipAccumulator = 0;
+                var ownershipCount = 0;
+                s.lineupCount += 1;
+
+                p.lineup.forEach(function(lp) {
+                    var golferName = lp.playerName || 'Unknown Golfer';
+                    var golferKey = golferName.toLowerCase();
+                    if (!golfers[golferKey]) {
+                        golfers[golferKey] = {
+                            name: golferName,
+                            appearances: 0,
+                            totalPoints: 0,
+                            bestPoints: null,
+                            usedBy: {},
+                            usedByCount: 0,
+                            events: {},
+                            draftedPctTotal: 0,
+                            draftedPctCount: 0
+                        };
+                    }
+
+                    var g = golfers[golferKey];
+                    var fantasyPoints = lp.fantasyPoints == null ? null : Number(lp.fantasyPoints);
+                    var draftedPct = lp.draftedPct == null ? null : Number(lp.draftedPct);
+
+                    g.appearances += 1;
+                    if (fantasyPoints != null) {
+                        g.totalPoints += fantasyPoints;
+                        g.bestPoints = g.bestPoints == null ? fantasyPoints : Math.max(g.bestPoints, fantasyPoints);
+                    }
+                    if (draftedPct != null) {
+                        g.draftedPctTotal += draftedPct;
+                        g.draftedPctCount += 1;
+                    }
+                    if (!g.usedBy[name]) {
+                        g.usedBy[name] = 0;
+                        g.usedByCount += 1;
+                    }
+                    g.usedBy[name] += 1;
+                    g.events[t.id || (t.name + ':' + t.date)] = true;
+
+                    s.uniqueGolfers[golferKey] = golferName;
+                    s.rosterSlots += 1;
+                    if (cutStatsEligible) {
+                        if (lp.madeCut === true) {
+                            s.rosterMadeCutCount += 1;
+                            s.rosterKnownCutCount += 1;
+                        } else if (lp.madeCut === false || lp.cutStatus === 'missed_cut') {
+                            s.rosterKnownCutCount += 1;
+                        }
+                    }
+                    if (draftedPct != null) {
+                        ownershipAccumulator += draftedPct;
+                        ownershipCount += 1;
+                    }
+                });
+
+                if (ownershipCount > 0) {
+                    s.ownershipTotal += ownershipAccumulator / ownershipCount;
+                }
+            }
         });
 
         var row = { tournament: t.name || 'Tournament', date: t.date || '', earnings: {} };
@@ -1051,7 +1711,7 @@ function buildSeasonAnalytics() {
     var playerRows = Object.keys(players).map(function(name) {
         var s = players[name];
         var cashStreak = calculateStreak(s.history, function(h) { return h.prize > 0; });
-        var top5Streak = calculateStreak(s.history, function(h) { return h.position > 0 && h.position <= 5; });
+        var top3Streak = calculateStreak(s.history, function(h) { return h.position > 0 && h.position <= 3; });
         var trend = getTrend(s.history);
 
         return {
@@ -1060,11 +1720,38 @@ function buildSeasonAnalytics() {
             entries: s.entries,
             played: s.played,
             avgFinish: s.played ? (s.finishTotal / s.played) : 0,
+            avgPoints: s.played ? (s.totalPoints / s.played) : 0,
             roi: s.entries > 0 ? ((s.winnings - s.entries) / s.entries) : 0,
+            cashRate: s.played ? (s.cashCount / s.played) : 0,
+            top3Rate: s.played ? (s.top3Count / s.played) : 0,
+            wins: s.wins,
+            top3Count: s.top3Count,
+            uniqueGolfers: Object.keys(s.uniqueGolfers).length,
+            avgOwnership: s.lineupCount ? (s.ownershipTotal / s.lineupCount) : 0,
+            rosterMadeCutRate: s.rosterKnownCutCount ? (s.rosterMadeCutCount / s.rosterKnownCutCount) : 0,
+            rosterMadeCutCount: s.rosterMadeCutCount,
+            rosterKnownCutCount: s.rosterKnownCutCount,
+            rosterSlots: s.rosterSlots,
+            mostUsedGolfer: (function() {
+                var counts = {};
+                var best = null;
+                s.history.forEach(function() {});
+                tournaments.forEach(function(t) {
+                    var entry = getTournamentEntry(t, s.name);
+                    (entry && entry.lineup ? entry.lineup : []).forEach(function(lp) {
+                        var key = String(lp.playerName || '').toLowerCase();
+                        if (!key) return;
+                        counts[key] = counts[key] || { name: lp.playerName, count: 0 };
+                        counts[key].count += 1;
+                        if (!best || counts[key].count > best.count) best = counts[key];
+                    });
+                });
+                return best;
+            })(),
             cashStreakCurrent: cashStreak.current,
             cashStreakBest: cashStreak.best,
-            top5StreakCurrent: top5Streak.current,
-            top5StreakBest: top5Streak.best,
+            top3StreakCurrent: top3Streak.current,
+            top3StreakBest: top3Streak.best,
             trend: trend
         };
     });
@@ -1074,11 +1761,29 @@ function buildSeasonAnalytics() {
         return a.avgFinish - b.avgFinish;
     });
 
+    var golferRows = Object.keys(golfers).map(function(key) {
+        var g = golfers[key];
+        var usedByNames = Object.keys(g.usedBy).sort(function(a, b) { return g.usedBy[b] - g.usedBy[a]; });
+        return {
+            name: g.name,
+            appearances: g.appearances,
+            avgPoints: g.appearances ? (g.totalPoints / g.appearances) : 0,
+            bestPoints: g.bestPoints == null ? 0 : g.bestPoints,
+            avgDraftedPct: g.draftedPctCount ? (g.draftedPctTotal / g.draftedPctCount) : 0,
+            usedByCount: g.usedByCount,
+            usedByPreview: usedByNames.slice(0, 3).map(function(name) { return name + ' (' + g.usedBy[name] + ')'; }).join(', ')
+        };
+    }).sort(function(a, b) {
+        if (b.appearances !== a.appearances) return b.appearances - a.appearances;
+        return b.avgPoints - a.avgPoints;
+    });
+
     return {
         tournaments: tournaments,
         players: playerRows,
         leaderboard: leaderboard,
-        cumulativeRows: cumulativeRows
+        cumulativeRows: cumulativeRows,
+        golfers: golferRows
     };
 }
 
@@ -1130,6 +1835,168 @@ function renderHeadToHead() {
         'Prizes (shared events): ' + escHtml(a) + ' ' + fmtMoney(rec.aPrize) + ' | ' + escHtml(b) + ' ' + fmtMoney(rec.bPrize);
 }
 
+window.setStandingsSort = function(key, defaultDir) {
+    toggleSortState(standingsSort, key, defaultDir);
+    renderStandings();
+};
+
+window.setAnalyticsSort = function(tableKey, key, defaultDir) {
+    if (!analyticsSorts[tableKey]) return;
+    toggleSortState(analyticsSorts[tableKey], key, defaultDir);
+    renderAnalytics();
+};
+
+function showOnlyMainView(viewKey) {
+    Object.keys(mainViews).forEach(function(k){
+        mainViews[k].classList[k === viewKey ? 'remove' : 'add']('hidden');
+    });
+}
+
+function buildPlayerLink(name) {
+    return '<button class="player-link" type="button" onclick="openPlayerProfile(\'' + encodeForInlineHandler(String(name || '')) + '\')">' + escHtml(name) + '</button>';
+}
+
+function parseTournamentDate(value) {
+    var raw = String(value || '').trim();
+    if (!raw) return null;
+    var normalized = raw.indexOf('T') >= 0 ? raw : (raw + 'T12:00:00');
+    var parsed = new Date(normalized);
+    return isNaN(parsed.getTime()) ? null : parsed;
+}
+
+function formatTournamentDate(value, options) {
+    var parsed = parseTournamentDate(value);
+    return parsed ? parsed.toLocaleDateString('en-US', options) : '—';
+}
+
+function buildTrendSparkline(history) {
+    if (!history.length) return '<div class="mini-note">No tournament history yet.</div>';
+    var maxScore = history.reduce(function(max, row) { return Math.max(max, Number(row.score) || 0); }, 0) || 1;
+    var recent = history.slice(-6);
+    return '<div class="profile-sparkline">' + recent.map(function(row) {
+        var score = Number(row.score) || 0;
+        var height = Math.max(8, Math.round((score / maxScore) * 96));
+        var label = formatTournamentDate(row.date, { month: 'short', day: 'numeric' });
+        return '<div class="spark-bar-wrap"><div class="spark-bar" style="height:' + height + 'px"></div><div class="spark-label">' + escHtml(label) + '<br>' + fmtScore(score) + '</div></div>';
+    }).join('') + '</div>';
+}
+
+function buildPlayerProfileData(playerName) {
+    var canonical = canonicalPlayerName(playerName, app.knownPlayers);
+    var data = buildSeasonAnalytics();
+    var player = null;
+    data.players.forEach(function(row) {
+        if (row.name === canonical) player = row;
+    });
+    if (!player) return null;
+
+    var tournaments = getChronologicalTournaments();
+    var history = [];
+    var golferUsage = {};
+    var lineups = [];
+    var headToHead = [];
+
+    tournaments.forEach(function(t) {
+        var entry = getTournamentEntry(t, canonical);
+        if (!entry) return;
+        var fee = Number(t.entryFee) || (t.type === 'major' ? 10 : 5);
+        var lineup = (entry.lineup || []).slice();
+        history.push({
+            tournamentId: t.id,
+            tournament: t.name,
+            date: t.date,
+            position: Number(entry.position) || 0,
+            score: Number(entry.score) || 0,
+            prize: Number(entry.prize) || 0,
+            entryFee: fee,
+            net: (Number(entry.prize) || 0) - fee,
+            lineup: lineup
+        });
+        lineups.push({
+            tournamentId: t.id,
+            tournament: t.name,
+            date: t.date,
+            position: Number(entry.position) || 0,
+            lineup: lineup
+        });
+        lineup.forEach(function(lp) {
+            var key = String(lp.playerName || '').toLowerCase();
+            if (!key) return;
+            if (!golferUsage[key]) golferUsage[key] = { name: lp.playerName, uses: 0, totalPoints: 0, pointSamples: 0, wins: 0, top3: 0 };
+            golferUsage[key].uses += 1;
+            if (lp.fantasyPoints != null) {
+                golferUsage[key].totalPoints += Number(lp.fantasyPoints);
+                golferUsage[key].pointSamples += 1;
+            }
+            if ((Number(entry.position) || 0) === 1) golferUsage[key].wins += 1;
+            if ((Number(entry.position) || 0) > 0 && (Number(entry.position) || 0) <= 3) golferUsage[key].top3 += 1;
+        });
+    });
+
+    data.players.forEach(function(opponent) {
+        if (opponent.name === canonical) return;
+        var rec = buildHeadToHead(canonical, opponent.name, tournaments);
+        if (!rec.compared) return;
+        headToHead.push({
+            name: opponent.name,
+            record: rec.aWins + '-' + rec.bWins + (rec.ties ? '-' + rec.ties : ''),
+            compared: rec.compared,
+            prizeDiff: rec.aPrize - rec.bPrize
+        });
+    });
+    headToHead.sort(function(a, b) {
+        if (b.prizeDiff !== a.prizeDiff) return b.prizeDiff - a.prizeDiff;
+        return a.name.localeCompare(b.name);
+    });
+
+    var golferRows = Object.keys(golferUsage).map(function(key) {
+        var g = golferUsage[key];
+        return {
+            name: g.name,
+            uses: g.uses,
+            avgPoints: g.pointSamples ? (g.totalPoints / g.pointSamples) : 0,
+            wins: g.wins,
+            top3: g.top3
+        };
+    }).sort(function(a, b) {
+        if (b.uses !== a.uses) return b.uses - a.uses;
+        return b.avgPoints - a.avgPoints;
+    });
+
+    return {
+        player: player,
+        leaderboardRank: data.leaderboard.findIndex(function(row) { return row.name === canonical; }) + 1,
+        history: history,
+        topGolfers: golferRows.slice(0, 5),
+        profitableGolfers: golferRows.slice().sort(function(a, b) { return b.avgPoints - a.avgPoints; }).slice(0, 5),
+        lineups: lineups.slice(-4).reverse(),
+        headToHead: headToHead.slice(0, 6),
+        bestByPrize: history.slice().sort(function(a, b) { return (b.prize - a.prize) || (b.score - a.score); })[0] || null,
+        bestByScore: history.slice().sort(function(a, b) { return b.score - a.score; })[0] || null,
+        worstFinish: history.slice().sort(function(a, b) { return b.position - a.position; })[0] || null
+    };
+}
+
+window.openPlayerProfile = function(encodedName) {
+    currentPlayerProfile = decodeURIComponent(String(encodedName || ''));
+    playerProfileReturnView = document.getElementById('analytics-view').classList.contains('hidden') ? 'standings' : 'analytics';
+    document.querySelectorAll('nav button').forEach(function(b){ b.classList.remove('active'); });
+    renderPlayerProfile(currentPlayerProfile);
+    showOnlyMainView('player-profile');
+    updateRoute('player-profile', { player: currentPlayerProfile, back: playerProfileReturnView });
+};
+
+window.closePlayerProfile = function() {
+    currentPlayerProfile = null;
+    var backTo = playerProfileReturnView || 'standings';
+    var navButton = document.querySelector('nav button[data-view="' + backTo + '"]');
+    if (navButton) navButton.classList.add('active');
+    showOnlyMainView(backTo);
+    if (backTo === 'analytics') renderAnalytics();
+    else renderStandings();
+    updateRoute(backTo);
+};
+
 function renderAnalytics() {
     var el = document.getElementById('analytics-content');
     if (!app.tournaments.length) {
@@ -1138,8 +2005,45 @@ function renderAnalytics() {
     }
 
     var data = buildSeasonAnalytics();
-    var playersByEarnings = data.leaderboard;
-    var playersByRoi = data.players.slice().sort(function(a, b) { return b.roi - a.roi; });
+    var seasonColumns = [
+        { key: 'name', getValue: function(row) { return row.name; } },
+        { key: 'winnings', getValue: function(row) { return row.winnings; } },
+        { key: 'played', getValue: function(row) { return row.played; } },
+        { key: 'avgFinish', getValue: function(row) { return row.avgFinish; } },
+        { key: 'avgPoints', getValue: function(row) { return row.avgPoints; } },
+        { key: 'trend', getValue: function(row) { return row.trend.delta; } }
+    ];
+    var roiColumns = [
+        { key: 'name', getValue: function(row) { return row.name; } },
+        { key: 'winnings', getValue: function(row) { return row.winnings; } },
+        { key: 'entries', getValue: function(row) { return row.entries; } },
+        { key: 'roi', getValue: function(row) { return row.roi; } },
+        { key: 'cashRate', getValue: function(row) { return row.cashRate; } },
+        { key: 'top3Count', getValue: function(row) { return row.top3Count; } },
+        { key: 'wins', getValue: function(row) { return row.wins; } }
+    ];
+    var strategyColumns = [
+        { key: 'name', getValue: function(row) { return row.name; } },
+        { key: 'avgOwnership', getValue: function(row) { return row.avgOwnership; } },
+        { key: 'rosterMadeCutRate', getValue: function(row) { return row.rosterMadeCutRate; } },
+        { key: 'uniqueGolfers', getValue: function(row) { return row.uniqueGolfers; } },
+        { key: 'mostUsedGolfer', getValue: function(row) { return row.mostUsedGolfer ? row.mostUsedGolfer.count : -1; } },
+        { key: 'cashStreakBest', getValue: function(row) { return row.cashStreakBest; } },
+        { key: 'top3StreakBest', getValue: function(row) { return row.top3StreakBest; } }
+    ];
+    var golferColumns = [
+        { key: 'name', getValue: function(row) { return row.name; } },
+        { key: 'appearances', getValue: function(row) { return row.appearances; } },
+        { key: 'avgPoints', getValue: function(row) { return row.avgPoints; } },
+        { key: 'bestPoints', getValue: function(row) { return row.bestPoints; } },
+        { key: 'avgDraftedPct', getValue: function(row) { return row.avgDraftedPct; } },
+        { key: 'usedByCount', getValue: function(row) { return row.usedByCount; } }
+    ];
+
+    var playersByEarnings = sortByColumns(data.leaderboard, seasonColumns, analyticsSorts.seasonPerformance, 'winnings');
+    var playersByRoi = sortByColumns(data.players, roiColumns, analyticsSorts.roi, 'roi');
+    var playerStrategies = sortByColumns(data.players, strategyColumns, analyticsSorts.strategy, 'avgOwnership');
+    var golfersByExposure = sortByColumns(data.golfers, golferColumns, analyticsSorts.golferExposure, 'appearances').slice(0, 20);
     var playerNames = playersByEarnings.map(function(p) { return p.name; });
 
     var playerOptions = playerNames.map(function(n) {
@@ -1147,35 +2051,146 @@ function renderAnalytics() {
     }).join('');
 
     var html = '';
+    var mobile = isMobileViewport();
 
-    html += '<div class="section-title">Season Stats</div>';
-    html += '<div class="table-container"><table><thead><tr><th>Player</th><th>Total Winnings</th><th>Events Played</th><th>Avg Finish</th></tr></thead><tbody>';
-    playersByEarnings.forEach(function(p) {
-        html += '<tr><td><strong>' + escHtml(p.name) + '</strong></td><td class="money">' + fmtMoney(p.winnings) + '</td><td>' + p.played + '</td><td>' + (p.played ? p.avgFinish.toFixed(2) : '—') + '</td></tr>';
-    });
-    html += '</tbody></table></div>';
+    html += '<div class="analytics-stack">';
 
-    html += '<div class="section-title">Player Leaderboard (YTD Earnings)</div>';
-    html += '<div class="table-container"><table><thead><tr><th>Rank</th><th>Player</th><th>YTD Earnings</th><th>Trend (Last 3)</th></tr></thead><tbody>';
-    playersByEarnings.forEach(function(p, i) {
-        html += '<tr><td>' + (i + 1) + '</td><td><strong>' + escHtml(p.name) + '</strong></td><td class="money">' + fmtMoney(p.winnings) + '</td><td class="' + p.trend.className + '">' + p.trend.symbol + '</td></tr>';
-    });
-    html += '</tbody></table></div>';
+    html += '<div class="analytics-panel">';
+    html += '<h3>Season Performance</h3>';
+    html += '<div class="note-inline">Long-run leaderboard for winnings, consistency, and scoring efficiency.</div>';
+    if (mobile) {
+        html += '<div class="mobile-stack">';
+        playersByEarnings.forEach(function(p, i) {
+            html += '<div class="mobile-card"><div class="mobile-card-head"><div><div class="mobile-card-title">' + buildPlayerLink(p.name) + '</div><div class="mobile-card-subtitle">Trend <span class="' + p.trend.className + '">' + p.trend.symbol + '</span> • ' + escHtml(p.trend.note) + '</div></div><div class="mobile-rank"><span class="rank-badge ' + (i===0?'rank-1':i===1?'rank-2':i===2?'rank-3':'rank-other') + '">' + (i + 1) + '</span></div></div><div class="mobile-metric-grid">' +
+                buildMobileMetric('Winnings', fmtMoney(p.winnings), 'money') +
+                buildMobileMetric('Events', String(p.played)) +
+                buildMobileMetric('Avg Finish', p.played ? p.avgFinish.toFixed(2) : '—') +
+                buildMobileMetric('Avg Pts', p.avgPoints.toFixed(1)) +
+            '</div></div>';
+        });
+        html += '</div>';
+    } else {
+        html += '<div class="table-container"><table><thead><tr><th>Rank</th>' +
+        buildAnalyticsSortHeader('Player', 'seasonPerformance', 'name', analyticsSorts.seasonPerformance, 'asc') +
+        buildAnalyticsSortHeader('Winnings', 'seasonPerformance', 'winnings', analyticsSorts.seasonPerformance, 'desc') +
+        buildAnalyticsSortHeader('Events', 'seasonPerformance', 'played', analyticsSorts.seasonPerformance, 'desc') +
+        buildAnalyticsSortHeader('Avg Finish', 'seasonPerformance', 'avgFinish', analyticsSorts.seasonPerformance, 'asc') +
+        buildAnalyticsSortHeader('Avg Pts', 'seasonPerformance', 'avgPoints', analyticsSorts.seasonPerformance, 'desc') +
+        buildAnalyticsSortHeader('Trend', 'seasonPerformance', 'trend', analyticsSorts.seasonPerformance, 'desc') +
+        '</tr></thead><tbody>';
+        playersByEarnings.forEach(function(p, i) {
+            html += '<tr><td>' + (i + 1) + '</td><td>' + buildPlayerLink(p.name) + '</td><td class="money">' + fmtMoney(p.winnings) + '</td><td>' + p.played + '</td><td>' + (p.played ? p.avgFinish.toFixed(2) : '—') + '</td><td>' + p.avgPoints.toFixed(1) + '</td><td class="' + p.trend.className + '">' + p.trend.symbol + '</td></tr>';
+        });
+        html += '</tbody></table></div>';
+    }
+    html += '</div>';
 
-    html += '<div class="section-title">ROI Tracker</div>';
-    html += '<div class="table-container"><table><thead><tr><th>Player</th><th>Total Prizes</th><th>Total Entry Fees</th><th>ROI</th></tr></thead><tbody>';
-    playersByRoi.forEach(function(p) {
-        html += '<tr><td><strong>' + escHtml(p.name) + '</strong></td><td class="money">' + fmtMoney(p.winnings) + '</td><td>' + fmtMoney(p.entries) + '</td><td class="' + (p.roi >= 0 ? 'money' : 'money negative') + '">' + fmtPct(p.roi) + '</td></tr>';
-    });
-    html += '</tbody></table></div>';
+    html += '<div class="analytics-panel">';
+    html += '<h3>ROI And Cashes</h3>';
+    if (mobile) {
+        html += '<div class="mobile-stack">';
+        playersByRoi.forEach(function(p) {
+            html += '<div class="mobile-card"><div class="mobile-card-title">' + buildPlayerLink(p.name) + '</div><div class="mobile-metric-grid mobile-section-spacer">' +
+                buildMobileMetric('ROI', fmtPct(p.roi), p.roi >= 0 ? 'money' : 'money negative') +
+                buildMobileMetric('Prizes', fmtMoney(p.winnings), 'money') +
+                buildMobileMetric('Entry Fees', fmtMoney(p.entries)) +
+                buildMobileMetric('Cash Rate', (p.cashRate * 100).toFixed(0) + '%') +
+                buildMobileMetric('Top 3', String(p.top3Count)) +
+                buildMobileMetric('Wins', String(p.wins)) +
+            '</div></div>';
+        });
+        html += '</div>';
+    } else {
+        html += '<div class="table-container"><table><thead><tr>' +
+        buildAnalyticsSortHeader('Player', 'roi', 'name', analyticsSorts.roi, 'asc') +
+        buildAnalyticsSortHeader('Total Prizes', 'roi', 'winnings', analyticsSorts.roi, 'desc') +
+        buildAnalyticsSortHeader('Entry Fees', 'roi', 'entries', analyticsSorts.roi, 'desc') +
+        buildAnalyticsSortHeader('ROI', 'roi', 'roi', analyticsSorts.roi, 'desc') +
+        buildAnalyticsSortHeader('Cash Rate', 'roi', 'cashRate', analyticsSorts.roi, 'desc') +
+        buildAnalyticsSortHeader('Top 3', 'roi', 'top3Count', analyticsSorts.roi, 'desc') +
+        buildAnalyticsSortHeader('Wins', 'roi', 'wins', analyticsSorts.roi, 'desc') +
+        '</tr></thead><tbody>';
+        playersByRoi.forEach(function(p) {
+            html += '<tr><td>' + buildPlayerLink(p.name) + '</td><td class="money">' + fmtMoney(p.winnings) + '</td><td>' + fmtMoney(p.entries) + '</td><td class="' + (p.roi >= 0 ? 'money' : 'money negative') + '">' + fmtPct(p.roi) + '</td><td>' + (p.cashRate * 100).toFixed(0) + '%</td><td>' + p.top3Count + '</td><td>' + p.wins + '</td></tr>';
+        });
+        html += '</tbody></table></div>';
+    }
+    html += '</div>';
 
-    html += '<div class="section-title">Head-to-Head</div>';
+    html += '<div class="analytics-panel">';
+    html += '<h3>Player Strategy Tendencies</h3>';
+    html += '<div class="note-inline">Compares how each participant builds teams based on field ownership and roster diversity.</div>';
+    if (mobile) {
+        html += '<div class="mobile-stack">';
+        playerStrategies.forEach(function(p) {
+            html += '<div class="mobile-card"><div class="mobile-card-title">' + buildPlayerLink(p.name) + '</div><div class="mobile-metric-grid mobile-section-spacer">' +
+                buildMobileMetric('Avg Ownership', p.avgOwnership ? p.avgOwnership.toFixed(1) + '%' : '—') +
+                buildMobileMetric('Roster Made Cut', p.rosterKnownCutCount ? ((p.rosterMadeCutRate * 100).toFixed(0) + '%') : '—', p.rosterMadeCutRate >= 0.66 ? 'money' : '') +
+                buildMobileMetric('Unique Golfers', String(p.uniqueGolfers)) +
+                buildMobileMetric('Most Used', p.mostUsedGolfer ? escHtml(p.mostUsedGolfer.name + ' (' + p.mostUsedGolfer.count + ')') : '—') +
+                buildMobileMetric('Best Cash Streak', String(p.cashStreakBest)) +
+                buildMobileMetric('Best Top 3 Streak', String(p.top3StreakBest)) +
+            '</div></div>';
+        });
+        html += '</div>';
+    } else {
+        html += '<div class="table-container"><table><thead><tr>' +
+        buildAnalyticsSortHeader('Player', 'strategy', 'name', analyticsSorts.strategy, 'asc') +
+        buildAnalyticsSortHeader('Avg Field Ownership', 'strategy', 'avgOwnership', analyticsSorts.strategy, 'desc') +
+        buildAnalyticsSortHeader('Roster Made Cut %', 'strategy', 'rosterMadeCutRate', analyticsSorts.strategy, 'desc') +
+        buildAnalyticsSortHeader('Unique Golfers Used', 'strategy', 'uniqueGolfers', analyticsSorts.strategy, 'desc') +
+        buildAnalyticsSortHeader('Most Used Golfer', 'strategy', 'mostUsedGolfer', analyticsSorts.strategy, 'desc') +
+        buildAnalyticsSortHeader('Best Cash Streak', 'strategy', 'cashStreakBest', analyticsSorts.strategy, 'desc') +
+        buildAnalyticsSortHeader('Best Top 3 Streak', 'strategy', 'top3StreakBest', analyticsSorts.strategy, 'desc') +
+        '</tr></thead><tbody>';
+        playerStrategies.forEach(function(p) {
+            html += '<tr><td>' + buildPlayerLink(p.name) + '</td><td>' + (p.avgOwnership ? p.avgOwnership.toFixed(1) + '%' : '—') + '</td><td>' + (p.rosterKnownCutCount ? ((p.rosterMadeCutRate * 100).toFixed(0) + '%') : '—') + '</td><td>' + p.uniqueGolfers + '</td><td>' + (p.mostUsedGolfer ? escHtml(p.mostUsedGolfer.name + ' (' + p.mostUsedGolfer.count + ')') : '—') + '</td><td>' + p.cashStreakBest + '</td><td>' + p.top3StreakBest + '</td></tr>';
+        });
+        html += '</tbody></table></div>';
+    }
+    html += '</div>';
+
+    html += '<div class="analytics-panel">';
+    html += '<h3>Golfer Exposure And Trends</h3>';
+    html += '<div class="note-inline">Season-long golfer usage across all submitted lineups. Higher exposure usually means the league trusted that golfer repeatedly.</div>';
+    if (mobile) {
+        html += '<div class="mobile-stack">';
+        golfersByExposure.forEach(function(g) {
+            html += '<div class="mobile-card"><div class="mobile-card-title">' + escHtml(g.name) + '</div><div class="mobile-metric-grid mobile-section-spacer">' +
+                buildMobileMetric('Appearances', String(g.appearances)) +
+                buildMobileMetric('Avg Pts', g.avgPoints.toFixed(1)) +
+                buildMobileMetric('Best Week', g.bestPoints.toFixed(1)) +
+                buildMobileMetric('Avg Rostered', g.avgDraftedPct ? g.avgDraftedPct.toFixed(1) + '%' : '—') +
+            '</div><div class="mobile-inline-note">Used by: ' + escHtml(g.usedByPreview || '—') + '</div></div>';
+        });
+        html += '</div>';
+    } else {
+        html += '<div class="table-container"><table><thead><tr>' +
+        buildAnalyticsSortHeader('Golfer', 'golferExposure', 'name', analyticsSorts.golferExposure, 'asc') +
+        buildAnalyticsSortHeader('Appearances', 'golferExposure', 'appearances', analyticsSorts.golferExposure, 'desc') +
+        buildAnalyticsSortHeader('Avg Pts', 'golferExposure', 'avgPoints', analyticsSorts.golferExposure, 'desc') +
+        buildAnalyticsSortHeader('Best Week', 'golferExposure', 'bestPoints', analyticsSorts.golferExposure, 'desc') +
+        buildAnalyticsSortHeader('Avg Field Rostered', 'golferExposure', 'avgDraftedPct', analyticsSorts.golferExposure, 'desc') +
+        buildAnalyticsSortHeader('Used By', 'golferExposure', 'usedByCount', analyticsSorts.golferExposure, 'desc') +
+        '</tr></thead><tbody>';
+        golfersByExposure.forEach(function(g) {
+            html += '<tr><td><strong>' + escHtml(g.name) + '</strong></td><td>' + g.appearances + '</td><td>' + g.avgPoints.toFixed(1) + '</td><td>' + g.bestPoints.toFixed(1) + '</td><td>' + (g.avgDraftedPct ? g.avgDraftedPct.toFixed(1) + '%' : '—') + '</td><td>' + escHtml(g.usedByPreview || '—') + '</td></tr>';
+        });
+        html += '</tbody></table></div>';
+    }
+    html += '</div>';
+
+    html += '<div class="analytics-panel">';
+    html += '<h3>Head-To-Head</h3>';
     html += '<div class="form-row">' +
         '<div class="form-group"><label>Player A</label><select id="h2h-a">' + playerOptions + '</select></div>' +
         '<div class="form-group"><label>Player B</label><select id="h2h-b">' + playerOptions + '</select></div>' +
         '</div>' +
         '<button class="btn btn-secondary" id="h2h-compare-btn" type="button">Compare</button>' +
-        '<div id="h2h-result" class="h2h-result">Select two players and click Compare.</div>';
+        '<div id="h2h-result" class="h2h-result">Select two players and click Compare.</div>' +
+        '</div>';
+
+    html += '</div>';
 
     el.innerHTML = html;
 
@@ -1189,6 +2204,136 @@ function renderAnalytics() {
     renderHeadToHead();
 }
 
+function renderPlayerProfile(playerName) {
+    var el = document.getElementById('player-profile-content');
+    var profile = buildPlayerProfileData(playerName);
+    if (!profile) {
+        el.innerHTML = emptyState('Player profile not found.');
+        return;
+    }
+
+    var p = profile.player;
+    var trend = p.trend || { symbol: '—', note: 'Need 3 events', className: 'trend-na' };
+    var cashRate = p.played ? (p.cashRate * 100).toFixed(0) + '%' : '—';
+    var top3Rate = p.played ? (p.top3Rate * 100).toFixed(0) + '%' : '—';
+    var rosterMadeCut = p.rosterKnownCutCount ? ((p.rosterMadeCutRate * 100).toFixed(0) + '%') : '—';
+    var mobile = isMobileViewport();
+
+    var historyRows = profile.history.slice().reverse().map(function(row) {
+        return '<tr>' +
+            '<td><strong>' + escHtml(row.tournament) + '</strong></td>' +
+            '<td>' + formatTournamentDate(row.date, { month: 'short', day: 'numeric' }) + '</td>' +
+            '<td>' + (row.position || '—') + '</td>' +
+            '<td>' + fmtScore(row.score) + '</td>' +
+            '<td class="' + (row.prize > 0 ? 'money' : '') + '">' + (row.prize > 0 ? fmtMoney(row.prize) : '—') + '</td>' +
+            '<td>' + fmtMoney(row.entryFee) + '</td>' +
+            '<td class="' + (row.net >= 0 ? 'money' : 'money negative') + '">' + (row.net >= 0 ? '+' : '-') + fmtMoney(Math.abs(row.net)).replace('$', '$') + '</td>' +
+            '<td>' + (row.lineup && row.lineup.length ? '<button class="lineup-link" type="button" onclick="openLineupModal(' + row.tournamentId + ', \'' + encodeForInlineHandler(String(p.name)) + '\')">View Team</button>' : '—') + '</td>' +
+        '</tr>';
+    }).join('');
+
+    var topGolferRows = profile.topGolfers.map(function(row) {
+        return '<tr><td><strong>' + escHtml(row.name) + '</strong></td><td>' + row.uses + '</td><td>' + row.avgPoints.toFixed(1) + '</td><td>' + row.wins + '</td><td>' + row.top3 + '</td></tr>';
+    }).join('');
+
+    var valueGolferRows = profile.profitableGolfers.map(function(row) {
+        return '<tr><td><strong>' + escHtml(row.name) + '</strong></td><td>' + row.avgPoints.toFixed(1) + '</td><td>' + row.uses + '</td></tr>';
+    }).join('');
+
+    var h2hRows = profile.headToHead.map(function(row) {
+        return '<tr><td>' + buildPlayerLink(row.name) + '</td><td>' + row.record + '</td><td>' + row.compared + '</td><td class="' + (row.prizeDiff >= 0 ? 'money' : 'money negative') + '">' + (row.prizeDiff >= 0 ? '+' : '-') + fmtMoney(Math.abs(row.prizeDiff)).replace('$', '$') + '</td></tr>';
+    }).join('');
+
+    var lineupCards = profile.lineups.map(function(item) {
+        return '<div class="profile-card"><div class="profile-card-label">' + escHtml(item.tournament) + '</div><div class="profile-card-note">Finish ' + (item.position || '—') + ' • ' + formatTournamentDate(item.date, { month: 'short', day: 'numeric' }) + '</div><div class="profile-card-note" style="margin-top:0.7rem;">' + item.lineup.map(function(lp) { return escHtml(lp.playerName); }).join(' • ') + '</div></div>';
+    }).join('');
+
+    var html = '';
+    html += '<div class="player-profile-header"><div class="player-profile-title"><h3>' + escHtml(p.name) + '</h3><div class="player-profile-subtitle">Season rank #' + profile.leaderboardRank + ' • ' + p.played + ' events • Trend <span class="' + trend.className + '">' + trend.symbol + '</span> ' + escHtml(trend.note) + '</div></div><button class="btn btn-secondary profile-back" type="button" onclick="closePlayerProfile()">← Back</button></div>';
+    html += '<div class="profile-grid">' +
+        '<div class="profile-card"><div class="profile-card-label">Total Winnings</div><div class="profile-card-value">' + fmtMoney(p.winnings) + '</div><div class="profile-card-note">' + p.wins + ' wins • ' + p.top3Count + ' top 3s</div></div>' +
+        '<div class="profile-card"><div class="profile-card-label">Net Profit</div><div class="profile-card-value ' + ((p.winnings - p.entries) >= 0 ? 'money' : 'money negative') + '">' + ((p.winnings - p.entries) >= 0 ? '+' : '-') + fmtMoney(Math.abs(p.winnings - p.entries)).replace('$', '$') + '</div><div class="profile-card-note">Entries paid ' + fmtMoney(p.entries) + '</div></div>' +
+        '<div class="profile-card"><div class="profile-card-label">ROI</div><div class="profile-card-value">' + fmtPct(p.roi) + '</div><div class="profile-card-note">Cash rate ' + cashRate + '</div></div>' +
+        '<div class="profile-card"><div class="profile-card-label">Average Finish</div><div class="profile-card-value">' + (p.played ? p.avgFinish.toFixed(2) : '—') + '</div><div class="profile-card-note">Top 3 rate ' + top3Rate + '</div></div>' +
+        '<div class="profile-card"><div class="profile-card-label">Average Points</div><div class="profile-card-value">' + p.avgPoints.toFixed(1) + '</div><div class="profile-card-note">Across ' + p.played + ' events</div></div>' +
+        '<div class="profile-card"><div class="profile-card-label">Lineup Style</div><div class="profile-card-value">' + (p.avgOwnership ? p.avgOwnership.toFixed(1) + '%' : '—') + '</div><div class="profile-card-note">' + p.uniqueGolfers + ' unique golfers used</div></div>' +
+        '<div class="profile-card"><div class="profile-card-label">Roster Made Cut %</div><div class="profile-card-value">' + rosterMadeCut + '</div><div class="profile-card-note">' + p.rosterMadeCutCount + ' of ' + p.rosterKnownCutCount + ' tracked roster spots made the weekend</div></div>' +
+        '</div>';
+
+    html += '<div class="player-profile-section"><h3>Season Trend</h3><div class="mini-note">Recent momentum and streaks over the latest events.</div><div class="profile-trend-strip">' +
+        '<div class="profile-trend-item"><div class="profile-trend-label">Current Cash Streak</div><div class="profile-trend-value">' + p.cashStreakCurrent + '</div></div>' +
+        '<div class="profile-trend-item"><div class="profile-trend-label">Best Cash Streak</div><div class="profile-trend-value">' + p.cashStreakBest + '</div></div>' +
+        '<div class="profile-trend-item"><div class="profile-trend-label">Current Top 3 Streak</div><div class="profile-trend-value">' + p.top3StreakCurrent + '</div></div>' +
+        '<div class="profile-trend-item"><div class="profile-trend-label">Best Top 3 Streak</div><div class="profile-trend-value">' + p.top3StreakBest + '</div></div>' +
+        '</div>' + buildTrendSparkline(profile.history) + '</div>';
+
+    html += '<div class="player-profile-section"><h3>Best And Worst Results</h3><div class="profile-split">' +
+        '<div class="profile-card"><div class="profile-card-label">Best Cash Event</div><div class="profile-card-value">' + (profile.bestByPrize ? escHtml(profile.bestByPrize.tournament) : '—') + '</div><div class="profile-card-note">' + (profile.bestByPrize ? ('Prize ' + fmtMoney(profile.bestByPrize.prize) + ' • Finish ' + profile.bestByPrize.position) : '—') + '</div></div>' +
+        '<div class="profile-card"><div class="profile-card-label">Best Score</div><div class="profile-card-value">' + (profile.bestByScore ? fmtScore(profile.bestByScore.score) : '—') + '</div><div class="profile-card-note">' + (profile.bestByScore ? escHtml(profile.bestByScore.tournament) : '—') + '</div></div>' +
+        '<div class="profile-card"><div class="profile-card-label">Toughest Week</div><div class="profile-card-value">' + (profile.worstFinish ? ('Finish ' + profile.worstFinish.position) : '—') + '</div><div class="profile-card-note">' + (profile.worstFinish ? escHtml(profile.worstFinish.tournament) : '—') + '</div></div>' +
+        '</div></div>';
+
+    html += '<div class="player-profile-section"><h3>Tournament History</h3><div class="mini-note">Event-by-event results with lineup access.</div>';
+    if (mobile) {
+        html += '<div class="mobile-stack">' + profile.history.slice().reverse().map(function(row) {
+            return '<div class="mobile-card"><div class="mobile-card-head"><div><div class="mobile-card-title">' + escHtml(row.tournament) + '</div><div class="mobile-card-subtitle">' + formatTournamentDate(row.date, { month: 'short', day: 'numeric' }) + '</div></div>' +
+                (row.position ? '<span class="rank-badge ' + (row.position===1?'rank-1':row.position===2?'rank-2':row.position===3?'rank-3':'rank-other') + '">' + row.position + '</span>' : '') +
+                '</div><div class="mobile-metric-grid">' +
+                buildMobileMetric('Points', fmtScore(row.score)) +
+                buildMobileMetric('Prize', row.prize > 0 ? fmtMoney(row.prize) : '—', row.prize > 0 ? 'money' : '') +
+                buildMobileMetric('Entry', fmtMoney(row.entryFee)) +
+                buildMobileMetric('Net', (row.net >= 0 ? '+' : '-') + fmtMoney(Math.abs(row.net)).replace('$', '$'), row.net >= 0 ? 'money' : 'money negative') +
+                '</div><div class="mobile-actions">' + (row.lineup && row.lineup.length ? '<button class="lineup-link" type="button" onclick="openLineupModal(' + row.tournamentId + ', \'' + encodeForInlineHandler(String(p.name)) + '\')">View Team</button>' : '') + '</div></div>';
+        }).join('') + '</div>';
+    } else {
+        html += '<div class="table-container"><table><thead><tr><th>Tournament</th><th>Date</th><th>Finish</th><th>Points</th><th>Prize</th><th>Entry</th><th>Net</th><th>Lineup</th></tr></thead><tbody>' + historyRows + '</tbody></table></div>';
+    }
+    html += '</div>';
+
+    html += '<div class="player-profile-section"><h3>Player Style</h3><div class="profile-split">' +
+        '<div class="profile-card"><div class="profile-card-label">Most Used Golfer</div><div class="profile-card-value">' + (p.mostUsedGolfer ? escHtml(p.mostUsedGolfer.name) : '—') + '</div><div class="profile-card-note">' + (p.mostUsedGolfer ? (p.mostUsedGolfer.count + ' appearances') : 'No lineup history yet') + '</div></div>' +
+        '<div class="profile-card"><div class="profile-card-label">Field Ownership Lean</div><div class="profile-card-value">' + (p.avgOwnership ? p.avgOwnership.toFixed(1) + '%' : '—') + '</div><div class="profile-card-note">' + (p.avgOwnership >= 25 ? 'More chalk-friendly builds' : 'More contrarian builds') + '</div></div>' +
+        '<div class="profile-card"><div class="profile-card-label">Lineup Diversity</div><div class="profile-card-value">' + p.uniqueGolfers + '</div><div class="profile-card-note">Unique golfers used so far</div></div>' +
+        '</div></div>';
+
+    html += '<div class="player-profile-section"><h3>Golfer Relationships</h3>';
+    if (mobile) {
+        html += '<div class="profile-split"><div><div class="mini-note">Most-used golfers in this player’s teams.</div><div class="mobile-stack">' + profile.topGolfers.map(function(row) {
+            return '<div class="mobile-card"><div class="mobile-card-title">' + escHtml(row.name) + '</div><div class="mobile-metric-grid mobile-section-spacer">' +
+                buildMobileMetric('Uses', String(row.uses)) +
+                buildMobileMetric('Avg Pts', row.avgPoints.toFixed(1)) +
+                buildMobileMetric('Wins', String(row.wins)) +
+                buildMobileMetric('Top 3s', String(row.top3)) +
+            '</div></div>';
+        }).join('') + '</div></div><div><div class="mini-note">Highest-scoring golfers when this player used them.</div><div class="mobile-stack">' + profile.profitableGolfers.map(function(row) {
+            return '<div class="mobile-card"><div class="mobile-card-title">' + escHtml(row.name) + '</div><div class="mobile-metric-grid mobile-section-spacer">' +
+                buildMobileMetric('Avg Pts', row.avgPoints.toFixed(1)) +
+                buildMobileMetric('Uses', String(row.uses)) +
+            '</div></div>';
+        }).join('') + '</div></div></div>';
+    } else {
+        html += '<div class="profile-split"><div><div class="mini-note">Most-used golfers in this player’s teams.</div><div class="table-container"><table><thead><tr><th>Golfer</th><th>Uses</th><th>Avg Pts</th><th>Wins</th><th>Top 3s</th></tr></thead><tbody>' + topGolferRows + '</tbody></table></div></div><div><div class="mini-note">Highest-scoring golfers when this player used them.</div><div class="table-container"><table><thead><tr><th>Golfer</th><th>Avg Pts</th><th>Uses</th></tr></thead><tbody>' + valueGolferRows + '</tbody></table></div></div></div>';
+    }
+    html += '</div>';
+
+    html += '<div class="player-profile-section"><h3>Head-To-Head Snapshot</h3><div class="mini-note">Best prize differentials against league opponents.</div>';
+    if (mobile) {
+        html += '<div class="mobile-stack">' + profile.headToHead.map(function(row) {
+            return '<div class="mobile-card"><div class="mobile-card-title">' + buildPlayerLink(row.name) + '</div><div class="mobile-metric-grid mobile-section-spacer">' +
+                buildMobileMetric('Record', row.record) +
+                buildMobileMetric('Shared Events', String(row.compared)) +
+                buildMobileMetric('Prize Diff', (row.prizeDiff >= 0 ? '+' : '-') + fmtMoney(Math.abs(row.prizeDiff)).replace('$', '$'), row.prizeDiff >= 0 ? 'money' : 'money negative') +
+            '</div></div>';
+        }).join('') + '</div>';
+    } else {
+        html += '<div class="table-container"><table><thead><tr><th>Opponent</th><th>Record</th><th>Shared Events</th><th>Prize Diff</th></tr></thead><tbody>' + h2hRows + '</tbody></table></div>';
+    }
+    html += '</div>';
+
+    html += '<div class="player-profile-section"><h3>Recent Teams</h3><div class="mini-note">Latest lineups used by this player.</div><div class="profile-grid">' + lineupCards + '</div></div>';
+    el.innerHTML = html;
+}
+
 // ── STANDINGS ─────────────────────────────────────────────────
 function renderStandings() {
     var el = document.getElementById('standings-content');
@@ -1199,54 +2344,98 @@ function renderStandings() {
 
     var stats = {};
     app.tournaments.forEach(function(t) {
+        var cutStatsEligible = shouldUseTournamentForCutStats(t);
         t.participants.forEach(function(p) {
-            if (!stats[p.name]) stats[p.name] = { name:p.name, winnings:0, entries:0, wins:0, top3:0, played:0, totalPoints:0 };
+            if (!stats[p.name]) stats[p.name] = { name:p.name, winnings:0, entries:0, wins:0, top3:0, played:0, totalPoints:0, rosterMadeCutCount:0, rosterKnownCutCount:0 };
             var s = stats[p.name];
             s.winnings += p.prize; s.entries += t.entryFee; s.played++;
             s.totalPoints += p.score;
             if (p.position === 1) s.wins++;
             if (p.position <= 3)  s.top3++;
+            if (!cutStatsEligible) return;
+            (p.lineup || []).forEach(function(lp) {
+                if (lp.madeCut === true) {
+                    s.rosterMadeCutCount += 1;
+                    s.rosterKnownCutCount += 1;
+                } else if (lp.madeCut === false || lp.cutStatus === 'missed_cut') {
+                    s.rosterKnownCutCount += 1;
+                }
+            });
         });
     });
+
+    var columns = [
+        { key: 'name', getValue: function(row) { return row.name; } },
+        { key: 'played', getValue: function(row) { return row.played; } },
+        { key: 'avgPoints', getValue: function(row) { return row.avgPoints; } },
+        { key: 'wins', getValue: function(row) { return row.wins; } },
+        { key: 'top3', getValue: function(row) { return row.top3; } },
+        { key: 'winnings', getValue: function(row) { return row.winnings; } },
+        { key: 'rosterMadeCutRate', getValue: function(row) { return row.rosterMadeCutRate; } },
+        { key: 'net', getValue: function(row) { return row.net; } }
+    ];
 
     var rows = Object.keys(stats).map(function(k){
         var s = stats[k];
         var avgPoints = s.played > 0 ? s.totalPoints / s.played : 0;
-        return { name:s.name, winnings:s.winnings, entries:s.entries, wins:s.wins, top3:s.top3, played:s.played, net:s.winnings-s.entries, avgPoints:avgPoints };
-    }).sort(function(a,b){
-        if (b.avgPoints !== a.avgPoints) return b.avgPoints - a.avgPoints;
-        if (b.played !== a.played) return b.played - a.played;
-        return b.net - a.net;
+        var rosterMadeCutRate = s.rosterKnownCutCount ? (s.rosterMadeCutCount / s.rosterKnownCutCount) : 0;
+        return { name:s.name, winnings:s.winnings, entries:s.entries, wins:s.wins, top3:s.top3, played:s.played, net:s.winnings-s.entries, avgPoints:avgPoints, rosterMadeCutRate:rosterMadeCutRate, rosterMadeCutCount:s.rosterMadeCutCount, rosterKnownCutCount:s.rosterKnownCutCount };
     });
+    rows = sortByColumns(rows, columns, standingsSort, 'winnings');
 
     var totalPrizes = app.tournaments.reduce(function(s,t){ return s+(t.totalPrizes||0); },0);
 
+    var mobile = isMobileViewport();
     var html =
         '<div class="stats-grid">' +
           '<div class="stat-card"><div class="stat-value">' + app.tournaments.length + '</div><div class="stat-label">Tournaments</div></div>' +
           '<div class="stat-card"><div class="stat-value">$' + totalPrizes.toFixed(2) + '</div><div class="stat-label">Total Prizes Paid</div></div>' +
-          '<div class="stat-card"><div class="stat-value">' + Object.keys(stats).length + '</div><div class="stat-label">Players</div></div>' +
-        '</div>' +
-        '<div class="table-container"><table>' +
-        '<thead><tr><th>Rank</th><th>Player</th><th>Played</th><th>Avg Pts</th><th>Wins</th><th>Top 3</th><th>Winnings</th><th>Entries Paid</th><th>Net Profit</th></tr></thead>' +
+        '<div class="stat-card"><div class="stat-value">' + Object.keys(stats).length + '</div><div class="stat-label">Players</div></div>' +
+        '</div>';
+    if (mobile) {
+        html += '<div class="mobile-stack">';
+        rows.forEach(function(p, i) {
+            var r = i + 1;
+            var rc = r===1?'rank-1':r===2?'rank-2':r===3?'rank-3':'rank-other';
+            html += '<div class="mobile-card"><div class="mobile-card-head"><div><div class="mobile-card-title">' + buildPlayerLink(p.name) + '</div><div class="mobile-card-subtitle">' + p.played + ' events • ' + p.wins + ' wins • ' + p.top3 + ' top 3s</div></div><div class="mobile-rank"><span class="rank-badge ' + rc + '">' + r + '</span></div></div><div class="mobile-metric-grid">' +
+                buildMobileMetric('Winnings', '$' + p.winnings.toFixed(2), 'money') +
+                buildMobileMetric('Made Cut %', p.rosterKnownCutCount ? ((p.rosterMadeCutRate * 100).toFixed(0) + '%') : '—', p.rosterMadeCutRate >= 0.66 ? 'money' : '') +
+                buildMobileMetric('Net Profit', (p.net>=0?'+':'') + '$' + p.net.toFixed(2), p.net >= 0 ? 'money' : 'money negative') +
+                buildMobileMetric('Avg Pts', p.avgPoints.toFixed(1)) +
+            '</div></div>';
+        });
+        html += '</div>';
+    } else {
+        html += '<div class="table-container"><table>' +
+        '<thead><tr><th>Rank</th>' +
+        buildSortHeader('Player', 'name', standingsSort, 'setStandingsSort', 'asc') +
+        buildSortHeader('Played', 'played', standingsSort, 'setStandingsSort', 'desc') +
+        buildSortHeader('Avg Pts', 'avgPoints', standingsSort, 'setStandingsSort', 'desc') +
+        buildSortHeader('Wins', 'wins', standingsSort, 'setStandingsSort', 'desc') +
+        buildSortHeader('Top 3', 'top3', standingsSort, 'setStandingsSort', 'desc') +
+        buildSortHeader('Winnings', 'winnings', standingsSort, 'setStandingsSort', 'desc') +
+        buildSortHeader('Made Cut %', 'rosterMadeCutRate', standingsSort, 'setStandingsSort', 'desc') +
+        buildSortHeader('Net Profit', 'net', standingsSort, 'setStandingsSort', 'desc') +
+        '</tr></thead>' +
         '<tbody>';
 
-    rows.forEach(function(p,i){
-        var r = i+1;
-        var rc = r===1?'rank-1':r===2?'rank-2':r===3?'rank-3':'rank-other';
-        var nc = p.net >= 0 ? 'money' : 'money negative';
-        html += '<tr>' +
-            '<td><span class="rank-badge ' + rc + '">' + r + '</span></td>' +
-            '<td><strong>' + escHtml(p.name) + '</strong></td>' +
-            '<td>' + p.played + '</td>' +
-            '<td>' + p.avgPoints.toFixed(1) + '</td>' +
-            '<td>' + p.wins + '</td><td>' + p.top3 + '</td>' +
-            '<td class="money">$' + p.winnings.toFixed(2) + '</td>' +
-            '<td>$' + p.entries.toFixed(2) + '</td>' +
-            '<td class="' + nc + '">' + (p.net>=0?'+':'') + '$' + p.net.toFixed(2) + '</td>' +
-        '</tr>';
-    });
-    html += '</tbody></table></div>';
+        rows.forEach(function(p,i){
+            var r = i+1;
+            var rc = r===1?'rank-1':r===2?'rank-2':r===3?'rank-3':'rank-other';
+            var nc = p.net >= 0 ? 'money' : 'money negative';
+            html += '<tr>' +
+                '<td><span class="rank-badge ' + rc + '">' + r + '</span></td>' +
+                '<td>' + buildPlayerLink(p.name) + '</td>' +
+                '<td>' + p.played + '</td>' +
+                '<td>' + p.avgPoints.toFixed(1) + '</td>' +
+                '<td>' + p.wins + '</td><td>' + p.top3 + '</td>' +
+                '<td class="money">$' + p.winnings.toFixed(2) + '</td>' +
+                '<td>' + (p.rosterKnownCutCount ? ((p.rosterMadeCutRate * 100).toFixed(0) + '%') : '—') + '</td>' +
+                '<td class="' + nc + '">' + (p.net>=0?'+':'') + '$' + p.net.toFixed(2) + '</td>' +
+            '</tr>';
+        });
+        html += '</tbody></table></div>';
+    }
     el.innerHTML = html;
 }
 
@@ -1257,11 +2446,14 @@ function renderTournaments() {
 
     var sorted = app.tournaments.slice().sort(function(a,b){ return new Date(b.date)-new Date(a.date); });
     var html = '';
+    var mobile = isMobileViewport();
 
     sorted.forEach(function(t) {
-        var dateStr = new Date(t.date+'T12:00:00').toLocaleDateString('en-US',{ month:'long', day:'numeric', year:'numeric' });
+        var dateStr = formatTournamentDate(t.date, { month:'long', day:'numeric', year:'numeric' });
         var bc = t.type==='major'?'badge-major':'badge-regular';
         var bt = t.type==='major'?'MAJOR':'REGULAR';
+        var insights = summarizeTournamentInsights(t);
+        var isExpanded = !!tournamentExpandState[String(t.id)];
         var trows = '';
         t.participants.forEach(function(p){
             var rc = p.position===1?'rank-1':p.position===2?'rank-2':p.position===3?'rank-3':'rank-other';
@@ -1270,16 +2462,17 @@ function renderTournaments() {
                 '<td><strong>'+escHtml(p.name)+'</strong></td>' +
                 '<td>'+p.score.toFixed(2)+'</td>' +
                 '<td class="money">'+(p.prize>0?'$'+p.prize.toFixed(2):'—')+'</td>' +
+                '<td>' + (p.lineup && p.lineup.length ? '<button class="lineup-link" type="button" onclick="openLineupModal(' + t.id + ', \'' + encodeForInlineHandler(String(p.name)) + '\')">View Team</button>' : '—') + '</td>' +
             '</tr>';
         });
 
         html +=
             '<div class="tournament-item">' +
-              '<button class="tournament-delete" onclick="deleteTournament('+t.id+')" title="Delete (Admin)">✕</button>' +
               '<div class="tournament-header"><div>' +
                 '<div class="tournament-name">'+escHtml(t.name)+'</div>' +
-                '<span class="badge '+bc+'">'+bt+'</span>' +
-              '</div></div>' +
+                '<div class="tournament-meta">' + dateStr + ' • ' + escHtml(t.location) + '</div>' +
+              '</div><div class="tournament-header-actions"><span class="badge '+bc+'">'+bt+'</span><button class="tournament-toggle" type="button" onclick="toggleTournamentDetails('+t.id+')">' + (isExpanded ? 'Hide Details' : 'Expand') + '</button></div></div>' +
+              '<div class="tournament-body' + (isExpanded ? '' : ' hidden') + '">' +
               '<div class="tournament-details">' +
                 '<div class="detail-item"><strong>Location</strong>'+escHtml(t.location)+'</div>' +
                 '<div class="detail-item"><strong>Final Round</strong>'+dateStr+'</div>' +
@@ -1287,69 +2480,86 @@ function renderTournaments() {
                 '<div class="detail-item"><strong>Gross Pool</strong>$'+t.grossPool.toFixed(2)+'</div>' +
                 '<div class="detail-item"><strong>Prizes Paid</strong>$'+(t.totalPrizes||0).toFixed(2)+'</div>' +
               '</div>' +
-              '<div class="table-container"><table>' +
-                '<thead><tr><th>Pos</th><th>Player</th><th>DK Score</th><th>Prize Won</th></tr></thead>' +
-                '<tbody>'+trows+'</tbody>' +
-              '</table></div>' +
+              '<div class="insight-grid">' +
+                '<div class="insight-card"><div class="insight-label">Most Rostered Golfer</div><div class="insight-value">' + (insights.mostRostered ? escHtml(insights.mostRostered.playerName) : 'Not available') + '</div><div class="insight-subvalue">' + (insights.mostRostered ? (insights.mostRostered.appearances + ' lineups') : 'Needs imported lineup detail') + '</div></div>' +
+                '<div class="insight-card"><div class="insight-label">Highest Field Score</div><div class="insight-value">' + (insights.highestField ? escHtml(insights.highestField.playerName) : 'Not available') + '</div><div class="insight-subvalue">' + (insights.highestField && insights.highestField.fantasyPoints != null ? fmtScore(insights.highestField.fantasyPoints) + ' DK pts' : 'Needs imported field stats') + '</div></div>' +
+                '<div class="insight-card"><div class="insight-label">Winning Lineup Edge</div><div class="insight-value">' + (insights.winningEdge ? escHtml(insights.winningEdge.playerName) : 'Not available') + '</div><div class="insight-subvalue">' + (insights.winningEdge && insights.winningEdge.fantasyPoints != null ? fmtScore(insights.winningEdge.fantasyPoints) + ' DK pts' : 'Needs first-place lineup detail') + '</div></div>' +
+                '<div class="insight-card"><div class="insight-label">Field Chalk</div><div class="insight-value">' + (insights.chalkiest ? escHtml(insights.chalkiest.playerName) : 'Not available') + '</div><div class="insight-subvalue">' + (insights.chalkiest && insights.chalkiest.draftedPct != null ? insights.chalkiest.draftedPct.toFixed(1) + '% rostered' : 'Ownership not imported') + '</div></div>' +
+              '</div>' +
+              (mobile
+                ? '<div class="mobile-stack">' + t.participants.map(function(p) {
+                    var rc = p.position===1?'rank-1':p.position===2?'rank-2':p.position===3?'rank-3':'rank-other';
+                    return '<div class="mobile-card"><div class="mobile-card-head"><div><div class="mobile-card-title">' + escHtml(p.name) + '</div><div class="mobile-card-subtitle">Finish ' + p.position + '</div></div><div class="mobile-rank"><span class="rank-badge ' + rc + '">' + p.position + '</span></div></div><div class="mobile-metric-grid">' +
+                      buildMobileMetric('DK Score', p.score.toFixed(2)) +
+                      buildMobileMetric('Prize', p.prize>0?'$'+p.prize.toFixed(2):'—', p.prize > 0 ? 'money' : '') +
+                    '</div><div class="mobile-actions">' + (p.lineup && p.lineup.length ? '<button class="lineup-link" type="button" onclick="openLineupModal(' + t.id + ', \'' + encodeForInlineHandler(String(p.name)) + '\')">View Team</button>' : '') + '</div></div>';
+                  }).join('') + '</div>'
+                : '<div class="table-container"><table><thead><tr><th>Pos</th><th>Player</th><th>DK Score</th><th>Prize Won</th><th>Lineup</th></tr></thead><tbody>'+trows+'</tbody></table></div>') +
+              '</div>' +
             '</div>';
     });
     el.innerHTML = html;
 }
 
-window.deleteTournament = function(id) {
-    if (confirm('Delete this tournament? This cannot be undone.')) {
-        app.tournaments = app.tournaments.filter(function(t){ return t.id!==id; });
-        saveLocal(); renderTournaments();
-    }
+window.toggleTournamentDetails = function(id) {
+    var key = String(id);
+    tournamentExpandState[key] = !tournamentExpandState[key];
+    renderTournaments();
 };
 
-// ── EXPORT ────────────────────────────────────────────────────
-document.getElementById('export-btn').addEventListener('click', function() {
-    var blob = new Blob([JSON.stringify(app, null, 2)], { type:'application/json' });
-    var url  = URL.createObjectURL(blob);
-    var a    = document.createElement('a');
-    a.href   = url;
-    a.download = 'data.json';   // always named data.json for GitHub upload
-    a.click();
-    URL.revokeObjectURL(url);
-});
+window.openLineupModal = function(tournamentId, participantName) {
+    var modal = document.getElementById('lineup-modal');
+    var body = document.getElementById('lineup-modal-body');
+    var title = document.getElementById('lineup-modal-title');
+    var subtitle = document.getElementById('lineup-modal-subtitle');
+    var tournament = null;
+    var entry = null;
 
-// ── IMPORT ────────────────────────────────────────────────────
-document.getElementById('import-btn').addEventListener('click', function() {
-    document.getElementById('import-file').click();
-});
-
-document.getElementById('import-file').addEventListener('change', function(e) {
-    var file = e.target.files[0];
-    if (!file) return;
-    var reader = new FileReader();
-    reader.onload = function(ev) {
-        try {
-            var imported = JSON.parse(ev.target.result);
-            app = normalizeAppData(imported);
-            saveLocal();
-            alert('Data imported successfully!');
-            location.reload();
-        } catch(err) {
-            alert('Error importing file. Please check the format.');
+    app.tournaments.forEach(function(t) {
+        if (String(t.id) === String(tournamentId)) {
+            tournament = t;
         }
-    };
-    reader.readAsText(file);
-});
+    });
 
-// ── CLEAR ─────────────────────────────────────────────────────
-document.getElementById('clear-btn').addEventListener('click', function() {
-    if (confirm('Clear ALL data? This cannot be undone.')) {
-        if (confirm('Are you sure? Everything will be deleted.')) {
-            localStorage.removeItem(STORAGE_KEY);
-            location.reload();
-        }
+    if (tournament) {
+        entry = getTournamentEntry(tournament, decodeURIComponent(participantName));
     }
+
+    if (!tournament || !entry || !entry.lineup || !entry.lineup.length) return;
+
+    title.textContent = entry.name + ' Lineup';
+    subtitle.textContent = tournament.name + ' • ' + formatTournamentDate(tournament.date, { month: 'long', day: 'numeric', year: 'numeric' });
+    body.innerHTML = buildLineupModalTable(entry, tournament);
+    modal.classList.remove('hidden');
+    modal.classList.add('visible');
+    modal.setAttribute('aria-hidden', 'false');
+};
+
+window.closeLineupModal = function() {
+    var modal = document.getElementById('lineup-modal');
+    modal.classList.remove('visible');
+    modal.classList.add('hidden');
+    modal.setAttribute('aria-hidden', 'true');
+};
+
+document.getElementById('lineup-modal-close').addEventListener('click', window.closeLineupModal);
+document.getElementById('lineup-modal').addEventListener('click', function(e) {
+    if (e.target === this) window.closeLineupModal();
+});
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') window.closeLineupModal();
 });
 
 // ── HELPERS ───────────────────────────────────────────────────
 function escHtml(str) {
     return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// encodeURIComponent leaves ' unescaped, which breaks (or can be abused to
+// break out of) the single-quoted JS string literal in inline onclick="...('...')"
+// handlers below. Percent-encode it too; decodeURIComponent still round-trips it.
+function encodeForInlineHandler(str) {
+    return encodeURIComponent(str).replace(/'/g, '%27');
 }
 
 function emptyState(msg) {
@@ -1360,7 +2570,19 @@ function emptyState(msg) {
 
 // ── INIT ──────────────────────────────────────────────────────
 loadData(function() {
-    renderStandings();
+    applyRoute({ normalizeHash: true });
+});
+
+window.addEventListener('hashchange', function() {
+    applyRoute();
+});
+
+var lastMobileViewport = isMobileViewport();
+window.addEventListener('resize', function() {
+    var nextMobile = isMobileViewport();
+    if (nextMobile === lastMobileViewport) return;
+    lastMobileViewport = nextMobile;
+    applyRoute();
 });
 </script>
 
